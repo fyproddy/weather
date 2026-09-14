@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WeatherGuard Waterproofing SA | Roof Repairs & Waterproofing Johannesburg</title>
+<meta name="description" content="WeatherGuard Waterproofing & Paints SA — liquid rubber waterproofing, roof repairs, damp proofing and painting across Johannesburg & Gauteng. Free inspection, workmanship warranty."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#000000;
+  --bg-soft:#07090c;
+  --surface:rgba(255,255,255,0.045);
+  --surface-hi:rgba(255,255,255,0.09);
+  --border:rgba(255,255,255,0.09);
+  --text:#f5f5f7;
+  --muted:#86868b;
+  --muted-2:#a1a1a6;
+  --blue:#0a84ff;
+  --cyan:#34d3ff;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --ease-soft:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+::selection{background:var(--blue);color:#fff}
+img{max-width:100%}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding-left:6vw;padding-right:6vw}
+
+/* ---------- NAV ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.35rem 6vw;
+  background:rgba(0,0,0,0);
+  border-bottom:1px solid transparent;
+  transition:padding .5s var(--ease), background .5s var(--ease), border-color .5s var(--ease), transform .5s var(--ease);
+}
+nav.scrolled{
+  padding:0.85rem 6vw;
+  background:rgba(6,8,11,0.72);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid var(--border);
+}
+nav.hide-nav{transform:translateY(-110%)}
+.logo{text-decoration:none;display:flex;flex-direction:column;line-height:1}
+.logo-main{font-size:1.15rem;font-weight:800;letter-spacing:-0.02em;color:var(--text)}
+.logo-main b{background:linear-gradient(120deg,var(--blue),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.logo-sub{font-size:0.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.nav-links{display:flex;gap:2.4rem;list-style:none}
+.nav-links a{font-size:0.82rem;font-weight:500;text-decoration:none;color:var(--muted-2);transition:color .3s var(--ease);position:relative}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{padding:0.55rem 1.3rem;border-radius:100px;background:var(--text);color:#000;text-decoration:none;font-size:0.76rem;font-weight:700;letter-spacing:.01em;transition:transform .35s var(--ease), box-shadow .35s var(--ease);white-space:nowrap}
+.nav-cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 8px 24px rgba(255,255,255,0.18)}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
+.burger span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform .3s var(--ease),opacity .3s var(--ease)}
+.mobile-menu{position:fixed;inset:0;background:rgba(4,5,7,0.98);backdrop-filter:blur(20px);z-index:499;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+.mobile-menu.open{opacity:1;pointer-events:auto}
+.mobile-menu a{font-size:1.6rem;font-weight:700;text-decoration:none;color:var(--text)}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  overflow:hidden;padding:8rem 6vw 4rem;
+}
+.hero-mesh{
+  position:absolute;inset:-20%;z-index:0;
+  background:
+    radial-gradient(38% 32% at 22% 28%, rgba(10,132,255,0.35), transparent 60%),
+    radial-gradient(32% 30% at 78% 24%, rgba(52,211,255,0.28), transparent 60%),
+    radial-gradient(45% 40% at 50% 82%, rgba(10,132,255,0.18), transparent 65%);
+  filter:blur(10px);
+  animation:meshDrift 22s ease-in-out infinite alternate;
+}
+@keyframes meshDrift{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  100%{transform:translate3d(-2%,3%,0) scale(1.08)}
+}
+.hero-grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 30%,transparent 75%)}
+
+.hero-3d{position:relative;z-index:2;perspective:1600px;width:100%;max-width:420px;height:300px;margin:0 auto 1.2rem}
+.hero-stage{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .2s var(--ease-soft)}
+.ring{
+  position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px;
+  border-radius:50%;transform-style:preserve-3d;
+  transform:translateZ(-30px) rotateX(72deg) rotateZ(0deg);
+  border:2px solid rgba(52,211,255,0.35);
+  box-shadow:0 0 60px rgba(10,132,255,0.25) inset, 0 0 40px rgba(52,211,255,0.15);
+  animation:ringSpin 18s linear infinite;
+}
+.ring.ring2{width:260px;height:260px;margin:-130px 0 0 -130px;border-color:rgba(10,132,255,0.25);animation-duration:26s;animation-direction:reverse;transform:translateZ(-10px) rotateX(72deg)}
+@keyframes ringSpin{from{transform:translateZ(-30px) rotateX(72deg) rotateZ(0deg)}to{transform:translateZ(-30px) rotateX(72deg) rotateZ(360deg)}}
+.orb{
+  position:absolute;left:50%;top:50%;width:170px;height:170px;margin:-85px 0 0 -85px;
+  border-radius:50%;transform-style:preserve-3d;transform:translateZ(40px);
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.9), rgba(255,255,255,0.05) 32%, transparent 45%),
+    radial-gradient(circle at 60% 70%, rgba(52,211,255,0.9), rgba(10,132,255,0.85) 55%, #041a30 100%);
+  box-shadow:0 0 70px rgba(10,132,255,0.55), 0 0 140px rgba(52,211,255,0.28), inset -10px -14px 30px rgba(0,0,0,0.35);
+  animation:orbSpin 12s ease-in-out infinite;
+}
+@keyframes orbSpin{0%,100%{transform:translateZ(40px) rotateY(0deg) rotateX(0deg)}50%{transform:translateZ(48px) rotateY(180deg) rotateX(6deg)}}
+.droplet{
+  position:absolute;width:16px;height:16px;border-radius:50% 50% 50% 0;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  box-shadow:0 0 18px rgba(52,211,255,0.6);
+  opacity:.85;
+}
+.d1{left:14%;top:18%;transform:translateZ(70px) rotate(-45deg);animation:floatY 5s var(--ease-soft) infinite}
+.d2{right:12%;top:30%;transform:translateZ(20px) rotate(-45deg) scale(.7);animation:floatY 6.5s var(--ease-soft) infinite .6s;opacity:.55}
+.d3{left:24%;bottom:10%;transform:translateZ(90px) rotate(-45deg) scale(1.3);animation:floatY 4.4s var(--ease-soft) infinite 1.1s}
+.d4{right:20%;bottom:16%;transform:translateZ(10px) rotate(-45deg) scale(.55);animation:floatY 7s var(--ease-soft) infinite .3s;opacity:.4}
+@keyframes floatY{0%,100%{translate:0 0}50%{translate:0 -16px}}
+
+.hero-eyebrow{position:relative;z-index:2;font-size:0.72rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.1rem;opacity:0;transform:translateY(16px);animation:revealUp .9s .1s var(--ease) forwards}
+.hero h1{position:relative;z-index:2;font-size:clamp(2.6rem,8vw,5.6rem);font-weight:800;letter-spacing:-0.03em;line-height:1.02;margin-bottom:1.4rem}
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .line span{display:block;opacity:0;transform:translateY(105%) rotateX(35deg);transform-origin:bottom;animation:lineUp 1s var(--ease) forwards}
+.hero h1 .line:nth-child(1) span{animation-delay:.22s}
+.hero h1 .line:nth-child(2) span{animation-delay:.36s;background:linear-gradient(120deg,var(--cyan),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes lineUp{to{opacity:1;transform:translateY(0) rotateX(0)}}
+.hero-sub{position:relative;z-index:2;font-size:1.02rem;color:var(--muted-2);line-height:1.7;max-width:560px;margin:0 auto 2.4rem;opacity:0;transform:translateY(16px);animation:revealUp .9s .55s var(--ease) forwards}
+.hero-ctas{position:relative;z-index:2;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;opacity:0;transform:translateY(16px);animation:revealUp .9s .72s var(--ease) forwards}
+@keyframes revealUp{to{opacity:1;transform:translateY(0)}}
+
+.btn{padding:0.95rem 1.9rem;border-radius:100px;text-decoration:none;font-size:0.86rem;font-weight:600;letter-spacing:.01em;transition:transform .4s var(--ease), box-shadow .4s var(--ease), background .4s var(--ease);display:inline-flex;align-items:center;gap:.5rem}
+.btn-primary{background:linear-gradient(120deg,var(--blue),var(--cyan));color:#fff;box-shadow:0 8px 30px rgba(10,132,255,0.35)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 42px rgba(10,132,255,0.5)}
+.btn-primary:active{transform:translateY(-1px) scale(.98)}
+.btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);backdrop-filter:blur(10px)}
+.btn-ghost:hover{background:var(--surface-hi);transform:translateY(-3px)}
+
+.scroll-cue{position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:revealUp .9s 1.1s var(--ease) forwards}
+.scroll-cue span{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.chev{width:9px;height:9px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg);animation:chevBounce 2s ease-in-out infinite}
+@keyframes chevBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(4px,4px)}}
+
+/* ---------- REVEAL UTIL ---------- */
+[data-reveal]{opacity:0;transform:translateY(46px);transition:opacity 1s var(--ease), transform 1s var(--ease);backface-visibility:hidden}
+[data-reveal].visible{opacity:1;transform:translateY(0)}
+
+/* ---------- PROBLEM / PINNED STORY ---------- */
+.story{position:relative;background:var(--bg-soft)}
+.story-track{height:420vh;position:relative}
+.story-pin{position:sticky;top:0;height:100svh;display:flex;align-items:center;overflow:hidden}
+.story-inner{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;padding:0 6vw}
+.story-text{position:relative;min-height:220px}
+.story-eyebrow{font-size:0.7rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem}
+.step{position:absolute;top:2.4rem;left:0;right:0;opacity:0;transform:translateY(36px);transition:opacity .28s var(--ease-soft), transform .28s var(--ease-soft);pointer-events:none}
+.step.active{opacity:1;transform:translateY(0);transition-duration:.32s;pointer-events:auto}
+.step h2{font-size:clamp(1.9rem,4vw,3.1rem);font-weight:800;letter-spacing:-0.02em;line-height:1.08;margin-bottom:.8rem}
+.step p{color:var(--muted-2);font-size:0.95rem;line-height:1.7;max-width:420px}
+.step.final h2{background:linear-gradient(120deg,var(--cyan),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.roof-stage{position:relative;height:420px;perspective:1400px;display:flex;align-items:center;justify-content:center}
+.roof-model{position:relative;width:300px;height:300px;transform-style:preserve-3d;transform:rotateX(52deg) rotateZ(-38deg)}
+.plate{position:absolute;inset:0;border-radius:18px;transform-style:preserve-3d}
+.plate-old{
+  background:repeating-linear-gradient(115deg,#20242b 0 10px,#171a1f 10px 20px);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 30px 60px rgba(0,0,0,0.5);
+  transform:translateZ(70px);
+  transition:transform .1s linear, opacity .1s linear;
+}
+.crack{position:absolute;background:#ff5a5a;box-shadow:0 0 14px rgba(255,90,90,0.7);border-radius:3px;transition:opacity .1s linear}
+.crack1{width:3px;height:120px;left:40%;top:8%;transform:rotate(18deg)}
+.crack2{width:3px;height:80px;left:60%;top:40%;transform:rotate(-24deg)}
+.crack3{width:3px;height:60px;left:30%;top:55%;transform:rotate(40deg)}
+.plate-mid{background:linear-gradient(135deg,#2a2f36,#15181c);border:1px solid rgba(255,255,255,0.06);transform:translateZ(20px);box-shadow:0 20px 50px rgba(0,0,0,0.55)}
+.stain{position:absolute;inset:0;border-radius:18px;background:radial-gradient(ellipse at 50% 30%, rgba(90,70,40,0.55), transparent 65%);opacity:0;transition:opacity .1s linear}
+.plate-seal{
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  border:1px solid rgba(255,255,255,0.25);
+  box-shadow:0 0 0 rgba(52,211,255,0);
+  transform:translateZ(-40px);
+  transition:transform .1s linear, box-shadow .1s linear;
+}
+.drop{position:absolute;width:14px;height:14px;border-radius:50% 50% 50% 0;background:linear-gradient(135deg,var(--cyan),var(--blue));box-shadow:0 0 14px rgba(52,211,255,0.6);transform-style:preserve-3d}
+
+/* ---------- STATS ---------- */
+.stats{background:linear-gradient(120deg,var(--blue),var(--cyan));padding:4.5rem 6vw;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;text-align:center}
+.stat{perspective:800px}
+.stat-inner{transition:transform .5s var(--ease)}
+.stat:hover .stat-inner{transform:rotateY(8deg) rotateX(-4deg) translateY(-4px)}
+.s-num{font-size:clamp(1.8rem,4vw,2.7rem);font-weight:800;color:#fff;display:block;line-height:1;letter-spacing:-0.02em}
+.s-label{font-size:0.66rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-top:.5rem}
+
+/* ---------- SECTION HEADERS ---------- */
+.section{padding:8rem 6vw;background:var(--bg)}
+.section.alt{background:var(--bg-soft)}
+.sec-label{font-size:0.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--cyan);margin-bottom:.9rem}
+.sec-title{font-size:clamp(2.1rem,5vw,3.6rem);font-weight:800;letter-spacing:-0.03em;line-height:1.03;margin-bottom:3.5rem;max-width:700px}
+
+/* ---------- SERVICES ---------- */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.4rem;perspective:1200px}
+.svc{
+  background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:2.4rem 2rem;
+  transition:transform .12s linear, background .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease);
+  transform-style:preserve-3d;position:relative;overflow:hidden;
+}
+.svc::before{content:'';position:absolute;inset:0;background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(52,211,255,0.12), transparent 60%);opacity:0;transition:opacity .4s var(--ease)}
+.svc:hover{background:var(--surface-hi);border-color:rgba(52,211,255,0.35);box-shadow:0 24px 60px rgba(0,0,0,0.45)}
+.svc:hover::before{opacity:1}
+.svc-icon{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1.4rem;box-shadow:0 10px 24px rgba(10,132,255,0.35)}
+.svc h3{font-size:1.12rem;font-weight:700;margin-bottom:.6rem;letter-spacing:-0.01em}
+.svc p{font-size:0.88rem;color:var(--muted-2);line-height:1.7}
+
+/* ---------- GALLERY ---------- */
+.gal-outer{overflow:visible}
+.gal-track{display:flex;gap:1.6rem;overflow-x:auto;scroll-snap-type:x proximity;padding:2rem 6vw 3rem;margin:0 -6vw;scrollbar-width:none}
+.gal-track::-webkit-scrollbar{display:none}
+.gal-item{
+  scroll-snap-align:center;flex:0 0 min(78vw,460px);border-radius:26px;overflow:hidden;position:relative;
+  aspect-ratio:4/3;will-change:transform;transition:transform .1s linear, opacity .1s linear;
+  box-shadow:0 30px 70px rgba(0,0,0,0.5);
+}
+.gal-item img{width:100%;height:100%;object-fit:cover;display:block}
+.gal-label{position:absolute;left:0;right:0;bottom:0;padding:1.4rem 1.4rem 1.1rem;background:linear-gradient(to top,rgba(0,0,0,0.85),transparent);font-size:0.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);font-weight:600}
+.gal-hint{text-align:center;font-size:.72rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:-1rem}
+
+/* ---------- WARRANTY ---------- */
+.warranty{background:var(--text);color:#000;padding:6.5rem 6vw;text-align:center;position:relative;overflow:hidden}
+.warranty h2{font-size:clamp(2rem,4.4vw,3.4rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1.1rem;max-width:760px;margin-left:auto;margin-right:auto}
+.warranty p{color:#4a4a4e;max-width:560px;margin:0 auto 2.2rem;line-height:1.75;font-size:0.95rem}
+.warranty-badge{display:inline-flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;background:#000;color:#fff;padding:1rem 1.8rem;border-radius:100px;font-size:0.82rem;font-weight:600}
+
+/* ---------- CTA ---------- */
+.cta{position:relative;background:var(--bg);padding:9rem 6vw;text-align:center;overflow:hidden}
+.cta-mesh{position:absolute;inset:-20%;background:radial-gradient(40% 35% at 30% 30%, rgba(10,132,255,0.28), transparent 60%),radial-gradient(35% 30% at 75% 70%, rgba(52,211,255,0.22), transparent 60%);filter:blur(20px);animation:meshDrift 20s ease-in-out infinite alternate}
+.cta-inner{position:relative;z-index:2}
+.cta h2{font-size:clamp(2.3rem,5.4vw,4.4rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1.1rem;line-height:1.04}
+.cta h2 b{background:linear-gradient(120deg,var(--cyan),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cta > .cta-inner > p{color:var(--muted-2);margin-bottom:2.6rem;max-width:480px;margin-left:auto;margin-right:auto;font-size:0.95rem;line-height:1.75}
+.cta-contacts{display:flex;justify-content:center;gap:3.5rem;flex-wrap:wrap;margin-bottom:2.6rem}
+.c-item span{display:block;font-size:0.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:.4rem}
+.c-item a{text-decoration:none;font-size:1.5rem;font-weight:700;letter-spacing:-0.01em;transition:opacity .3s}
+.c-item a:hover{opacity:.7}
+
+footer{background:#000;padding:2.2rem 6vw;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border)}
+footer p{font-size:0.72rem;color:rgba(245,245,247,0.28)}
+
+.wa-float{position:fixed;bottom:2rem;right:2rem;z-index:400;width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 8px 30px rgba(37,211,102,0.45);transition:transform .4s var(--ease), box-shadow .4s var(--ease);animation:waPulse 3s ease-in-out infinite}
+.wa-float:hover{transform:scale(1.12) translateY(-3px);box-shadow:0 14px 40px rgba(37,211,102,0.6)}
+.wa-float svg{width:28px;height:28px;fill:#fff}
+@keyframes waPulse{0%,100%{box-shadow:0 8px 30px rgba(37,211,102,0.45)}50%{box-shadow:0 8px 30px rgba(37,211,102,0.45),0 0 0 10px rgba(37,211,102,0.12)}}
+
+@media(max-width:860px){
+  .nav-links{display:none}
+  .burger{display:flex}
+  .story-inner{grid-template-columns:1fr;text-align:center}
+  .story-text{min-height:180px;order:2}
+  .step{left:0;right:0}
+  .step p{margin-left:auto;margin-right:auto}
+  .roof-stage{order:1;height:280px}
+  .stats{grid-template-columns:1fr 1fr}
+  .section{padding:6rem 6vw}
+  .cta-contacts{gap:2rem}
+}
+@media(prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#home" class="logo">
+    <span class="logo-main">Weather<b>Guard</b></span>
+    <span class="logo-sub">Waterproofing · JHB</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">Why Us</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="tel:0789379763" class="nav-cta">Call Wisdom</a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#problem">Why Us</a>
+  <a href="#services">Services</a>
+  <a href="#gallery">Work</a>
+  <a href="#contact">Contact</a>
+  <a href="tel:0789379763" class="btn btn-primary">Call Wisdom</a>
+</div>
+
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-mesh"></div>
+
+  <div class="hero-3d" id="heroScene">
+    <div class="hero-stage" id="heroStage">
+      <div class="ring ring2"></div>
+      <div class="ring"></div>
+      <div class="orb"></div>
+      <div class="droplet d1"></div>
+      <div class="droplet d2"></div>
+      <div class="droplet d3"></div>
+      <div class="droplet d4"></div>
+    </div>
+  </div>
+
+  <p class="hero-eyebrow">Johannesburg · Gauteng Wide · Since Day One</p>
+  <h1>
+    <span class="line"><span>Stop the leaks.</span></span>
+    <span class="line"><span>Permanently.</span></span>
+  </h1>
+  <p class="hero-sub">WeatherGuard Waterproofing & Paints SA specialises in rubber liquid waterproofing, roof repairs, and damp treatments that last. No temporary fixes — only permanent solutions, backed by a workmanship warranty.</p>
+  <div class="hero-ctas">
+    <a href="tel:0789379763" class="btn btn-primary">📞 Call Wisdom — 078 937 9763</a>
+    <a href="#services" class="btn btn-ghost">Our Services</a>
+  </div>
+
+  <div class="scroll-cue"><span>Scroll</span><div class="chev"></div></div>
+</section>
+
+<section class="story" id="problem">
+  <div class="story-track" id="storyTrack">
+    <div class="story-pin">
+      <div class="story-inner">
+        <div class="story-text">
+          <p class="story-eyebrow">Sound Familiar?</p>
+          <div class="step" data-step="0">
+            <h2>Every rainy season,<br/>the ceiling gives in.</h2>
+            <p>Water stains, peeling paint, and wet ceilings after every downpour. We trace the source and seal it properly.</p>
+          </div>
+          <div class="step" data-step="1">
+            <h2>Damp creeps in<br/>where you can't see it.</h2>
+            <p>Black mould, peeling paint, and musty smells caused by moisture penetrating walls from below.</p>
+          </div>
+          <div class="step" data-step="2">
+            <h2>Old waterproofing<br/>was never built to last.</h2>
+            <p>Cracked concrete slabs, corroded sheets, and coatings that gave up years ago — still letting water in.</p>
+          </div>
+          <div class="step" data-step="3">
+            <h2>One patch job.<br/>Same leak, next winter.</h2>
+            <p>A previous contractor patched it — and it leaked again. We fix it right, the first time.</p>
+          </div>
+          <div class="step final" data-step="4">
+            <h2>We seal it.<br/>Once. Properly.</h2>
+            <p>Premium rubberised liquid waterproofing, fully bonded and UV resistant — backed by our workmanship warranty.</p>
+          </div>
+        </div>
+        <div class="roof-stage">
+          <div class="roof-model" id="roofModel">
+            <div class="plate plate-seal" id="plateSeal"></div>
+            <div class="plate plate-mid"><div class="stain" id="stain"></div></div>
+            <div class="plate plate-old" id="plateOld">
+              <div class="crack crack1" id="crack1"></div>
+              <div class="crack crack2" id="crack2"></div>
+              <div class="crack crack3" id="crack3"></div>
+            </div>
+            <div class="drop" id="storyDrop1" style="left:35%;top:-10%"></div>
+            <div class="drop" id="storyDrop2" style="left:58%;top:-10%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats" data-reveal>
+  <div class="stat"><div class="stat-inner"><span class="s-num" data-count="100" data-suffix="%">0%</span><span class="s-label">Rubber Liquid Seal</span></div></div>
+  <div class="stat"><div class="stat-inner"><span class="s-num" data-static="UV">UV</span><span class="s-label">Resistant Coating</span></div></div>
+  <div class="stat"><div class="stat-inner"><span class="s-num" data-static="GTG">GTG</span><span class="s-label">Wide Coverage</span></div></div>
+  <div class="stat"><div class="stat-inner"><span class="s-num" data-static="Free">Free</span><span class="s-label">Inspection & Quote</span></div></div>
+</div>
+
+<section class="section" id="services">
+  <p class="sec-label" data-reveal>What We Offer</p>
+  <h2 class="sec-title" data-reveal>Our Services</h2>
+  <div class="svc-grid">
+    <div class="svc" data-reveal><div class="svc-icon">🛡️</div><h3>Liquid Rubber Waterproofing</h3><p>Premium rubberised liquid coating applied to flat and pitched roofs. UV resistant, heat reflective, and permanently sealed.</p></div>
+    <div class="svc" data-reveal><div class="svc-icon">🔥</div><h3>Torch-On Waterproofing</h3><p>Bitumen torch-on membrane for flat roofs requiring maximum durability and long-term protection.</p></div>
+    <div class="svc" data-reveal><div class="svc-icon">🏠</div><h3>Roof Repairs & Restoration</h3><p>Crack repairs, ridge tile sealing, flashing replacement, and full roof restoration on all roof types.</p></div>
+    <div class="svc" data-reveal><div class="svc-icon">💦</div><h3>Damp Proofing & Sealing</h3><p>Rising damp treatment on walls, penetrating damp repairs, and full interior damp-proof solutions.</p></div>
+    <div class="svc" data-reveal><div class="svc-icon">🎨</div><h3>Roof & Wall Painting</h3><p>Interior and exterior painting after waterproofing treatment — clean finish, correct product for each surface.</p></div>
+    <div class="svc" data-reveal><div class="svc-icon">🔍</div><h3>Leak Detection & Inspection</h3><p>Free on-site inspection to trace the exact source of your leak before any work begins.</p></div>
+  </div>
+</section>
+
+<section class="section alt" id="gallery">
+  <div class="wrap">
+    <p class="sec-label" data-reveal>Before & After</p>
+    <h2 class="sec-title" data-reveal>Our Work</h2>
+  </div>
+  <div class="gal-outer">
+    <div class="gal-track" id="galTrack">
+      <div class="gal-item"><img src="https://media.base44.com/images/public/69ffbad7b9520cdef58a47b2/2fc7f9404_generated_image.png" alt="Waterproofing application roof"/><div class="gal-label">Liquid Rubber Application — Flat Roof JHB</div></div>
+      <div class="gal-item"><img src="https://media.base44.com/images/public/69ffbad7b9520cdef58a47b2/22d068d32_generated_image.png" alt="Before and after roof waterproofing"/><div class="gal-label">Before & After — Roof Restoration</div></div>
+      <div class="gal-item"><img src="https://media.base44.com/images/public/69ffbad7b9520cdef58a47b2/284475d3f_generated_image.png" alt="Damp wall treatment"/><div class="gal-label">Rising Damp Treatment — Interior Wall</div></div>
+      <div class="gal-item"><img src="https://media.base44.com/images/public/69ffbad7b9520cdef58a47b2/2fc7f9404_generated_image.png" alt="Roof coating completed"/><div class="gal-label">Completed Roof Coating — Heat Reflective</div></div>
+    </div>
+    <p class="gal-hint">← Swipe to explore →</p>
+  </div>
+</section>
+
+<section class="warranty" data-reveal>
+  <h2>Workmanship warranty on every job.</h2>
+  <p>We back every project with a workmanship guarantee. If it leaks again due to our application, we come back and fix it — no argument, no charge.</p>
+  <div class="warranty-badge"><span>✓ Guaranteed Results</span><span>✓ Free Inspection</span><span>✓ Gauteng Wide</span></div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="cta-mesh"></div>
+  <div class="cta-inner">
+    <p class="sec-label" data-reveal>Book Your Inspection</p>
+    <h2 data-reveal>Don't wait for <b>next winter.</b></h2>
+    <p data-reveal>Call or WhatsApp Wisdom today for your free, no-obligation roof inspection and quote. Small issues become expensive if ignored.</p>
+    <div class="cta-contacts" data-reveal>
+      <div class="c-item"><span>Call / WhatsApp Wisdom</span><a href="tel:0789379763">078 937 9763</a></div>
+      <div class="c-item"><span>Email</span><a href="mailto:zweli4478@gmail.com">zweli4478@gmail.com</a></div>
+    </div>
+    <a href="tel:0789379763" class="btn btn-primary" data-reveal>📞 Book Free Inspection</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 WeatherGuard Waterproofing & Paints SA · Johannesburg, Gauteng</p>
+  <p>Roof Repairs · Waterproofing · Damp Proofing · Painting</p>
+</footer>
+
+<a href="https://wa.me/27789379763" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- helpers ---------- */
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+  function lerp(a,b,t){return a+(b-a)*t}
+  function smoothstep(a,b,x){var t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)}
+
+  /* ---------- nav ---------- */
+  var nav=document.getElementById('nav');
+  var lastY=window.scrollY;
+  window.addEventListener('scroll',function(){
+    var y=window.scrollY;
+    nav.classList.toggle('scrolled', y>30);
+    if(y>140 && y>lastY){nav.classList.add('hide-nav')} else {nav.classList.remove('hide-nav')}
+    lastY=y;
+  },{passive:true});
+
+  var burger=document.getElementById('burger');
+  var mobileMenu=document.getElementById('mobileMenu');
+  burger.addEventListener('click',function(){
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click',function(){mobileMenu.classList.remove('open')});
+  });
+
+  /* ---------- scroll reveal ---------- */
+  var revealEls=document.querySelectorAll('[data-reveal]');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en,i){
+        if(en.isIntersecting){
+          en.target.style.transitionDelay=(i%6)*0.06+'s';
+          en.target.classList.add('visible');
+          io.unobserve(en.target);
+        }
+      });
+    },{threshold:0.15});
+    revealEls.forEach(function(el){io.observe(el)});
+  } else {
+    revealEls.forEach(function(el){el.classList.add('visible')});
+  }
+
+  /* ---------- count up ---------- */
+  var counters=document.querySelectorAll('[data-count]');
+  if('IntersectionObserver' in window){
+    var cio=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          var el=en.target, target=parseFloat(el.dataset.count), suffix=el.dataset.suffix||'', start=null, dur=1200;
+          function step(ts){
+            if(!start)start=ts;
+            var p=clamp((ts-start)/dur,0,1);
+            var eased=1-Math.pow(1-p,3);
+            el.textContent=Math.round(target*eased)+suffix;
+            if(p<1)requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+          cio.unobserve(el);
+        }
+      });
+    },{threshold:0.4});
+    counters.forEach(function(el){cio.observe(el)});
+  }
+
+  /* ---------- hero 3D parallax ---------- */
+  var heroScene=document.getElementById('heroScene');
+  var heroStage=document.getElementById('heroStage');
+  if(heroScene && !reduceMotion){
+    var tx=0, ty=0, cx=0, cy=0;
+    heroScene.addEventListener('mousemove',function(e){
+      var r=heroScene.getBoundingClientRect();
+      tx=((e.clientX-r.left)/r.width-0.5)*2;
+      ty=((e.clientY-r.top)/r.height-0.5)*2;
+    });
+    heroScene.addEventListener('mouseleave',function(){tx=0;ty=0});
+    function raf(){
+      cx=lerp(cx,tx,0.06); cy=lerp(cy,ty,0.06);
+      heroStage.style.transform='rotateY('+(cx*16)+'deg) rotateX('+(-cy*14)+'deg)';
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }
+
+  /* ---------- card tilt ---------- */
+  if(!reduceMotion){
+    document.querySelectorAll('.svc').forEach(function(card){
+      card.addEventListener('mousemove',function(e){
+        var r=card.getBoundingClientRect();
+        var px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
+        var rx=(py-0.5)*-10, ry=(px-0.5)*10;
+        card.style.transform='rotateX('+rx+'deg) rotateY('+ry+'deg) translateY(-4px)';
+        card.style.setProperty('--mx',(px*100)+'%');
+        card.style.setProperty('--my',(py*100)+'%');
+      });
+      card.addEventListener('mouseleave',function(){
+        card.style.transform='rotateX(0deg) rotateY(0deg) translateY(0)';
+      });
+    });
+  }
+
+  /* ---------- pinned story scroll ---------- */
+  var storyTrack=document.getElementById('storyTrack');
+  var steps=document.querySelectorAll('.step');
+  var plateOld=document.getElementById('plateOld');
+  var plateSeal=document.getElementById('plateSeal');
+  var stain=document.getElementById('stain');
+  var crack1=document.getElementById('crack1'), crack2=document.getElementById('crack2'), crack3=document.getElementById('crack3');
+  var drop1=document.getElementById('storyDrop1'), drop2=document.getElementById('storyDrop2');
+  var roofModel=document.getElementById('roofModel');
+  var storyTicking=false;
+
+  function updateStory(){
+    storyTicking=false;
+    var rect=storyTrack.getBoundingClientRect();
+    var total=rect.height-window.innerHeight;
+    var p=clamp(-rect.top/Math.max(total,1),0,1);
+
+    var stepIdx=Math.min(4,Math.floor(p*5));
+    steps.forEach(function(s){
+      s.classList.toggle('active', parseInt(s.dataset.step,10)===stepIdx);
+    });
+
+    var crackOpacity=smoothstep(0,0.15,p)*(1-smoothstep(0.78,1,p));
+    [crack1,crack2,crack3].forEach(function(c){c.style.opacity=crackOpacity});
+    plateOld.style.opacity=1-smoothstep(0.75,0.98,p);
+    plateOld.style.transform='translateZ('+lerp(70,140,smoothstep(0.75,1,p))+'px) rotateX('+lerp(0,-40,smoothstep(0.75,1,p))+'deg)';
+
+    stain.style.opacity=smoothstep(0.22,0.5,p)*(1-smoothstep(0.75,1,p));
+
+    var sealProgress=smoothstep(0.7,1,p);
+    plateSeal.style.transform='translateZ('+lerp(-40,30,sealProgress)+'px)';
+    plateSeal.style.boxShadow='0 0 '+lerp(0,80,sealProgress)+'px rgba(52,211,255,'+(0.15+0.55*sealProgress)+')';
+
+    var dropP=(p*2.4)%1;
+    var dropStop=smoothstep(0.7,0.85,p);
+    var dy=lerp(-10,80,dropP)*(1-dropStop);
+    drop1.style.transform='translateY('+dy+'%) rotate(-45deg)';
+    drop1.style.opacity=(1-dropStop)*(1-smoothstep(0.9,1,dropP));
+    var dropP2=((p*2.4)+0.35)%1;
+    var dy2=lerp(-10,80,dropP2)*(1-dropStop);
+    drop2.style.transform='translateY('+dy2+'%) rotate(-45deg)';
+    drop2.style.opacity=(1-dropStop)*(1-smoothstep(0.9,1,dropP2));
+
+    roofModel.style.transform='rotateX('+lerp(52,44,p)+'deg) rotateZ('+lerp(-38,-24,p)+'deg)';
+  }
+  function onScrollStory(){
+    if(!storyTicking){storyTicking=true;requestAnimationFrame(updateStory)}
+  }
+  window.addEventListener('scroll',onScrollStory,{passive:true});
+  window.addEventListener('resize',onScrollStory);
+  updateStory();
+
+  /* ---------- gallery 3D carousel ---------- */
+  var galTrack=document.getElementById('galTrack');
+  var galItems=document.querySelectorAll('.gal-item');
+  var galTicking=false;
+  function updateGallery(){
+    galTicking=false;
+    var trackRect=galTrack.getBoundingClientRect();
+    var center=trackRect.left+trackRect.width/2;
+    galItems.forEach(function(item){
+      var r=item.getBoundingClientRect();
+      var itemCenter=r.left+r.width/2;
+      var dist=(itemCenter-center)/(trackRect.width/2);
+      dist=clamp(dist,-1.4,1.4);
+      var scale=lerp(1,0.86,Math.abs(dist));
+      var rotY=lerp(0,18,dist);
+      var opacity=lerp(1,0.55,Math.abs(dist));
+      item.style.transform='perspective(1000px) rotateY('+(-rotY)+'deg) scale('+scale+')';
+      item.style.opacity=opacity;
+    });
+  }
+  function onScrollGallery(){
+    if(!galTicking){galTicking=true;requestAnimationFrame(updateGallery)}
+  }
+  galTrack.addEventListener('scroll',onScrollGallery,{passive:true});
+  window.addEventListener('resize',onScrollGallery);
+  updateGallery();
+
+})();
+</script>
+</body>
+</html>
