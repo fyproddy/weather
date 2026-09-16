@@ -1,0 +1,97 @@
+; ProfessionalFXScalper - EURUSD M5 - Minimum-Risk LIVE profile
+; ============================================================
+; READ BEFORE USE:
+;  1. This profile sets EnableRealAccountTrading=true, but
+;     ConfirmedLiveAccountNumber is deliberately left at 0 below.
+;     The EA will REFUSE to trade on a real account until you replace
+;     that 0 with your own verified account number. This is intentional
+;     safety design, not an oversight - edit it only when you are certain.
+;  2. Risk is set well below the EA's own hard ceilings, as a starting
+;     point for the FIRST weeks of real-money use. Loosen it gradually
+;     and only after real forward-test evidence supports it.
+;  3. Re-check BrokerToUTCOffsetHours against YOUR broker before going
+;     live - it is NOT auto-detected. See the README timezone table.
+;  4. Load via: Chart -> EA properties -> Inputs tab -> Load.
+Section_General===== GENERAL ====
+MagicNumber=20260916
+TradeComment=PFXScalper
+AllowNewTrades=true
+Section_Account===== ACCOUNT SAFETY ====
+EnableRealAccountTrading=true
+ConfirmedLiveAccountNumber=0
+RealAccountMaxRiskPercent=0.25
+Section_Risk===== RISK MANAGEMENT ====
+RiskPercentPerTrade=0.10
+HardMaxRiskPercentPerTrade=0.50
+DailyLossLimitPercent=1.00
+MaxEquityDrawdownPercent=3.00
+MaxConsecutiveLosses=3
+MaxTradesPerDay=2
+MaxOpenPositions=1
+ResetConsecutiveLossesDaily=true
+AcknowledgeAndResetDrawdownLock=false
+EmergencyStop=false
+Section_Strategy===== STRATEGY / CONFIDENCE ====
+MinConfidenceScore=75
+MinRewardToRisk=1.5
+RewardRiskMultiple=1.8
+HTF_EMA_Fast=50
+HTF_EMA_Slow=200
+Entry_EMA_Fast=20
+Entry_EMA_Slow=50
+RSI_Period=14
+ADX_Period=14
+ADX_TrendingThreshold=25.0
+ADX_RangingThreshold=18.0
+ATR_Period=14
+ATR_MA_Period=50
+ATR_UnstableExpansionRatio=2.2
+ATR_MinRatio=0.55
+SwingLookbackBars=30
+ATR_SLBufferMultiple=0.30
+LiquiditySweepLookback=6
+Section_Session===== SESSION / TIME FILTERS ====
+BrokerToUTCOffsetHours=2
+EnableWindow1=true
+Window1StartHourUTC=7
+Window1EndHourUTC=10
+EnableWindow2=true
+Window2StartHourUTC=12
+Window2EndHourUTC=15
+EnableAsianSession=false
+TradeMonday=true
+TradeTuesday=true
+TradeWednesday=true
+TradeThursday=true
+TradeFriday=true
+NoNewTradesAfterFridayHourUTC=16
+CloseAllPositionsFridayEnabled=true
+CloseAllPositionsFridayHourUTC=19
+RolloverBlockStartHourBroker=23
+RolloverBlockStartMinuteBroker=45
+RolloverBlockEndHourBroker=0
+RolloverBlockEndMinuteBroker=15
+Section_Execution===== SPREAD / EXECUTION ====
+MaxSpreadPoints=15.0
+MaxSlippagePoints=10
+MaxOrderRetries=3
+RetryDelayMs=300
+MinFreeMarginBuffer=500.0
+Section_Management===== TRADE MANAGEMENT ====
+UseBreakEven=true
+BreakEvenTriggerR=1.0
+BreakEvenLockPoints=20.0
+UseTrailingStop=true
+TrailStartR=1.5
+TrailATRMultiple=1.2
+Section_News===== NEWS FILTER ====
+EnableNewsFilter=false
+NewsCalendarFileName=PFXS_NewsCalendar.csv
+NewsBlackoutMinutesBefore=30
+NewsBlackoutMinutesAfter=30
+Section_UI===== LOGGING / DASHBOARD ====
+EnableDashboard=true
+EnableCSVLogging=true
+DashboardFontSize=8
+DashboardTextColor=16777215
+DashboardBgColor=5197615

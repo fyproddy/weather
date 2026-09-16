@@ -1,0 +1,88 @@
+; ProfessionalFXScalper - EURUSD M5 - Conservative Demo profile
+; Load via: Strategy Tester / Chart EA properties -> Inputs tab -> Load
+; Intended for: DEMO accounts, forward testing and Strategy Tester runs.
+; Mirrors the EA's own conservative built-in defaults, made explicit here
+; so the profile is self-documenting and reproducible.
+Section_General===== GENERAL ====
+MagicNumber=20260916
+TradeComment=PFXScalper
+AllowNewTrades=true
+Section_Account===== ACCOUNT SAFETY ====
+EnableRealAccountTrading=false
+ConfirmedLiveAccountNumber=0
+RealAccountMaxRiskPercent=0.50
+Section_Risk===== RISK MANAGEMENT ====
+RiskPercentPerTrade=0.25
+HardMaxRiskPercentPerTrade=1.00
+DailyLossLimitPercent=2.00
+MaxEquityDrawdownPercent=6.00
+MaxConsecutiveLosses=4
+MaxTradesPerDay=3
+MaxOpenPositions=1
+ResetConsecutiveLossesDaily=true
+AcknowledgeAndResetDrawdownLock=false
+EmergencyStop=false
+Section_Strategy===== STRATEGY / CONFIDENCE ====
+MinConfidenceScore=70
+MinRewardToRisk=1.5
+RewardRiskMultiple=1.8
+HTF_EMA_Fast=50
+HTF_EMA_Slow=200
+Entry_EMA_Fast=20
+Entry_EMA_Slow=50
+RSI_Period=14
+ADX_Period=14
+ADX_TrendingThreshold=25.0
+ADX_RangingThreshold=18.0
+ATR_Period=14
+ATR_MA_Period=50
+ATR_UnstableExpansionRatio=2.2
+ATR_MinRatio=0.55
+SwingLookbackBars=30
+ATR_SLBufferMultiple=0.30
+LiquiditySweepLookback=6
+Section_Session===== SESSION / TIME FILTERS ====
+BrokerToUTCOffsetHours=2
+EnableWindow1=true
+Window1StartHourUTC=7
+Window1EndHourUTC=10
+EnableWindow2=true
+Window2StartHourUTC=12
+Window2EndHourUTC=15
+EnableAsianSession=false
+TradeMonday=true
+TradeTuesday=true
+TradeWednesday=true
+TradeThursday=true
+TradeFriday=true
+NoNewTradesAfterFridayHourUTC=17
+CloseAllPositionsFridayEnabled=true
+CloseAllPositionsFridayHourUTC=20
+RolloverBlockStartHourBroker=23
+RolloverBlockStartMinuteBroker=45
+RolloverBlockEndHourBroker=0
+RolloverBlockEndMinuteBroker=15
+Section_Execution===== SPREAD / EXECUTION ====
+MaxSpreadPoints=20.0
+MaxSlippagePoints=15
+MaxOrderRetries=3
+RetryDelayMs=300
+MinFreeMarginBuffer=200.0
+Section_Management===== TRADE MANAGEMENT ====
+UseBreakEven=true
+BreakEvenTriggerR=1.0
+BreakEvenLockPoints=20.0
+UseTrailingStop=true
+TrailStartR=1.5
+TrailATRMultiple=1.2
+Section_News===== NEWS FILTER ====
+EnableNewsFilter=false
+NewsCalendarFileName=PFXS_NewsCalendar.csv
+NewsBlackoutMinutesBefore=30
+NewsBlackoutMinutesAfter=30
+Section_UI===== LOGGING / DASHBOARD ====
+EnableDashboard=true
+EnableCSVLogging=true
+DashboardFontSize=8
+DashboardTextColor=16777215
+DashboardBgColor=5197615
