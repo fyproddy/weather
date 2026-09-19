@@ -1,5 +1,22 @@
 # ProfessionalFXScalper — Changelog
 
+## v2.01 — First real MetaEditor compile fix (2026-09-19)
+
+First actual MetaEditor compile attempt (by the end user, on their own
+machine) returned 3 errors, all the same root cause:
+
+### Fixed
+- `'GlobalVariableSave' - function not defined` at lines 270, 551, 609.
+  `GlobalVariableSave()` is not a real MQL4 function — the correct
+  built-in function to force-write terminal Global Variables to disk is
+  `GlobalVariablesFlush()`. All three call sites corrected. This is the
+  only change in this version; no logic changed, only the function name.
+
+This is exactly the kind of thing `_TESTING.md` Phase 1 (compilation) was
+written to catch before it reached Phase 2/3 — confirms the static
+review alone was not sufficient and a real compile was necessary, as
+stated.
+
 ## v2.00 — Initial autonomous release (2026-09-16)
 
 No `ProfessionalFXScalper_v1.mq4` or its README were available/attached

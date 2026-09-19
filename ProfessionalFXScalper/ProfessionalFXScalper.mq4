@@ -46,7 +46,7 @@
 //
 #property copyright "Professional FX Scalper"
 #property link      "https://www.mql4.com"
-#property version   "2.00"
+#property version   "2.01"
 #property strict
 #property description "Fully autonomous EURUSD M5 scalping robot. Not an adviser or signal tool."
 
@@ -267,7 +267,7 @@ int OnInit()
    if(AcknowledgeAndResetDrawdownLock)
      {
       GlobalVariableSet(GVKey("DrawdownLocked"), 0);
-      GlobalVariableSave();
+      GlobalVariablesFlush();
       Print("Drawdown lock manually acknowledged and cleared by operator.");
      }
 
@@ -301,7 +301,7 @@ int OnInit()
 
    g_lastBarTime = iTime(Symbol(), PERIOD_M5, 0);
 
-   Print("ProfessionalFXScalper v2.00 initialised. Magic=", MagicNumber,
+   Print("ProfessionalFXScalper v2.01 initialised. Magic=", MagicNumber,
          " Demo=", g_isDemo, " RealTradingEnabled=", EnableRealAccountTrading);
    return(INIT_SUCCEEDED);
   }
@@ -548,7 +548,7 @@ void SavePersistedRiskState()
    GlobalVariableSet(GVKey("CurrentDay"), (double)g_currentDay);
    GlobalVariableSet(GVKey("TradesToday"), (double)g_tradesToday);
    GlobalVariableSet(GVKey("ConsecutiveLosses"), (double)g_consecutiveLosses);
-   GlobalVariableSave();
+   GlobalVariablesFlush();
   }
 
 datetime DayStamp(datetime t)
@@ -606,7 +606,7 @@ void UpdateRiskLocks()
       if(!drawdownLocked)
         {
          GlobalVariableSet(GVKey("DrawdownLocked"), 1);
-         GlobalVariableSave();
+         GlobalVariablesFlush();
         }
       g_lockState  = LOCK_DRAWDOWN;
       g_lockReason = StringConcatenate("Max equity drawdown reached (", DoubleToString(ddPct, 2),
@@ -1597,7 +1597,7 @@ void SetDashLine(int lineIndex, string text)
 void UpdateDashboard()
   {
    int L = 0;
-   SetDashLine(L++, "ProfessionalFXScalper v2.00");
+   SetDashLine(L++, "ProfessionalFXScalper v2.01");
    SetDashLine(L++, "Account: " + (g_isReal ? "REAL" : (g_isDemo ? "DEMO" : "CONTEST")) +
                      "  |  Real trading enabled: " + (EnableRealAccountTrading ? "YES" : "NO"));
    SetDashLine(L++, "Symbol: " + Symbol() + "  TF: " + EnumToString((ENUM_TIMEFRAMES)Period()));
