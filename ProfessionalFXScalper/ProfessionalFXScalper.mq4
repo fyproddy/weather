@@ -46,7 +46,7 @@
 //
 #property copyright "Professional FX Scalper"
 #property link      "https://www.mql4.com"
-#property version   "2.01"
+#property version   "2.02"
 #property strict
 #property description "Fully autonomous EURUSD M5 scalping robot. Not an adviser or signal tool."
 
@@ -238,7 +238,11 @@ struct SignalInfo
 //====================================================================
 string GVKey(string suffix)
   {
-   return("PFXS_" + Symbol() + "_" + IntegerToString(MagicNumber) + "_" + suffix);
+   // IsTesting() namespaces Strategy Tester runs separately from live/demo
+   // state - Global Variables are shared terminal-wide, so without this a
+   // backtest's simulated peak equity would corrupt the live drawdown lock.
+   string mode = IsTesting() ? "TESTER_" : "";
+   return("PFXS_" + mode + Symbol() + "_" + IntegerToString(MagicNumber) + "_" + suffix);
   }
 
 //====================================================================
@@ -267,8 +271,15 @@ int OnInit()
    if(AcknowledgeAndResetDrawdownLock)
      {
       GlobalVariableSet(GVKey("DrawdownLocked"), 0);
+      // Also reset the remembered peak equity to the current balance -
+      // clearing only the lock flag is not enough, since a stale (e.g.
+      // corrupted or outdated) peak would just re-trigger the same lock
+      // on the very next tick.
+      g_peakEquity = AccountEquity();
+      GlobalVariableSet(GVKey("PeakEquity"), g_peakEquity);
       GlobalVariablesFlush();
-      Print("Drawdown lock manually acknowledged and cleared by operator.");
+      Print("Drawdown lock manually acknowledged and cleared by operator. Peak equity reset to current equity (",
+            DoubleToString(g_peakEquity, 2), ").");
      }
 
    if(EnableNewsFilter)
@@ -301,7 +312,7 @@ int OnInit()
 
    g_lastBarTime = iTime(Symbol(), PERIOD_M5, 0);
 
-   Print("ProfessionalFXScalper v2.01 initialised. Magic=", MagicNumber,
+   Print("ProfessionalFXScalper v2.02 initialised. Magic=", MagicNumber,
          " Demo=", g_isDemo, " RealTradingEnabled=", EnableRealAccountTrading);
    return(INIT_SUCCEEDED);
   }
@@ -1597,7 +1608,7 @@ void SetDashLine(int lineIndex, string text)
 void UpdateDashboard()
   {
    int L = 0;
-   SetDashLine(L++, "ProfessionalFXScalper v2.01");
+   SetDashLine(L++, "ProfessionalFXScalper v2.02");
    SetDashLine(L++, "Account: " + (g_isReal ? "REAL" : (g_isDemo ? "DEMO" : "CONTEST")) +
                      "  |  Real trading enabled: " + (EnableRealAccountTrading ? "YES" : "NO"));
    SetDashLine(L++, "Symbol: " + Symbol() + "  TF: " + EnumToString((ENUM_TIMEFRAMES)Period()));

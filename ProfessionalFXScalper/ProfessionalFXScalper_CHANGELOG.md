@@ -1,5 +1,39 @@
 # ProfessionalFXScalper — Changelog
 
+## v2.02 — Fix Strategy Tester / live state collision (2026-09-24)
+
+Found through real usage: the end user ran a Strategy Tester backtest
+(simulated $10,000 account) and then attached the EA live to the same
+symbol/magic number on their real ~$500 demo account. The live EA came
+up immediately locked with "Max equity drawdown reached (95%)" even
+though no real losses had occurred.
+
+### Root cause
+`GlobalVariableSet`/`GlobalVariableGet` are shared terminal-wide in
+MT4 - they are **not** sandboxed per Strategy Tester run. `GVKey()`
+built its key from only `Symbol()` + `MagicNumber`, so a backtest and a
+live/demo chart using the same symbol and default magic number wrote to
+the exact same persisted `PeakEquity` value. The backtest's simulated
+$10,000 peak got read back by the live EA and compared against the real
+~$500 equity, producing a false ~95% "drawdown."
+
+### Fixed
+- `GVKey()` now prefixes the key with `TESTER_` whenever `IsTesting()`
+  is true, so Strategy Tester runs and live/demo trading never share
+  persisted risk state again.
+- `AcknowledgeAndResetDrawdownLock` previously only cleared the lock
+  flag, which was not actually sufficient to recover from this bug (a
+  stale peak equity would just re-trigger the same lock on the next
+  tick). It now also resets the persisted peak equity to the current
+  account equity, so it fully recovers on its own going forward.
+
+### Note for anyone hitting this on v2.00/v2.01
+If you ran a backtest before this fix and now see a false drawdown
+lock live: open **Tools → Global Variables** in MT4, delete any entries
+starting with `PFXS_` for your symbol/magic number, then remove and
+re-attach the EA to the chart. Updating to v2.02 prevents it from
+happening again.
+
 ## v2.01 — First real MetaEditor compile fix (2026-09-19)
 
 First actual MetaEditor compile attempt (by the end user, on their own
