@@ -9,14 +9,10 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://roddyaccess.co.za",
   city: "Johannesburg",
 
-  // WhatsApp number in international format, digits only (e.g. 27821234567).
-  // Set NEXT_PUBLIC_WHATSAPP_NUMBER or replace the empty string below.
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
+  // WhatsApp number in international format, digits only.
+  whatsapp: "27680579202",
   email: "hello@roddyaccess.co.za",
   instagram: "https://instagram.com/roddyaccess",
-
-  // Optional JSON endpoint (Formspree, Basin, own API) for plan requests.
-  formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT || "",
 };
 
 export const nav = [
@@ -29,6 +25,6 @@ export const nav = [
 ];
 
 export function whatsappLink(message?: string) {
-  const base = site.whatsapp ? `https://wa.me/${site.whatsapp}` : "https://wa.me/";
+  const base = `https://wa.me/${site.whatsapp}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }

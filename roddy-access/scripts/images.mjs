@@ -24,6 +24,8 @@ const OVERRIDES = {
   "move-maybach-cabin": { exposure: 1.03 },
   "stay-villa-garden": { wb: 0.12, warmth: 0.25, blues: 0.18, greens: 0.8, exposure: 1.03 },
   "drinks-on-ice": { wb: 0.3 },
+  // keep some of the club light — it is the point of the photo
+  "night-bottle-parade": { wb: 0.2, blues: 0.2, warmth: 0.15 },
 };
 
 // ---------- colour helpers ----------
@@ -161,6 +163,7 @@ for (const file of files) {
 
   const graded = sharp(data, { raw: { width: info.width, height: info.height, channels: info.channels } });
   const sizes = WIDTHS.filter((w) => w <= info.width);
+  if (sizes.at(-1) !== info.width && info.width < MASTER) sizes.push(info.width); // smaller originals keep full size
 
   for (const w of sizes) {
     await graded

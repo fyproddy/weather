@@ -4,29 +4,62 @@ Website for RODDY ACCESS, a private Johannesburg lifestyle concierge.
 **STAY • MOVE • DINE • NIGHT — Johannesburg, curated.**
 
 Next.js (App Router) and React, with plain CSS. There is no UI framework and no animation library.
-The site builds to static files (`/out`) that can be hosted anywhere.
+Every page is prerendered as static HTML. One small server route, `/api/request`, delivers
+plan requests straight to RODDY ACCESS.
 
 ## Run it
 
 ```bash
 npm install
 npm run dev        # http://localhost:3000
-npm run build      # static site → /out
+npm run build && npm start
 ```
 
-## Before launch
+## How requests reach you
 
-Copy `.env.example` to `.env.local` (or set the same variables on your host):
+When someone finishes the planner, the site sends their request **straight to the
+RODDY ACCESS WhatsApp (+27 68 057 9202)**, and to email if that's set up too. The visitor
+never has to open WhatsApp. They see "Request received", and their answers are formatted with a
+one-tap link to reply to them on WhatsApp.
 
-| Variable | What it does |
-| --- | --- |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | **Required.** Digits only, e.g. `27821234567`. Every "Chat on WhatsApp" link and the planner hand-off use it. |
-| `NEXT_PUBLIC_FORM_ENDPOINT` | Optional. A JSON form endpoint (Formspree, Basin, your own API). When set, plan requests are also emailed to you before the WhatsApp step, and the final screen reads "Request received". |
-| `NEXT_PUBLIC_SITE_URL` | The live domain, used for the sitemap, canonical URLs and share previews. |
+The delivery keys live on the server only, never in the page. Set them on your host
+(on Vercel: Settings → Environment Variables); `.env.example` lists them all.
 
-The email address and Instagram link are in `content/site.ts`.
+### WhatsApp: CallMeBot (free, about 2 minutes)
 
-Deploying on Vercel: import the repo and set **Root Directory** to `roddy-access`.
+WhatsApp doesn't let a website send messages on its own, so a relay service does it.
+CallMeBot is free and made for exactly this: notifications to your own number.
+
+1. On the phone with +27 68 057 9202, go to **callmebot.com → WhatsApp API** and follow
+   "How to get the API key": add their number to your contacts and send the activation
+   message it shows.
+2. CallMeBot replies with an **API key**.
+3. Set `CALLMEBOT_APIKEY` to that key on your host and redeploy.
+
+Messages arrive from the CallMeBot contact on the RODDY ACCESS WhatsApp.
+(Once you have a WhatsApp Business account, the official WhatsApp Cloud API can replace
+this. Only `sendWhatsApp()` in `app/api/request/route.ts` changes.)
+
+### Email backup: Resend (free tier)
+
+1. Create an account at resend.com and an API key → `RESEND_API_KEY`.
+2. `REQUEST_EMAIL_TO` is where requests go (defaults to the address in `content/site.ts`).
+3. Until you verify your domain on Resend, leave `REQUEST_EMAIL_FROM` empty. Resend's
+   test sender only delivers to the email you signed up with.
+
+**Set up at least one channel.** If neither is set, or both fail, the visitor sees a
+friendly fallback that lets them send the same details on WhatsApp or by email instead,
+so no request is lost.
+
+### Other settings
+
+- Phone number, email and Instagram: `content/site.ts`
+- `NEXT_PUBLIC_SITE_URL`: the live domain (sitemap, canonical URLs, share previews)
+
+### Hosting
+
+Vercel is simplest: import the repo, set **Root Directory** to `roddy-access`, add the
+environment variables, deploy. Netlify or any Node host works too (`npm run build && npm start`).
 
 ## Where things live
 
@@ -40,6 +73,8 @@ content/            ← all copy and data. Edit here, not in components.
   listings.ts       future inventory (empty at launch)
 app/                pages: / stay move dine night weekends private-section plan contact
 components/         Header, Footer, Photo, Planner, PillarPage, Listings, Motion
+lib/request.ts      request format + validation (shared by planner and server)
+app/api/request/    delivers planner requests to WhatsApp / email
 photos-src/         original photographs
 public/images/      generated web images (don't edit by hand)
 ```
@@ -57,9 +92,9 @@ WebP output at four sizes.
 
 You can tweak a single photo with `OVERRIDES` at the top of the script (exposure, warmth, white balance strength).
 
-A few roles still use hosted stock photos (penthouse, hotel suite, sports car, aircraft,
-nightclub, bar). Each of those falls back to one of your own photos if it fails to load.
-Replace them with your own shots when you can. **NIGHT** matters most.
+A few roles still use hosted stock photos (penthouse, hotel suite, sports car, aircraft).
+Each of those falls back to one of your own photos if it fails to load.
+Replace them with your own shots when you can.
 
 ## Adding real inventory later
 

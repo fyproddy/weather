@@ -3,101 +3,21 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { site, whatsappLink } from "@/content/site";
-import {
-  areas,
-  budgets,
-  groupSizes,
-  needs,
-  needsForType,
-  occasions,
-  planningTypes,
-  type Option,
-} from "@/content/plan";
-
-type Plan = {
-  type: string;
-  dateFrom: string;
-  dateTo: string;
-  flexible: boolean;
-  dateNote: string;
-  group: string;
-  occasion: string;
-  occasionOther: string;
-  needs: string[];
-  area: string;
-  budget: string;
-  notes: string;
-  name: string;
-  phone: string;
-  email: string;
-};
-
-const empty: Plan = {
-  type: "",
-  dateFrom: "",
-  dateTo: "",
-  flexible: false,
-  dateNote: "",
-  group: "",
-  occasion: "",
-  occasionOther: "",
-  needs: [],
-  area: "",
-  budget: "",
-  notes: "",
-  name: "",
-  phone: "",
-  email: "",
-};
+import { budgets, groupSizes, needs, needsForType, occasions, planningTypes, areas, type Option } from "@/content/plan";
+import { emptyPlan as empty, emailOk, labelOf, phoneOk, summarise, visitorMessage as message, type Plan } from "@/lib/request";
 
 const STORE = "ra-plan";
 const STEPS = ["type", "when", "group", "occasion", "needs", "area", "budget", "notes", "contact"] as const;
 type Step = (typeof STEPS)[number];
 
-const labelOf = (options: Option[], value: string) => options.find((o) => o.value === value)?.label ?? value;
-const fmtDate = (d: string) =>
-  d ? new Date(d + "T12:00:00").toLocaleDateString("en-ZA", { day: "numeric", month: "short", year: "numeric" }) : "";
 const today = () => new Date().toISOString().slice(0, 10);
-const phoneOk = (p: string) => p.replace(/\D/g, "").length >= 9;
-const emailOk = (e: string) => !e || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
-
-function summarise(p: Plan) {
-  const when = p.dateFrom
-    ? `${fmtDate(p.dateFrom)}${p.dateTo && p.dateTo !== p.dateFrom ? ` – ${fmtDate(p.dateTo)}` : ""}${p.flexible ? " (flexible)" : ""}`
-    : p.flexible
-      ? `Flexible${p.dateNote ? ` — ${p.dateNote}` : ""}`
-      : "";
-  return [
-    ["Planning", labelOf(planningTypes, p.type)],
-    ["When", when],
-    ["Group", labelOf(groupSizes, p.group)],
-    ["Occasion", p.occasion === "other" && p.occasionOther ? p.occasionOther : labelOf(occasions, p.occasion)],
-    ["Needs", p.needs.map((n) => labelOf(needs, n)).join(", ")],
-    ["Area", labelOf(areas, p.area)],
-    ["Budget", labelOf(budgets, p.budget)],
-    ["Notes", p.notes.trim()],
-  ].filter(([, v]) => v) as [string, string][];
-}
-
-function message(p: Plan) {
-  const lines = summarise(p).map(([k, v]) => `${k}: ${v}`);
-  return [
-    "Hi RODDY ACCESS — here's what I'm planning:",
-    "",
-    ...lines,
-    "",
-    `Name: ${p.name}`,
-    `Phone: ${p.phone}`,
-    ...(p.email ? [`Email: ${p.email}`] : []),
-  ].join("\n");
-}
 
 export default function Planner() {
   const [plan, setPlan] = useState<Plan>(empty);
   const [step, setStep] = useState(0);
   const [ready, setReady] = useState(false);
   const [touched, setTouched] = useState(false);
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "local" | "failed">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "failed">("idle");
   const heading = useRef<HTMLHeadingElement>(null);
   const advanceTimer = useRef<number>(0);
   const first = useRef(true);
@@ -213,29 +133,22 @@ export default function Planner() {
       needs: p.needs.includes(value) ? p.needs.filter((n) => n !== value) : [...p.needs, value],
     }));
 
+  const honeypot = useRef<HTMLInputElement>(null);
+
+  // the request goes straight to RODDY ACCESS — no WhatsApp step for the visitor
   async function submit() {
-    if (!site.formEndpoint) {
-      setStatus("local");
-      finish();
-      return;
-    }
     setStatus("sending");
     try {
-      const res = await fetch(site.formEndpoint, {
+      const res = await fetch("/api/request/", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          ...plan,
-          needs: plan.needs.map((n) => labelOf(needs, n)).join(", "),
-          summary: message(plan),
-          _subject: `New request — ${plan.name} (${labelOf(planningTypes, plan.type)})`,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan, website: honeypot.current?.value ?? "" }),
       });
       setStatus(res.ok ? "sent" : "failed");
+      if (res.ok) finish();
     } catch {
       setStatus("failed");
     }
-    finish();
   }
 
   function finish() {
@@ -259,12 +172,12 @@ export default function Planner() {
   };
 
   // ------------------------------------------------------------------ done
-  if (status === "sent" || status === "local" || status === "failed") {
+  if (status === "sent" || status === "failed") {
+    const received = status === "sent";
     const wa = whatsappLink(message(plan));
     const mail = `mailto:${site.email}?subject=${encodeURIComponent(
       `Request — ${labelOf(planningTypes, plan.type)}`
     )}&body=${encodeURIComponent(message(plan))}`;
-    const received = status === "sent";
 
     return (
       <div className="plan">
@@ -273,7 +186,7 @@ export default function Planner() {
         </div>
         <div className="wrap plan__stage">
           <div className="plan__step" aria-live="polite">
-            <p className="label muted">{received ? "Request received" : "One last step"}</p>
+            <p className="label muted">{received ? "Request received" : "Not sent yet"}</p>
             <h1 className="plan__q" ref={heading} tabIndex={-1} style={{ marginTop: "1.5rem" }}>
               {received ? (
                 <>
@@ -281,12 +194,14 @@ export default function Planner() {
                 </>
               ) : (
                 <>
-                  Your request is ready. <em>Send it on WhatsApp</em> and we’ll build your options around it.
+                  Something went wrong on our side. <em>Send it on WhatsApp</em> and it reaches us directly.
                 </>
               )}
             </h1>
-            {status === "failed" && (
-              <p className="plan__hint">It didn’t go through automatically — WhatsApp or email will reach us directly.</p>
+            {received && (
+              <p className="plan__hint">
+                Expect a message on {plan.phone} shortly{plan.name ? `, ${plan.name.split(" ")[0]}` : ""}.
+              </p>
             )}
 
             <dl className="summary">
@@ -298,22 +213,32 @@ export default function Planner() {
               ))}
             </dl>
 
-            <div className="done__actions">
-              <a href={wa} className="btn btn--ink" target="_blank" rel="noopener">
-                Continue to WhatsApp
-              </a>
-              <a href={mail} className="link" style={{ justifySelf: "start" }}>
-                Send by email instead
-              </a>
-            </div>
-            <div style={{ marginTop: "3rem", display: "flex", gap: "2rem", flexWrap: "wrap" }}>
-              <button type="button" className="link" onClick={restart}>
-                Plan something else
-              </button>
-              <Link href="/" className="link">
-                Back to home
-              </Link>
-            </div>
+            {received ? (
+              <div style={{ marginTop: "2.5rem", display: "flex", gap: "1.25rem 2rem", flexWrap: "wrap", alignItems: "center" }}>
+                <Link href="/" className="btn btn--ink">
+                  Back to home
+                </Link>
+                <button type="button" className="link" onClick={restart}>
+                  Plan something else
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="done__actions">
+                  <a href={wa} className="btn btn--ink" target="_blank" rel="noopener">
+                    Continue to WhatsApp
+                  </a>
+                  <a href={mail} className="link" style={{ justifySelf: "start" }}>
+                    Send by email instead
+                  </a>
+                </div>
+                <div style={{ marginTop: "3rem" }}>
+                  <button type="button" className="link" onClick={() => setStatus("idle")}>
+                    Back to my answers
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -339,6 +264,8 @@ export default function Planner() {
         noValidate
         style={{ visibility: ready ? "visible" : "hidden" }}
       >
+        {/* spam trap — hidden from people and screen readers */}
+        <input ref={honeypot} type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="trap" />
         <p className="label plan__meta">
           <span>Plan your experience</span>
           <span aria-label={`Step ${step + 1} of ${STEPS.length}`}>

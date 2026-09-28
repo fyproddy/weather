@@ -53,14 +53,9 @@ export const photos = {
 
   // Night
   night: {
-    src: u("photo-1566737236500-c8ac43014a67"),
-    fallback: "move-maybach-cabin",
-    alt: "A club at night, lights low over the crowd",
-  },
-  nightBar: {
-    src: u("photo-1572116469696-31de0f17cc34"),
-    fallback: "drinks-on-ice",
-    alt: "Cocktails being prepared at a dim bar",
+    src: "night-bottle-parade",
+    alt: "Champagne carried to the table on a lit bottle stand in a Sandton club",
+    position: "50% 42%",
   },
 
   // Private Section / weekends

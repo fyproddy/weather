@@ -54,6 +54,16 @@
     ],
     "color": "rgb(8 8 8)"
   },
+  "night-bottle-parade": {
+    "width": 1179,
+    "height": 1277,
+    "sizes": [
+      640,
+      1080,
+      1179
+    ],
+    "color": "rgb(8 24 24)"
+  },
   "stay-villa-garden": {
     "width": 2200,
     "height": 3651,
