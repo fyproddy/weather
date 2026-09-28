@@ -1,0 +1,79 @@
+{
+  "dine-private-chef": {
+    "width": 2200,
+    "height": 2933,
+    "sizes": [
+      640,
+      1080,
+      1600,
+      2200
+    ],
+    "color": "rgb(24 24 24)"
+  },
+  "dine-villa-table": {
+    "width": 2200,
+    "height": 3890,
+    "sizes": [
+      640,
+      1080,
+      1600,
+      2200
+    ],
+    "color": "rgb(120 120 120)"
+  },
+  "drinks-on-ice": {
+    "width": 2200,
+    "height": 3295,
+    "sizes": [
+      640,
+      1080,
+      1600,
+      2200
+    ],
+    "color": "rgb(24 24 24)"
+  },
+  "move-maybach-cabin": {
+    "width": 2200,
+    "height": 2750,
+    "sizes": [
+      640,
+      1080,
+      1600,
+      2200
+    ],
+    "color": "rgb(8 8 8)"
+  },
+  "move-vclass": {
+    "width": 2200,
+    "height": 2933,
+    "sizes": [
+      640,
+      1080,
+      1600,
+      2200
+    ],
+    "color": "rgb(8 8 8)"
+  },
+  "stay-villa-garden": {
+    "width": 2200,
+    "height": 3651,
+    "sizes": [
+      640,
+      1080,
+      1600,
+      2200
+    ],
+    "color": "rgb(24 40 24)"
+  },
+  "stay-villa-interior": {
+    "width": 2200,
+    "height": 2933,
+    "sizes": [
+      640,
+      1080,
+      1600,
+      2200
+    ],
+    "color": "rgb(8 8 8)"
+  }
+}
