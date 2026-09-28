@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 // a photograph beside some of the lines in the sequence
 const beside: Partial<Record<number, PhotoKey>> = {
   0: "stayVilla",
-  1: "drinks",
+  1: "champagne",
   2: "dineChef",
   4: "move",
 };

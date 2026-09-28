@@ -223,7 +223,7 @@ export default function Home() {
           </div>
           <div className="ps__side">
             <div className="ps__photo" data-reveal-img>
-              <Photo photo="drinks" sizes="(min-width: 900px) 38vw, 100vw" />
+              <Photo photo="champagne" sizes="(min-width: 900px) 38vw, 100vw" />
             </div>
           </div>
         </div>

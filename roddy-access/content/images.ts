@@ -36,6 +36,7 @@ export const photos = {
   },
 
   // Private Section / weekends
+  champagne: { src: "drinks-dom-on-ice", alt: "Dom Pérignon on ice, ready before the guests arrive", position: "50% 58%" },
   drinks: { src: "drinks-on-ice", alt: "Champagne bottles buried in ice", position: "50% 55%" },
   weekend: { src: "stay-villa-garden", alt: "A villa garden ready for the weekend", position: "40% 70%" },
 } satisfies Record<string, PhotoRef>;

@@ -21,6 +21,17 @@
     ],
     "color": "rgb(120 120 120)"
   },
+  "drinks-dom-on-ice": {
+    "width": 2200,
+    "height": 3911,
+    "sizes": [
+      640,
+      1080,
+      1600,
+      2200
+    ],
+    "color": "rgb(184 184 184)"
+  },
   "drinks-on-ice": {
     "width": 2200,
     "height": 3295,
