@@ -393,7 +393,7 @@ export default function Planner() {
           {current === "budget" && (
             <Question
               title="What budget are you working with?"
-              hint="For the whole request, roughly. It helps us source the right options first time."
+              hint="A rough number for everything together is fine."
               heading={heading}
             >
               <Choices name="budget" options={budgets} value={plan.budget} onChoose={(v) => choose("budget", v)} />

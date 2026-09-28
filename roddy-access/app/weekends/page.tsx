@@ -42,8 +42,8 @@ export default function WeekendsPage() {
             <li key={t}>{t}</li>
           ))}
         </ol>
-        <p className="lead" data-reveal style={{ marginTop: "2.5rem", maxWidth: "26em" }}>
-          RODDY ACCESS creates the weekend around you — one contact from the moment you land to the moment you leave.
+        <p className="lead" data-reveal style={{ marginTop: "2.5rem" }}>
+          We plan the rest.
         </p>
       </section>
 
@@ -54,7 +54,7 @@ export default function WeekendsPage() {
         </div>
         <div style={{ display: "grid", gap: "2rem" }}>
           <p className="label muted" data-reveal>
-            What it can include
+            What we can arrange
           </p>
           <div className="includes" data-reveal>
             <ul className="slashes">
@@ -79,11 +79,8 @@ export default function WeekendsPage() {
         <div className="weekend">
           <div className="weekend__head">
             <h2 className="h2" data-reveal>
-              How a weekend can run.
+              An example weekend.
             </h2>
-            <p className="body muted" data-reveal>
-              An illustration, not a package. Every weekend is planned from your details.
-            </p>
           </div>
           <ol className="timeline">
             {accessWeekend.example.map((e, i) => (
@@ -125,15 +122,12 @@ export default function WeekendsPage() {
           <h2 id="cel" className="h2" data-reveal>
             Celebrations
           </h2>
-          <p className="body muted" data-reveal>
-            Start from the occasion. We shape the stay, the table, the movement and the night around it.
-          </p>
+
         </div>
         <div className="rows">
           {celebrations.map((c) => (
-            <Link key={c.name} href={`/plan/?type=full-weekend&occasion=${c.plan}`} className="row" data-reveal>
+            <Link key={c.name} href={`/plan/?type=full-weekend&occasion=${c.plan}`} className="row row--simple" data-reveal>
               <span className="row__name">{c.name}</span>
-              <span className="row__items">{c.items.join(" · ")}</span>
               <span className="row__go">Start planning</span>
             </Link>
           ))}

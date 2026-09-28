@@ -2,7 +2,7 @@ import Link from "next/link";
 import Photo from "@/components/Photo";
 import { getPillar } from "@/content/pillars";
 import { accessWeekend, celebrations, privateSection } from "@/content/weekends";
-import { site } from "@/content/site";
+import { howItWorks, site } from "@/content/site";
 
 const stay = getPillar("stay");
 const move = getPillar("move");
@@ -56,6 +56,20 @@ export default function Home() {
         <h2 className="h2 intro__title" data-reveal>
           One connection for your Johannesburg experience.
         </h2>
+        <ol className="how" aria-label="How it works">
+          {howItWorks.map((step, i) => (
+            <li key={step.title} data-reveal style={{ ["--d" as string]: i }}>
+              <span className="how__n">{i + 1}</span>
+              <h3 className="how__title">{step.title}</h3>
+              <p className="how__line">{step.line}</p>
+            </li>
+          ))}
+        </ol>
+        <div data-reveal style={{ marginTop: "clamp(32px, 5vw, 56px)" }}>
+          <Link href="/plan/" className="btn btn--ink">
+            Plan your experience
+          </Link>
+        </div>
       </section>
 
       {/* ---------------------------------------------------------------- STAY */}

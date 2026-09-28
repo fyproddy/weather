@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import manifest from "@/content/photo-manifest.json";
 import { photos, type PhotoKey, type PhotoRef } from "@/content/images";
 
@@ -15,57 +12,27 @@ type Props = {
   position?: string;
 };
 
-function sources(src: string) {
-  const local = m[src];
-  if (local) {
-    const largest = local.sizes[local.sizes.length - 1];
-    return {
-      src: `/images/${src}-${largest >= 1600 ? 1600 : largest}.webp`,
-      srcSet: local.sizes.map((w) => `/images/${src}-${w}.webp ${w}w`).join(", "),
-      color: local.color,
-    };
-  }
-  // remote (Unsplash-style) URL: let the CDN resize
-  const join = src.includes("?") ? "&" : "?";
-  return {
-    src: `${src}${join}w=1600`,
-    srcSet: [640, 1080, 1600, 2200].map((w) => `${src}${join}w=${w} ${w}w`).join(", "),
-    color: undefined,
-  };
-}
-
 /**
  * A photograph that fills its parent (the parent sets the shape).
- * Local photos get responsive WebP sizes; remote photos fall back to a local
- * one if they fail to load.
+ * Serves the responsive WebP sizes made by `npm run images`.
  */
 export default function Photo({ photo, sizes = "100vw", priority, className, position }: Props) {
   const ref: PhotoRef = typeof photo === "string" ? photos[photo] : photo;
-  const [failed, setFailed] = useState(false);
-  const img = useRef<HTMLImageElement>(null);
-
-  // an image can fail before React hydrates and attaches onError
-  useEffect(() => {
-    const el = img.current;
-    if (el && el.complete && el.naturalWidth === 0 && ref.fallback) setFailed(true);
-  }, [ref.fallback]);
-  const active = failed && ref.fallback ? ref.fallback : ref.src;
-  const s = sources(active);
+  const info = m[ref.src];
+  if (!info) throw new Error(`Photo "${ref.src}" not found — add it to /photos-src and run npm run images`);
+  const largest = info.sizes[info.sizes.length - 1];
 
   return (
-    <span className={`photo ${className ?? ""}`} style={{ backgroundColor: s.color }}>
+    <span className={`photo ${className ?? ""}`} style={{ backgroundColor: info.color }}>
       <img
-        key={active}
-        ref={img}
-        src={s.src}
-        srcSet={s.srcSet}
+        src={`/images/${ref.src}-${Math.min(largest, 1600)}.webp`}
+        srcSet={info.sizes.map((w) => `/images/${ref.src}-${w}.webp ${w}w`).join(", ")}
         sizes={sizes}
         alt={ref.alt}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : undefined}
         decoding="async"
         style={{ objectPosition: position ?? ref.position ?? "50% 50%" }}
-        onError={() => ref.fallback && !failed && setFailed(true)}
       />
     </span>
   );

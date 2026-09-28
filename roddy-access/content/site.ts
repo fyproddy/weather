@@ -28,3 +28,10 @@ export function whatsappLink(message?: string) {
   const base = `https://wa.me/${site.whatsapp}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
+
+// The whole service in three steps — shown on the homepage and contact page.
+export const howItWorks = [
+  { title: "Tell us what you want", line: "Your dates, your group and the occasion. It takes two minutes." },
+  { title: "We send you options", line: "Places, cars, tables and chefs, with the cost. You choose." },
+  { title: "We book everything", line: "One contact for the whole weekend. You just arrive." },
+];

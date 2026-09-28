@@ -2,21 +2,9 @@
 
 export const accessWeekend = {
   title: "THE ACCESS WEEKEND",
-  lead: "Your Johannesburg weekend, planned from start to finish.",
+  lead: "We plan your whole Johannesburg weekend, from start to finish.",
   tellUs: ["Dates", "Group size", "Occasion", "Budget"],
-  inclusions: [
-    "Luxury accommodation",
-    "Airport collection",
-    "Chauffeur or V-Class",
-    "Luxury vehicle",
-    "Private dining",
-    "Restaurant bookings",
-    "Club tables",
-    "Events",
-    "Activities",
-    "Sunday lunch",
-    "Transport between bookings",
-  ],
+  inclusions: ["Where you stay", "Airport pickup", "Drivers", "Dinners", "Club tables", "Sunday lunch"],
   line: "You choose the weekend. We handle the movement.",
   cta: "Build my weekend",
   // The homepage tells the weekend in pictures, with a caption each.
@@ -54,21 +42,12 @@ export const privateSection = {
   close: "You arrive. We’ve already set the tone.",
   cta: "Create my private section",
   inclusions: [
-    { group: "The house", items: ["Private luxury villa", "Host", "Security"] },
-    { group: "The bar", items: ["Premium alcohol", "Ice", "Mixers", "Refreshments"] },
-    {
-      group: "The table",
-      items: ["Private chef", "Private braai", "Breakfast", "Food service", "Platters", "Late-night food"],
-    },
-    {
-      group: "The setup",
-      items: ["Birthday décor", "Celebration setup", "Personalised setup", "DJ or music setup"],
-    },
-    { group: "The movement", items: ["Chauffeur", "V-Class", "Luxury vehicle"] },
-    {
-      group: "The night",
-      items: ["Restaurant reservation", "VIP club table", "Event access", "Sunday recovery plan"],
-    },
+    { group: "The house", items: ["Private villa", "Host", "Security"] },
+    { group: "The bar", items: ["Drinks", "Ice and mixers"] },
+    { group: "The food", items: ["Private chef", "Braai", "Breakfast", "Late-night food"] },
+    { group: "The setup", items: ["Décor", "Music or DJ"] },
+    { group: "Transport", items: ["Chauffeur", "V-Class", "Luxury car"] },
+    { group: "The night", items: ["Dinner booking", "Club table", "Sunday recovery"] },
   ],
 };
 

@@ -71,7 +71,7 @@ export default function PrivateSectionPage() {
             What can be arranged
           </p>
           <p className="body muted" data-reveal>
-            Built per group. Take all of it, or only what the weekend needs.
+            Pick what you want. We set it all up before you arrive.
           </p>
         </div>
         <div className="incl">

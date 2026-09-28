@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { site, whatsappLink } from "@/content/site";
+import { howItWorks, site, whatsappLink } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -8,24 +8,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact/" },
 };
 
-const faq = [
-  {
-    q: "How does it work?",
-    a: "Send us the details — dates, group, occasion, what you need. We come back with options, you choose, and we book and coordinate everything. One contact from start to finish.",
-  },
-  {
-    q: "Do you own the villas and cars?",
-    a: "No. We source from trusted owners, operators, chefs and venues for each request, so the options fit your group rather than a fixed list.",
-  },
-  {
-    q: "What does it cost?",
-    a: "Every request is quoted on its own. Tell us the budget you're working with and we plan to it.",
-  },
-  {
-    q: "How far ahead should I ask?",
-    a: "The earlier the better for villas, big groups and peak weekends. Short notice is fine too — ask, and we'll tell you honestly what's possible.",
-  },
-];
 
 export default function ContactPage() {
   return (
@@ -58,15 +40,22 @@ export default function ContactPage() {
           </div>
         </div>
 
-        <div className="faq">
-          {faq.map((f) => (
-            <div key={f.q}>
-              <h2 className="faq-q" style={{ fontSize: "1.25rem", fontWeight: 500, marginBottom: "0.5rem" }}>
-                {f.q}
-              </h2>
-              <p className="muted">{f.a}</p>
-            </div>
-          ))}
+        <div>
+          <p className="label muted" style={{ marginBottom: "1.25rem" }}>
+            How it works
+          </p>
+          <ol className="how how--stack">
+            {howItWorks.map((step, i) => (
+              <li key={step.title}>
+                <span className="how__n">{i + 1}</span>
+                <h2 className="how__title">{step.title}</h2>
+                <p className="how__line">{step.line}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="muted" style={{ marginTop: "1.5rem" }}>
+            You get the full price before anything is booked.
+          </p>
         </div>
       </div>
     </section>

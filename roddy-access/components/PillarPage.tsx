@@ -87,7 +87,6 @@ export default function PillarPage({ slug }: { slug: Pillar["slug"] }) {
                 <Photo photo={n.photo} sizes="(min-width: 700px) 50vw, 100vw" />
                 <span className="next__label">
                   <span className="next__word">{n.title}</span>
-                  <span className="label">{n.services.slice(0, 2).join(" · ")}</span>
                 </span>
               </Link>
             );

@@ -92,9 +92,8 @@ WebP output at four sizes.
 
 You can tweak a single photo with `OVERRIDES` at the top of the script (exposure, warmth, white balance strength).
 
-A few roles still use hosted stock photos (penthouse, hotel suite, sports car, aircraft).
-Each of those falls back to one of your own photos if it fails to load.
-Replace them with your own shots when you can.
+The site uses only your own photography — no stock images. A service without a
+photo simply shows as text. Add a photo later by giving it a `photo:` in `content/pillars.ts`.
 
 ## Adding real inventory later
 
