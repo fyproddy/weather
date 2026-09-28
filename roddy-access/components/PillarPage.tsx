@@ -21,21 +21,13 @@ export default function PillarPage({ slug }: { slug: Pillar["slug"] }) {
         </div>
         <div className="phero__content">
           <div>
-            <p className="label" style={{ opacity: 0.8, marginBottom: "1rem" }}>
-              {p.index} / 04
-            </p>
             <h1 className="word">{p.title}</h1>
           </div>
           <p className="lead phero__lead">{p.lead}</p>
         </div>
       </section>
 
-      <section className="wrap section pintro">
-        <ul className="label muted" data-reveal style={{ display: "grid", gap: "0.5rem", alignContent: "start" }}>
-          {p.services.map((s) => (
-            <li key={s}>{s}</li>
-          ))}
-        </ul>
+      <section className="wrap section">
         <p className="pintro__text" data-reveal>
           {p.intro}
         </p>
@@ -134,14 +126,11 @@ function groupOffer(p: Pillar) {
   return blocks;
 }
 
-function OfferText({ o, i }: Entry) {
+function OfferText({ o }: Entry) {
   return (
     <div className="offer__text">
       <div className="offer__head">
-        <p className="label offer__num">{String(i + 1).padStart(2, "0")}</p>
-        <h2 className="h2" style={{ marginTop: "0.9rem" }}>
-          {o.name}
-        </h2>
+        <h2 className="h2">{o.name}</h2>
       </div>
       <p className="lead">{o.line}</p>
       {o.details && (

@@ -17,7 +17,8 @@ export type Pillar = {
   metaTitle: string;
   metaDescription: string;
   photo: PhotoKey;
-  services: string[]; // the short list shown on the homepage
+  services: string[];
+  homeLine: string; // the single line shown on the homepage
   lead: string; // one line under the page title
   intro: string;
   statement?: string; // large pull line
@@ -36,6 +37,7 @@ export const pillars: Pillar[] = [
       "Villas, penthouses, hotels and suites across Johannesburg, sourced around your dates, group and requirements.",
     photo: "stay",
     services: ["Villas", "Penthouses", "Hotels & Suites"],
+    homeLine: "Villas, penthouses and suites — sourced for your group.",
     lead: "Tell us your dates, group size and requirements. We source the right stay.",
     intro:
       "We don't push a fixed list. Every request is sourced for the group in front of us: how many of you there are, what the weekend is for, and where in the city it needs to be.",
@@ -69,6 +71,7 @@ export const pillars: Pillar[] = [
       "Private chauffeurs, V-Class group transport, airport transfers and luxury car rental, arranged around your plans in Johannesburg.",
     photo: "move",
     services: ["Luxury Car Rental", "Private Chauffeur", "V-Class", "Airport Transfers"],
+    homeLine: "Chauffeurs, V-Class, cars and airport runs.",
     lead: "From the arrivals hall to the last stop of the night, the movement is already handled.",
     intro:
       "Transport is the thing that quietly makes or breaks a weekend. We plan it around the bookings, not the other way round, so nobody waits outside and nobody drives home.",
@@ -107,6 +110,7 @@ export const pillars: Pillar[] = [
       "Private chefs, private dining, group restaurant bookings, curated menus and celebration dinners in Johannesburg.",
     photo: "dine",
     services: ["Private Dining", "Private Chef", "Group Dining", "Curated Menus", "Celebration Dining"],
+    homeLine: "Private chefs. Private tables.",
     lead: "Private dining arranged around your group — at the house or at the right table in the city.",
     intro:
       "Food is usually where group plans fall apart: the booking for twelve, the dietary requirements, the birthday cake that nobody organised. This is the part we like handling.",
@@ -155,6 +159,7 @@ export const pillars: Pillar[] = [
       "VIP club tables, nightlife reservations, events, private access and night transport in Johannesburg.",
     photo: "night",
     services: ["VIP Club Tables", "Nightlife Reservations", "Events", "Private Access", "Night Transport"],
+    homeLine: "Tables, events and a driver waiting outside.",
     lead: "Your night can be arranged as part of the full experience.",
     intro:
       "Dinner runs into the table, the table runs into the ride home. We plan the night as one line, so there's no standing at the door and no one negotiating a lift at 3am.",

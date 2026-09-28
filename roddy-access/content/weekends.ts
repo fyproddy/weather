@@ -19,6 +19,14 @@ export const accessWeekend = {
   ],
   line: "You choose the weekend. We handle the movement.",
   cta: "Build my weekend",
+  // The homepage tells the weekend in pictures, with a caption each.
+  strip: [
+    { when: "Fri 14:10", what: "Collected at arrivals", photo: "moveVClass" },
+    { when: "Fri 15:30", what: "The house is ready", photo: "stay" },
+    { when: "Sat 13:00", what: "Chef at the villa", photo: "dineChef" },
+    { when: "Sat 23:30", what: "Table waiting", photo: "night" },
+    { when: "Sun 12:00", what: "Long lunch, then home", photo: "dine" },
+  ] as const,
   // An illustration of how a weekend can run — not a fixed package.
   example: [
     { when: "Friday, 14:10", what: "Collected at arrivals. Bags in the V-Class." },

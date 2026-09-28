@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Photo from "@/components/Photo";
-import { getPillar, pillars } from "@/content/pillars";
+import { getPillar } from "@/content/pillars";
 import { accessWeekend, celebrations, privateSection } from "@/content/weekends";
 import { site } from "@/content/site";
 
@@ -39,7 +39,6 @@ export default function Home() {
         <div className="hero__shade" />
 
         <div className="hero__content">
-          <p className="label hero__kicker">RODDY ACCESS</p>
           <h1 className="display hero__title">
             <span>Johannesburg,</span> <em>curated.</em>
           </h1>
@@ -54,22 +53,9 @@ export default function Home() {
 
       {/* --------------------------------------------------------------- intro */}
       <section className="wrap intro">
-        <div className="grid">
-          <h2 className="h2 intro__title" data-reveal>
-            One connection for your Johannesburg experience.
-          </h2>
-          <p className="lead intro__copy" data-reveal style={{ ["--d" as string]: 1 }}>
-            Stays, movement, dining, nightlife and private weekends — arranged around you.
-          </p>
-        </div>
-        <nav className="index" aria-label="Explore">
-          {pillars.map((p) => (
-            <a key={p.slug} href={`#${p.slug}`}>
-              {p.title.charAt(0) + p.title.slice(1).toLowerCase()}
-              <span>{p.index}</span>
-            </a>
-          ))}
-        </nav>
+        <h2 className="h2 intro__title" data-reveal>
+          One connection for your Johannesburg experience.
+        </h2>
       </section>
 
       {/* ---------------------------------------------------------------- STAY */}
@@ -78,21 +64,13 @@ export default function Home() {
           <div data-parallax="0.08">
             <Photo photo={stay.photo} sizes="100vw" />
           </div>
-          <p className="label p-stay__index">{stay.index} / 04</p>
           <h2 id="stay-title" className="word p-stay__word">
             {stay.title}
           </h2>
         </div>
-        <div className="wrap p-stay__text">
-          <ul className="pillar-services" data-reveal>
-            {stay.services.map((s) => (
-              <li key={s}>{s}</li>
-            ))}
-          </ul>
-          <p className="lead" data-reveal style={{ ["--d" as string]: 1 }}>
-            {stay.lead}
-          </p>
-          <Link href="/stay/" className="btn" data-reveal style={{ ["--d" as string]: 2 }}>
+        <div className="wrap one-line" data-reveal>
+          <p className="lead">{stay.homeLine}</p>
+          <Link href="/stay/" className="link">
             {stay.cta.label}
           </Link>
         </div>
@@ -102,22 +80,14 @@ export default function Home() {
       <section id="move" className="wrap section" aria-labelledby="move-title">
         <div className="p-move">
           <div className="p-move__text">
-            <p className="label muted" data-reveal>
-              {move.index} / 04
-            </p>
             <h2 id="move-title" className="word" data-reveal>
               {move.title}
             </h2>
-            <ul className="pillar-services" data-reveal>
-              {move.services.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-            </ul>
-            <p className="body muted" data-reveal>
-              {move.lead}
+            <p className="lead" data-reveal>
+              {move.homeLine}
             </p>
             <div data-reveal>
-              <Link href="/move/" className="btn">
+              <Link href="/move/" className="link">
                 {move.cta.label}
               </Link>
             </div>
@@ -140,22 +110,14 @@ export default function Home() {
             <Photo photo="dineChef" sizes="(min-width: 900px) 52vw, 100vw" />
           </div>
           <div className="p-dine__text">
-            <div className="pillar-top" data-reveal>
-              <h2 id="dine-title" className="word">
-                {dine.title}
-              </h2>
-              <p className="label muted">{dine.index} / 04</p>
-            </div>
-            <ul className="p-dine__list" data-reveal>
-              {dine.offer.map((o) => (
-                <li key={o.name}>
-                  <strong>{o.name.toUpperCase()}</strong>
-                  <span>{o.short ?? o.line}</span>
-                </li>
-              ))}
-            </ul>
+            <h2 id="dine-title" className="word" data-reveal>
+              {dine.title}
+            </h2>
+            <p className="lead" data-reveal>
+              {dine.homeLine}
+            </p>
             <div data-reveal>
-              <Link href="/dine/" className="btn">
+              <Link href="/dine/" className="link">
                 {dine.cta.label}
               </Link>
             </div>
@@ -182,68 +144,44 @@ export default function Home() {
           </div>
         </div>
         <div className="wrap p-night__inner">
-          <div>
-            <p className="label" data-reveal style={{ opacity: 0.7 }}>
-              {night.index} / 04
-            </p>
-            <h2 id="night-title" className="word" data-reveal style={{ marginTop: "1rem" }}>
-              {night.title}
-            </h2>
-          </div>
-          <div className="p-night__side">
-            <ul className="pillar-services" data-reveal>
-              {night.services.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-            </ul>
-            <p className="lead" data-reveal>
-              {night.lead}
-            </p>
-            <div data-reveal>
-              <Link href="/night/" className="btn btn--light">
-                {night.cta.label}
-              </Link>
-            </div>
+          <h2 id="night-title" className="word" data-reveal>
+            {night.title}
+          </h2>
+          <div className="p-night__side" data-reveal>
+            <p className="lead">{night.homeLine}</p>
+            <Link href="/night/" className="link">
+              {night.cta.label}
+            </Link>
           </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------ ACCESS WEEKEND */}
-      <section className="wrap section" aria-labelledby="aw-title">
-        <div className="weekend">
-          <div className="weekend__head">
-            <p className="label muted" data-reveal>
-              Weekends
-            </p>
-            <h2 id="aw-title" className="h2" data-reveal>
-              The Access Weekend
-            </h2>
-            <p className="lead" data-reveal>
-              {accessWeekend.lead} Tell us your dates, group size, occasion and budget. We build the weekend around
-              you.
-            </p>
-            <div data-reveal style={{ display: "flex", gap: "1.25rem 2rem", flexWrap: "wrap", alignItems: "center" }}>
-              <Link href="/plan/?type=full-weekend" className="btn btn--ink">
-                {accessWeekend.cta}
-              </Link>
-              <Link href="/weekends/" className="link">
-                How it works
-              </Link>
-            </div>
-          </div>
-          <div>
-            <ol className="timeline">
-              {accessWeekend.example.map((e, i) => (
-                <li key={e.when} data-reveal style={{ ["--d" as string]: i % 3 }}>
-                  <time>{e.when}</time>
-                  <p>{e.what}</p>
-                </li>
-              ))}
-            </ol>
-            <p className="timeline__note" data-reveal>
-              One way a weekend can run. Yours is planned from scratch.
-            </p>
-          </div>
+      <section className="section" aria-labelledby="aw-title">
+        <div className="wrap strip__head">
+          <h2 id="aw-title" className="h2" data-reveal>
+            The Access Weekend
+          </h2>
+          <p className="lead muted" data-reveal>
+            {accessWeekend.line}
+          </p>
+        </div>
+        <ol className="strip" aria-label="How a weekend can run">
+          {accessWeekend.strip.map((m, i) => (
+            <li key={m.when} className="strip__item" data-reveal style={{ ["--d" as string]: i }}>
+              <div className="strip__photo">
+                <Photo photo={m.photo} sizes="(min-width: 900px) 22vw, 70vw" />
+              </div>
+              <p className="strip__cap">
+                <time>{m.when}</time> {m.what}
+              </p>
+            </li>
+          ))}
+        </ol>
+        <div className="wrap" data-reveal style={{ marginTop: "clamp(32px, 5vw, 56px)" }}>
+          <Link href="/plan/?type=full-weekend" className="btn btn--ink">
+            {accessWeekend.cta}
+          </Link>
         </div>
       </section>
 
@@ -251,17 +189,11 @@ export default function Home() {
       <section className="ps section" aria-labelledby="ps-title">
         <div className="wrap ps__grid">
           <div>
-            <p className="label" style={{ color: "var(--grey-dark)" }} data-reveal>
-              The signature
-            </p>
-            <h2 id="ps-title" className="ps__title" data-reveal style={{ marginTop: "1.25rem" }}>
+            <h2 id="ps-title" className="ps__title" data-reveal>
               The Private
               <br />
               Section
             </h2>
-            <p className="lead ps__lead" data-reveal>
-              {privateSection.lead}
-            </p>
             <ol className="ps__sequence">
               {[...privateSection.sequence, privateSection.arrive].map((line, i) => (
                 <li key={line} data-reveal style={{ ["--d" as string]: i }}>
@@ -269,6 +201,11 @@ export default function Home() {
                 </li>
               ))}
             </ol>
+            <div data-reveal style={{ marginTop: "clamp(40px, 6vw, 72px)" }}>
+              <Link href="/private-section/" className="btn btn--light">
+                Discover the Private Section
+              </Link>
+            </div>
           </div>
           <div className="ps__side">
             <div className="ps__photo" data-reveal-img>
@@ -276,31 +213,17 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="wrap">
-          <div className="ps__core" data-reveal>
-            <p className="lead">{privateSection.close}</p>
-            <Link href="/private-section/" className="btn btn--light">
-              Discover the Private Section
-            </Link>
-          </div>
-        </div>
       </section>
 
       {/* -------------------------------------------------------- CELEBRATIONS */}
       <section className="wrap section" aria-labelledby="cel-title">
-        <div className="celebrate__head">
-          <h2 id="cel-title" className="h2" data-reveal>
-            Built around the occasion.
-          </h2>
-          <p className="body muted" data-reveal>
-            Birthdays, group weekends, send-offs and artists in town. Pick where you're starting from.
-          </p>
-        </div>
+        <h2 id="cel-title" className="label muted" data-reveal style={{ marginBottom: "1.5rem" }}>
+          Built around the occasion
+        </h2>
         <div className="rows">
           {celebrations.map((c) => (
-            <Link key={c.name} href={`/plan/?type=full-weekend&occasion=${c.plan}`} className="row" data-reveal>
+            <Link key={c.name} href={`/plan/?type=full-weekend&occasion=${c.plan}`} className="row row--simple" data-reveal>
               <span className="row__name">{c.name}</span>
-              <span className="row__items">{c.items.join(" · ")}</span>
               <span className="row__go">Start planning</span>
             </Link>
           ))}
