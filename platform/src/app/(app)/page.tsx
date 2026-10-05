@@ -8,6 +8,7 @@ import { formatDate } from "@/lib/date-range";
 import { change, count, money, pct } from "@/lib/format";
 import { agencyAdsSummary, derive, type AdsTotals, type ClientAdsSummary } from "@/server/ads";
 import { listClients, recentActivity } from "@/server/clients";
+import { leadStatsByClient, type LeadStats } from "@/server/leads";
 import { hasRole } from "@/server/permissions";
 import { rangeFromParams } from "@/server/range";
 import { requireCtx } from "@/server/session";
@@ -19,7 +20,6 @@ const NOT_YET = [
   ["Organic visibility & traffic", 6],
   ["Maps visibility, rating & reviews", 7],
   ["SEO score", 8],
-  ["Leads & cost per lead", 9],
 ] as const;
 
 const add = (a: AdsTotals, b: AdsTotals): AdsTotals => ({
@@ -34,11 +34,13 @@ export default async function DashboardPage(props: PageProps<"/">) {
   const ctx = await requireCtx();
   const sp = await props.searchParams;
   const { range, previous, today, agency } = await rangeFromParams(ctx, sp);
-  const [clients, summaries, activity] = await Promise.all([
+  const [clients, summaries, activity, leadStats] = await Promise.all([
     listClients(db, ctx),
     agencyAdsSummary(db, ctx, range, previous),
     recentActivity(db, ctx, 8),
+    leadStatsByClient(db, ctx, range),
   ]);
+  const totalLeads = [...leadStats.values()].reduce((s, l) => s + l.total, 0);
   const byClient = new Map(summaries.map((s) => [s.clientId, s]));
   const compared = `previous ${range.days} day${range.days === 1 ? "" : "s"}`;
 
@@ -76,8 +78,9 @@ export default async function DashboardPage(props: PageProps<"/">) {
       ) : (
         <>
           <section aria-label="Agency totals" className="mb-8">
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-6">
               <StatTile label="Active clients" value={count(clients.length)} note={`${withData} with Google Ads data in range`} />
+              <StatTile label="Leads" value={count(totalLeads)} note="Logged on the Leads page" />
               <StatTile label="Ad spend" value={money(cur?.cost, agency.currency)} delta={delta(cur?.cost, prev?.cost)} upIsGood={null} comparedTo={compared} note={cur ? undefined : "No imported data"} />
               <StatTile label="Conversions" value={count(cur?.conversions)} delta={delta(cur?.conversions, prev?.conversions)} comparedTo={compared} />
               <StatTile label="Cost / conversion" value={money(d?.costPerConversion, agency.currency)} delta={delta(d?.costPerConversion, pd?.costPerConversion)} upIsGood={false} comparedTo={compared} />
@@ -92,7 +95,14 @@ export default async function DashboardPage(props: PageProps<"/">) {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {clients.map((c) => (
-              <ClientCard key={c.id} client={c} summary={byClient.get(c.id)} compared={compared} rangeLabel={range.label.toLowerCase()} />
+              <ClientCard
+                key={c.id}
+                client={c}
+                summary={byClient.get(c.id)}
+                leads={leadStats.get(c.id)}
+                compared={compared}
+                rangeLabel={range.label.toLowerCase()}
+              />
             ))}
           </div>
         </>
@@ -120,11 +130,13 @@ export default async function DashboardPage(props: PageProps<"/">) {
 function ClientCard({
   client,
   summary,
+  leads,
   compared,
   rangeLabel,
 }: {
   client: { id: string; name: string; industry: string | null; city: string | null; region: string | null };
   summary?: ClientAdsSummary;
+  leads?: LeadStats;
   compared: string;
   rangeLabel: string;
 }) {
@@ -157,6 +169,22 @@ function ClientCard({
         {s?.dataTo ? <Badge tone="good">Ads data to {formatDate(s.dataTo)}</Badge> : <Badge>Google Ads not connected</Badge>}
       </div>
 
+      <div className="grid grid-cols-3 gap-4 border-b border-border px-5 py-3 text-sm">
+        <div>
+          <div className="text-xs text-muted">Leads</div>
+          <div className="text-lg font-semibold tabular-nums">{count(leads?.total ?? 0)}</div>
+        </div>
+        <div>
+          <div className="text-xs text-muted">Won</div>
+          <div className="text-lg font-semibold tabular-nums">{count(leads?.won ?? 0)}</div>
+        </div>
+        <div>
+          <div className="text-xs text-muted">Ads cost per lead</div>
+          <div className="text-lg font-semibold tabular-nums">
+            {cur && s?.currentComplete && leads?.bySource.google_ads ? money(cur.cost / leads.bySource.google_ads, currency) : "—"}
+          </div>
+        </div>
+      </div>
       <div className="px-5 py-4">
         {cur ? (
           <>
@@ -216,6 +244,10 @@ function describe(action: string, d: Record<string, string | number> | null) {
     "user.created": `Added user ${d?.email ?? ""}`,
     "agency.updated": "Updated agency settings",
     "user.password_changed": "Changed a password",
+    "lead.created": "Logged a lead",
+    "lead.updated": "Updated a lead",
+    "lead.status_changed": `Lead marked ${d?.status ?? ""}`,
+    "lead.deleted": "Deleted a lead",
     "ads.imported": `Imported Google Ads report ${d?.filename ?? ""} (${d?.rows ?? 0} rows)`,
     "ads.import_removed": `Removed Google Ads import ${d?.filename ?? ""}`,
   };

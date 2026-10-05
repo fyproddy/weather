@@ -1,6 +1,7 @@
 export const RANGE_PRESETS = [
   ["today", "Today"],
   ["yesterday", "Yesterday"],
+  ["recent_30", "Last 30 days (incl. today)"],
   ["last_7", "Last 7 days"],
   ["last_30", "Last 30 days"],
   ["last_90", "Last 90 days"],
@@ -41,6 +42,8 @@ export function resolveRange(params: { range?: unknown; from?: unknown; to?: unk
       return make(key, today, today);
     case "yesterday":
       return make(key, yesterday, yesterday);
+    case "recent_30":
+      return make(key, addDays(today, -29), today);
     case "last_7":
       return make(key, addDays(today, -7), yesterday);
     case "last_90":

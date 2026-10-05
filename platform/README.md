@@ -75,6 +75,15 @@ thresholds (`THRESHOLDS`) so small samples aren't judged. Findings are
 recomputed from data on every view; only decisions (approved / dismissed /
 done) are stored. Nothing is ever changed in Google Ads automatically.
 
+## Leads
+
+Per-client log of enquiries (call, WhatsApp, form, email, walk-in) with where
+the person found the business, the service, status (new → contacted → quoted →
+won/lost) and job value when won. Leads are personal information: agency staff
+only, scoped like all client data, and audit-logged without copying personal
+details. Google Ads cost per lead = imported spend ÷ leads marked "Google Ads",
+shown only when the Ads data covers the whole range.
+
 ## Roles
 
 - **Admin** — everything, including team, agency settings and permanent delete
@@ -90,5 +99,5 @@ AI assistants (from Phase 5) only ever receive a client's facts marked
 
 1. Foundation ✅ · 2. Agency dashboard + Google Ads CSV import ✅ · 3. Google OAuth + Google Ads (read-only) ·
 4. Ads analysis & recommendations ✅ · 5. Ads creative assistant · 6. Search Console + GA4 ·
-7. Business Profile + reviews · 8. SEO, keywords, competitors · 9. Leads, tasks, content ·
+7. Business Profile + reviews · 8. SEO, keywords, competitors · 9. Leads ✅, tasks, content ·
 10. Reports & client portal

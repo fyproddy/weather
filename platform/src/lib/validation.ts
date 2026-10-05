@@ -116,3 +116,29 @@ export function fieldErrors(error: z.ZodError): Record<string, string> {
   }
   return out;
 }
+
+export const LEAD_CHANNELS = ["call", "whatsapp", "form", "email", "walk_in", "other"] as const;
+export const LEAD_SOURCES = ["google_ads", "google_search", "google_maps", "referral", "social", "direct", "other", "unknown"] as const;
+export const LEAD_STATUSES = ["new", "contacted", "quoted", "won", "lost"] as const;
+
+export const leadInput = z.object({
+  name: z.string().trim().min(1, "Enter the person's name").max(200),
+  phone: optionalPhone,
+  email: optionalEmail,
+  channel: z.enum(LEAD_CHANNELS),
+  source: z.enum(LEAD_SOURCES),
+  service: optionalText(200),
+  location: optionalText(200),
+  notes: optionalText(5000),
+  status: z.enum(LEAD_STATUSES).default("new"),
+  value: z
+    .union([z.literal(""), z.coerce.number().min(0).max(100_000_000)])
+    .optional()
+    .transform((v) => (v === "" || v === undefined ? null : v)),
+  receivedOn: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a date")
+    .optional()
+    .or(z.literal("").transform(() => undefined)),
+});
+export type LeadInput = z.infer<typeof leadInput>;

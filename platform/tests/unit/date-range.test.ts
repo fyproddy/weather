@@ -10,6 +10,7 @@ describe("resolveRange", () => {
     expect(resolveRange({ range: "last_7" }, today)).toMatchObject({ from: "2026-09-28", to: "2026-10-04", days: 7 });
     expect(resolveRange({ range: "last_30" }, today)).toMatchObject({ from: "2026-09-05", to: "2026-10-04", days: 30 });
     expect(resolveRange({ range: "last_90" }, today)).toMatchObject({ days: 90, to: "2026-10-04" });
+    expect(resolveRange({ range: "recent_30" }, today)).toMatchObject({ from: "2026-09-06", to: "2026-10-05", days: 30 });
   });
 
   it("accepts a valid custom range and falls back on bad input", () => {

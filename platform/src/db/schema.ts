@@ -34,6 +34,18 @@ export const googleProvider = pgEnum("google_provider", [
 ]);
 export const adsReportType = pgEnum("ads_report_type", ["campaigns", "keywords", "search_terms"]);
 export const recommendationStatus = pgEnum("recommendation_status", ["approved", "dismissed", "done"]);
+export const leadChannel = pgEnum("lead_channel", ["call", "whatsapp", "form", "email", "walk_in", "other"]);
+export const leadSource = pgEnum("lead_source", [
+  "google_ads",
+  "google_search",
+  "google_maps",
+  "referral",
+  "social",
+  "direct",
+  "other",
+  "unknown",
+]);
+export const leadStatus = pgEnum("lead_status", ["new", "contacted", "quoted", "won", "lost"]);
 export const connectionStatus = pgEnum("connection_status", [
   "not_connected",
   "connected",
@@ -356,6 +368,31 @@ export const adsRecommendationDecisions = pgTable(
   (t) => [uniqueIndex("ads_rec_decision_idx").on(t.clientId, t.fingerprint)],
 );
 
+/** An enquiry from a potential customer. Personal information — agency staff only. */
+export const leads = pgTable(
+  "leads",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientId: clientRef(),
+    receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
+    name: text("name").notNull(),
+    phone: text("phone"),
+    email: text("email"),
+    channel: leadChannel("channel").notNull(),
+    source: leadSource("source").notNull().default("unknown"),
+    service: text("service"),
+    location: text("location"),
+    notes: text("notes"),
+    status: leadStatus("status").notNull().default("new"),
+    /** Job value in the client's currency, recorded when won. */
+    value: numeric("value", { precision: 14, scale: 2, mode: "number" }),
+    createdById: uuid("created_by_id").references(() => users.id, { onDelete: "set null" }),
+    ...timestamps,
+  },
+  (t) => [index("leads_client_received_idx").on(t.clientId, t.receivedAt)],
+);
+
+export type Lead = typeof leads.$inferSelect;
 export type User = typeof users.$inferSelect;
 export type Client = typeof clients.$inferSelect;
 export type ClientFact = typeof clientFacts.$inferSelect;
