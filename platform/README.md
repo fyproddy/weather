@@ -36,6 +36,18 @@ npm run db:migrate
 npm run dev                     # http://localhost:3000 → first visit opens /setup
 ```
 
+## Deploying (Railway)
+
+The `production` branch is what the live site runs. Railway settings:
+
+- **Root directory:** `platform`
+- **Database:** add a PostgreSQL service; set `DATABASE_URL` to `${{Postgres.DATABASE_URL}}`
+- **SETUP_CODE:** any secret phrase — required once, to create the first admin.
+  Without it, setup stays locked so nobody else can claim the agency.
+
+`railway.json` sets the build and start commands; migrations run on every start
+(`npm run start:prod`) and the health check is `/api/health`.
+
 ## Checks
 
 ```bash

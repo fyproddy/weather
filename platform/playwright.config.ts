@@ -15,10 +15,10 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    command: `npx tsx scripts/migrate.ts --reset && npx next start -p ${PORT}`,
+    command: `node scripts/migrate.mjs --reset && npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}/login`,
     reuseExistingServer: false,
-    env: { DATABASE_URL: E2E_DB },
+    env: { DATABASE_URL: E2E_DB, SETUP_CODE: "test-setup-code" },
     timeout: 60_000,
   },
 });

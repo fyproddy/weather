@@ -7,6 +7,7 @@ import { authenticate } from "@/server/auth-core";
 import { setupAgency, SetupAlreadyDoneError } from "@/server/agency";
 import { endSession, startSession } from "@/server/session";
 import { fieldErrors, setupInput } from "@/lib/validation";
+import { setupCodeMatches, setupCodeStatus } from "@/server/setup-code";
 
 export type FormState = {
   error?: string;
@@ -34,6 +35,8 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
 }
 
 export async function setupAction(_: FormState, formData: FormData): Promise<FormState> {
+  if (setupCodeStatus() === "missing") return { error: "Setup is locked: add a SETUP_CODE variable on the server first." };
+  if (!setupCodeMatches(formData.get("setupCode"))) return { error: "That setup code is wrong." };
   const parsed = setupInput.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { fields: fieldErrors(parsed.error) };
   try {

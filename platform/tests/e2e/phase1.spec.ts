@@ -30,6 +30,16 @@ test("signed-out visitors are sent to setup on a fresh install", async ({ page }
 test("first-run setup creates the agency and signs in", async ({ page }) => {
   await page.goto("/setup");
   await shot(page, "01-setup");
+  // Without the right setup code nobody can claim the agency.
+  await page.getByLabel("Setup code").fill("guess");
+  await page.getByLabel("Agency name").fill("Intruder");
+  await page.getByLabel("Your name").fill("x");
+  await page.getByLabel("Email").fill("intruder@example.com");
+  await page.getByLabel("Password").fill("intruder password");
+  await page.getByRole("button", { name: "Create agency" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "That setup code is wrong." })).toBeVisible();
+
+  await page.getByLabel("Setup code").fill("test-setup-code");
   await page.getByLabel("Agency name").fill("LeadPath Digital");
   await page.getByLabel("Your name").fill("Roddy");
   await page.getByLabel("Email").fill(ADMIN.email);
@@ -197,6 +207,12 @@ test("archive hides a client and restore brings it back", async ({ page }) => {
   await expect(page.getByText("This client is archived.")).toHaveCount(0);
   await page.goto("/");
   await expect(page.getByRole("link", { name: "DriveLab" })).toBeVisible();
+});
+
+test("health check is public and reports the database is up", async ({ request }) => {
+  const res = await request.get("/api/health", { maxRedirects: 0 });
+  expect(res.status()).toBe(200);
+  expect(await res.json()).toEqual({ ok: true });
 });
 
 test("a signed-out visitor can't reach app pages", async ({ page }) => {

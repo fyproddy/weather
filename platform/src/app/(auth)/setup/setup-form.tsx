@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { setupAction, type FormState } from "@/app/actions/auth";
 import { Button, Card, Field, FormError, Input } from "@/components/ui";
 
-export function SetupForm() {
+export function SetupForm({ needsCode }: { needsCode: boolean }) {
   const [state, action, pending] = useActionState<FormState, FormData>(setupAction, {});
   return (
     <Card className="p-6">
@@ -12,6 +12,11 @@ export function SetupForm() {
       <p className="mb-4 mt-1 text-sm text-muted">This creates your agency and your admin login. It only runs once.</p>
       <form action={action} className="space-y-4">
         <FormError message={state.error} />
+        {needsCode && (
+          <Field label="Setup code" name="setupCode" hint="The SETUP_CODE you set on the server.">
+            <Input id="setupCode" name="setupCode" type="password" autoComplete="off" required />
+          </Field>
+        )}
         <Field label="Agency name" name="agencyName" error={state.fields?.agencyName}>
           <Input id="agencyName" name="agencyName" defaultValue="LeadPath Digital" required />
         </Field>
