@@ -3,9 +3,10 @@
 Internal agency tool for managing the Google growth of multiple client businesses:
 Google Ads, organic search, Maps / Business Profile, SEO, reviews, leads and reporting.
 
-**Status: Phase 2** — login, agency & team, client management (details,
+**Status: Phase 4** — login, agency & team, client management (details,
 services, target locations, competitors, verified facts), the agency dashboard,
-and Google Ads reporting from CSV exports. Sections not built yet show what's
+Google Ads reporting from CSV exports, and Google Ads analysis with
+recommendations you approve. Sections not built yet show what's
 planned and honest "not connected" states; no metric is ever estimated or invented.
 
 ## Google Ads CSV import
@@ -52,6 +53,16 @@ Every client-owned table belongs to an agency. All reads and writes go through
 its agency, and child records are only reachable through a client already
 checked against that agency. `tests/unit/clients.test.ts` covers this.
 
+## Google Ads analysis
+
+`src/lib/ads-analysis.ts` turns imported Campaigns, Keywords and Search terms
+reports into winners, problems and opportunities. Each finding carries its
+reason with the real figures and a suggested action (budget, pause, negative
+keyword, new keyword, new ad, landing page, tracking). Rules have minimum-data
+thresholds (`THRESHOLDS`) so small samples aren't judged. Findings are
+recomputed from data on every view; only decisions (approved / dismissed /
+done) are stored. Nothing is ever changed in Google Ads automatically.
+
 ## Roles
 
 - **Admin** — everything, including team, agency settings and permanent delete
@@ -66,6 +77,6 @@ AI assistants (from Phase 5) only ever receive a client's facts marked
 ## Phases
 
 1. Foundation ✅ · 2. Agency dashboard + Google Ads CSV import ✅ · 3. Google OAuth + Google Ads (read-only) ·
-4. Ads analysis & recommendations · 5. Ads creative assistant · 6. Search Console + GA4 ·
+4. Ads analysis & recommendations ✅ · 5. Ads creative assistant · 6. Search Console + GA4 ·
 7. Business Profile + reviews · 8. SEO, keywords, competitors · 9. Leads, tasks, content ·
 10. Reports & client portal

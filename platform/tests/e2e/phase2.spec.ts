@@ -15,7 +15,7 @@ const shot = async (page: Page, name: string) => {
 };
 
 const money = (n: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "ZAR", currencyDisplay: "narrowSymbol", minimumFractionDigits: 2 }).format(n);
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "ZAR", currencyDisplay: "narrowSymbol", minimumFractionDigits: 2 }).format(n).replace(/\u00a0/g, "");
 
 /** 60 days of daily data ending yesterday (Johannesburg time), oldest first. */
 function buildReport() {

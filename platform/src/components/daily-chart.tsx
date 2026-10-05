@@ -39,7 +39,7 @@ export function DailyChart({
       format === "money"
         ? new Intl.NumberFormat("en-US", { style: "currency", currency, currencyDisplay: "narrowSymbol", maximumFractionDigits: 0 })
         : new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
-    return (n: number | null) => (n === null ? "—" : nf.format(n));
+    return (n: number | null) => (n === null ? "—" : nf.format(n).replace(/\u00a0/g, ""));
   }, [format, currency]);
 
   const h = 200;

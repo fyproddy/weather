@@ -32,6 +32,8 @@ export const googleProvider = pgEnum("google_provider", [
   "analytics",
   "business_profile",
 ]);
+export const adsReportType = pgEnum("ads_report_type", ["campaigns", "keywords", "search_terms"]);
+export const recommendationStatus = pgEnum("recommendation_status", ["approved", "dismissed", "done"]);
 export const connectionStatus = pgEnum("connection_status", [
   "not_connected",
   "connected",
@@ -210,6 +212,7 @@ export const adsImports = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     clientId: clientRef(),
     userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+    reportType: adsReportType("report_type").notNull().default("campaigns"),
     filename: text("filename").notNull(),
     rowCount: integer("row_count").notNull(),
     /** The span the file covers (from its date-range line, or its first/last day). */
@@ -269,11 +272,88 @@ export const adsCoverage = pgTable(
     importId: uuid("import_id")
       .notNull()
       .references(() => adsImports.id, { onDelete: "cascade" }),
+    reportType: adsReportType("report_type").notNull().default("campaigns"),
     periodStart: date("period_start").notNull(),
     periodEnd: date("period_end").notNull(),
     daily: boolean("daily").notNull(),
   },
-  (t) => [index("ads_coverage_client_idx").on(t.clientId, t.periodStart)],
+  (t) => [index("ads_coverage_client_idx").on(t.clientId, t.reportType, t.periodStart)],
+);
+
+const metricColumns = () => ({
+  cost: numeric("cost", { precision: 14, scale: 2, mode: "number" }).notNull(),
+  impressions: bigint("impressions", { mode: "number" }).notNull(),
+  clicks: bigint("clicks", { mode: "number" }).notNull(),
+  conversions: numeric("conversions", { precision: 14, scale: 2, mode: "number" }),
+  conversionValue: numeric("conversion_value", { precision: 14, scale: 2, mode: "number" }),
+});
+
+/** Rows from a Google Ads "Keywords" report. */
+export const adsKeywordMetrics = pgTable(
+  "ads_keyword_metrics",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientId: clientRef(),
+    importId: uuid("import_id")
+      .notNull()
+      .references(() => adsImports.id, { onDelete: "cascade" }),
+    keyword: text("keyword").notNull(),
+    matchType: text("match_type").notNull(), // broad | phrase | exact
+    status: text("status"),
+    campaignName: text("campaign_name").notNull(),
+    adGroupName: text("ad_group_name").notNull(),
+    maxCpc: numeric("max_cpc", { precision: 14, scale: 2, mode: "number" }),
+    qualityScore: integer("quality_score"),
+    periodStart: date("period_start").notNull(),
+    periodEnd: date("period_end").notNull(),
+    ...metricColumns(),
+  },
+  (t) => [
+    uniqueIndex("ads_keyword_unique_idx").on(t.clientId, t.campaignName, t.adGroupName, t.keyword, t.matchType, t.periodStart, t.periodEnd),
+  ],
+);
+
+/** Rows from a Google Ads "Search terms" report: what people actually typed. */
+export const adsSearchTermMetrics = pgTable(
+  "ads_search_term_metrics",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientId: clientRef(),
+    importId: uuid("import_id")
+      .notNull()
+      .references(() => adsImports.id, { onDelete: "cascade" }),
+    searchTerm: text("search_term").notNull(),
+    matchType: text("match_type"),
+    addedExcluded: text("added_excluded"),
+    keyword: text("keyword"),
+    campaignName: text("campaign_name").notNull(),
+    adGroupName: text("ad_group_name").notNull(),
+    periodStart: date("period_start").notNull(),
+    periodEnd: date("period_end").notNull(),
+    ...metricColumns(),
+  },
+  (t) => [
+    uniqueIndex("ads_search_term_unique_idx").on(t.clientId, t.campaignName, t.adGroupName, t.searchTerm, t.periodStart, t.periodEnd),
+  ],
+);
+
+/**
+ * Decisions on recommendations. Recommendations themselves are recomputed
+ * from the data every time; only what a person decided is stored, keyed by a
+ * stable fingerprint (rule + target), with a snapshot of what they saw.
+ */
+export const adsRecommendationDecisions = pgTable(
+  "ads_recommendation_decisions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientId: clientRef(),
+    fingerprint: text("fingerprint").notNull(),
+    status: recommendationStatus("status").notNull(),
+    snapshot: jsonb("snapshot").notNull(),
+    decidedById: uuid("decided_by_id").references(() => users.id, { onDelete: "set null" }),
+    ...timestamps,
+  },
+  (t) => [uniqueIndex("ads_rec_decision_idx").on(t.clientId, t.fingerprint)],
 );
 
 export type User = typeof users.$inferSelect;

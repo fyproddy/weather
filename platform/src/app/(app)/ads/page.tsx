@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { db } from "@/db";
 import { RemoveImportButton } from "@/components/ads-forms";
+import { AdsTabs } from "@/components/ads-tabs";
 import { DailyChart } from "@/components/daily-chart";
 import { RangePicker } from "@/components/range-picker";
 import { StatTile } from "@/components/stat";
 import { Badge, ButtonLink, Card, CardHeader, EmptyState, PageHeader } from "@/components/ui";
+import { REPORT_LABELS } from "@/lib/ads-csv";
 import { addDays, formatDate, isCovered } from "@/lib/date-range";
 import { change, count, money, pct } from "@/lib/format";
 import { adsCoverageFor, campaignReport, dailySeries, derive, listAdsImports, type AdsTotals } from "@/server/ads";
@@ -91,6 +93,7 @@ export default async function AdsPage(props: PageProps<"/ads">) {
         }
       />
 
+      <AdsTabs />
       <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-border bg-surface px-4 py-3 text-sm">
         <span className="flex items-center gap-2">
           Google Ads API <Badge>Not connected — Phase 3</Badge>
@@ -193,7 +196,7 @@ export default async function AdsPage(props: PageProps<"/ads">) {
                 <div className="min-w-0">
                   <div className="truncate font-medium">{i.filename}</div>
                   <div className="text-xs text-muted">
-                    {formatDate(i.periodStart)} – {formatDate(i.periodEnd)} · {i.daily ? "daily" : "period totals"} · {i.rowCount} rows · imported{" "}
+                    {REPORT_LABELS[i.reportType]} · {formatDate(i.periodStart)} – {formatDate(i.periodEnd)} · {i.daily ? "daily" : "period totals"} · {i.rowCount} rows · imported{" "}
                     {i.createdAt.toLocaleDateString("en-ZA", { day: "numeric", month: "short", timeZone: "Africa/Johannesburg" })}
                   </div>
                 </div>
@@ -205,8 +208,7 @@ export default async function AdsPage(props: PageProps<"/ads">) {
       )}
 
       <p className="mt-6 text-xs text-muted">
-        Coming next: analysis of winners, problems and opportunities, search terms, keywords and budget recommendations (Phase 4). Want to see what&apos;s
-        planned? <Link href="/clients" className="underline">Client profiles</Link> hold the verified facts the ad assistant will use.
+        See <Link href="/ads/analysis" className="underline">Analysis</Link> for winners, problems, opportunities and budget recommendations.
       </p>
     </>
   );

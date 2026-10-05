@@ -1,7 +1,7 @@
 import { and, asc, desc, eq, gte, inArray, lte, ne, sql } from "drizzle-orm";
 import type { Db } from "@/db";
-import { adsCampaignMetrics, adsCoverage, adsImports, clients } from "@/db/schema";
-import type { ParsedAdsReport } from "@/lib/ads-csv";
+import { adsCampaignMetrics, adsCoverage, adsImports, adsKeywordMetrics, adsSearchTermMetrics, clients } from "@/db/schema";
+import { REPORT_LABELS, type ParsedAdsReport, type ReportType } from "@/lib/ads-csv";
 import { addDays, isCovered } from "@/lib/date-range";
 import { audit, getClient, isUuid } from "./clients";
 import { assertRole, NotFoundError, type Ctx } from "./permissions";
@@ -41,6 +41,7 @@ export async function importAdsReport(
       .where(
         and(
           eq(adsCoverage.clientId, clientId),
+          eq(adsCoverage.reportType, report.type),
           lte(adsCoverage.periodStart, report.periodEnd),
           gte(adsCoverage.periodEnd, report.periodStart),
         ),
@@ -49,13 +50,13 @@ export async function importAdsReport(
       const samePeriod = c.periodStart === report.periodStart && c.periodEnd === report.periodEnd;
       if (report.daily !== c.daily || (!report.daily && !samePeriod)) {
         throw new AdsImportConflictError(
-          `This file's dates (${report.periodStart} to ${report.periodEnd}) overlap data already imported for ${c.periodStart} to ${c.periodEnd} in a different format. ` +
+          `This ${REPORT_LABELS[report.type].toLowerCase()} report (${report.periodStart} to ${report.periodEnd}) overlaps data already imported for ${c.periodStart} to ${c.periodEnd} in a different format. ` +
             "Remove that import first, or export the same date range segmented by Day.",
         );
       }
     }
 
-    if (report.currency) {
+    if (report.type === "campaigns" && report.currency) {
       const [other] = await tx
         .select({ currency: adsCampaignMetrics.currency })
         .from(adsCampaignMetrics)
@@ -69,15 +70,7 @@ export async function importAdsReport(
     }
 
     // Replace existing rows for these dates and trim older coverage.
-    await tx
-      .delete(adsCampaignMetrics)
-      .where(
-        and(
-          eq(adsCampaignMetrics.clientId, clientId),
-          gte(adsCampaignMetrics.periodStart, report.periodStart),
-          lte(adsCampaignMetrics.periodEnd, report.periodEnd),
-        ),
-      );
+    await deleteRowsInPeriod(tx, report.type, clientId, report.periodStart, report.periodEnd);
     await trimCoverage(tx, clientId, overlapping, report.periodStart, report.periodEnd);
 
     const [imp] = await tx
@@ -85,6 +78,7 @@ export async function importAdsReport(
       .values({
         clientId,
         userId: ctx.userId,
+        reportType: report.type,
         filename: input.filename.slice(0, 200),
         rowCount: report.rows.length,
         periodStart: report.periodStart,
@@ -97,15 +91,12 @@ export async function importAdsReport(
     await tx.insert(adsCoverage).values({
       clientId,
       importId: imp.id,
+      reportType: report.type,
       periodStart: report.periodStart,
       periodEnd: report.periodEnd,
       daily: report.daily,
     });
-    for (let i = 0; i < report.rows.length; i += 1000) {
-      await tx
-        .insert(adsCampaignMetrics)
-        .values(report.rows.slice(i, i + 1000).map((r) => ({ ...r, clientId, importId: imp.id })));
-    }
+    await insertRows(tx, report, clientId, imp.id);
     // Imports whose data has been completely replaced no longer provide anything.
     await tx.execute(sql`
       delete from ads_imports i
@@ -115,12 +106,31 @@ export async function importAdsReport(
   });
 
   await audit(db, ctx, "ads.imported", clientId, {
+    type: report.type,
     filename: result.filename,
     rows: result.rowCount,
     from: result.periodStart,
     to: result.periodEnd,
   });
   return result;
+}
+
+async function deleteRowsInPeriod(tx: Tx, type: ReportType, clientId: string, from: string, to: string) {
+  const t = type === "campaigns" ? adsCampaignMetrics : type === "keywords" ? adsKeywordMetrics : adsSearchTermMetrics;
+  await tx.delete(t).where(and(eq(t.clientId, clientId), gte(t.periodStart, from), lte(t.periodEnd, to)));
+}
+
+async function insertRows(tx: Tx, report: ParsedAdsReport, clientId: string, importId: string) {
+  for (let i = 0; i < report.rows.length; i += 1000) {
+    const ids = { clientId, importId };
+    if (report.type === "campaigns") {
+      await tx.insert(adsCampaignMetrics).values(report.rows.slice(i, i + 1000).map((r) => ({ ...r, ...ids })));
+    } else if (report.type === "keywords") {
+      await tx.insert(adsKeywordMetrics).values(report.rows.slice(i, i + 1000).map((r) => ({ ...r, ...ids })));
+    } else {
+      await tx.insert(adsSearchTermMetrics).values(report.rows.slice(i, i + 1000).map((r) => ({ ...r, ...ids })));
+    }
+  }
 }
 
 async function trimCoverage(
@@ -268,7 +278,7 @@ export async function agencyAdsSummary(
   const [current, prev, coverage, daily] = await Promise.all([
     totalsFor(range.from, range.to),
     totalsFor(previous.from, previous.to),
-    db.select().from(adsCoverage).where(inArray(adsCoverage.clientId, ids)),
+    db.select().from(adsCoverage).where(and(inArray(adsCoverage.clientId, ids), eq(adsCoverage.reportType, "campaigns"))),
     db
       .select({
         clientId: adsCampaignMetrics.clientId,
@@ -309,7 +319,62 @@ export async function agencyAdsSummary(
 }
 
 /** Coverage for one client, for the Google Ads page. */
-export async function adsCoverageFor(db: Db, ctx: Ctx, clientId: string) {
+export async function adsCoverageFor(db: Db, ctx: Ctx, clientId: string, type: ReportType = "campaigns") {
   await getClient(db, ctx, clientId);
-  return db.select().from(adsCoverage).where(eq(adsCoverage.clientId, clientId)).orderBy(asc(adsCoverage.periodStart));
+  return db
+    .select()
+    .from(adsCoverage)
+    .where(and(eq(adsCoverage.clientId, clientId), eq(adsCoverage.reportType, type)))
+    .orderBy(asc(adsCoverage.periodStart));
+}
+
+const kwSums = (t: typeof adsKeywordMetrics | typeof adsSearchTermMetrics) => ({
+  cost: sql<number>`coalesce(sum(${t.cost}), 0)::float8`,
+  impressions: sql<number>`coalesce(sum(${t.impressions}), 0)::float8`,
+  clicks: sql<number>`coalesce(sum(${t.clicks}), 0)::float8`,
+  conversions: sql<number | null>`sum(${t.conversions})::float8`,
+  conversionValue: sql<number | null>`sum(${t.conversionValue})::float8`,
+});
+
+/** Keyword figures for a date range, one row per keyword + match type + ad group. */
+export async function keywordReport(db: Db, ctx: Ctx, clientId: string, from: string, to: string) {
+  await getClient(db, ctx, clientId);
+  const k = adsKeywordMetrics;
+  const rows = await db
+    .select({
+      keyword: k.keyword,
+      matchType: k.matchType,
+      campaignName: k.campaignName,
+      adGroupName: k.adGroupName,
+      ...kwSums(k),
+      status: sql<string | null>`(array_agg(${k.status} order by ${k.periodEnd} desc))[1]`,
+      maxCpc: sql<number | null>`(array_agg(${k.maxCpc} order by ${k.periodEnd} desc))[1]::float8`,
+      qualityScore: sql<number | null>`(array_agg(${k.qualityScore} order by ${k.periodEnd} desc))[1]`,
+    })
+    .from(k)
+    .where(and(eq(k.clientId, clientId), gte(k.periodStart, from), lte(k.periodEnd, to)))
+    .groupBy(k.keyword, k.matchType, k.campaignName, k.adGroupName)
+    .orderBy(desc(sql`sum(${k.cost})`), asc(k.keyword));
+  return rows.map((r) => ({ ...r, ...derive(r) }));
+}
+
+/** Search terms for a date range, one row per term + ad group. */
+export async function searchTermReport(db: Db, ctx: Ctx, clientId: string, from: string, to: string) {
+  await getClient(db, ctx, clientId);
+  const t = adsSearchTermMetrics;
+  const rows = await db
+    .select({
+      searchTerm: t.searchTerm,
+      campaignName: t.campaignName,
+      adGroupName: t.adGroupName,
+      ...kwSums(t),
+      matchType: sql<string | null>`(array_agg(${t.matchType} order by ${t.periodEnd} desc))[1]`,
+      addedExcluded: sql<string | null>`(array_agg(${t.addedExcluded} order by ${t.periodEnd} desc))[1]`,
+      keyword: sql<string | null>`(array_agg(${t.keyword} order by ${t.periodEnd} desc))[1]`,
+    })
+    .from(t)
+    .where(and(eq(t.clientId, clientId), gte(t.periodStart, from), lte(t.periodEnd, to)))
+    .groupBy(t.searchTerm, t.campaignName, t.adGroupName)
+    .orderBy(desc(sql`sum(${t.cost})`), asc(t.searchTerm));
+  return rows.map((r) => ({ ...r, ...derive(r) }));
 }

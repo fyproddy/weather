@@ -9,28 +9,56 @@
  * - Anything ambiguous is reported back rather than guessed.
  */
 
-export type ParsedAdsRow = {
-  campaignName: string;
-  campaignStatus: string | null;
+export type ReportType = "campaigns" | "keywords" | "search_terms";
+export type MatchType = "broad" | "phrase" | "exact";
+
+type Metrics = {
   periodStart: string; // YYYY-MM-DD
   periodEnd: string;
-  currency: string | null;
-  budget: number | null;
   cost: number;
   impressions: number;
   clicks: number;
   conversions: number | null;
   conversionValue: number | null;
+};
+
+export type ParsedAdsRow = Metrics & {
+  campaignName: string;
+  campaignStatus: string | null;
+  currency: string | null;
+  budget: number | null;
   searchImpressionShare: number | null;
 };
 
-export type ParsedAdsReport = {
-  rows: ParsedAdsRow[];
-  periodStart: string;
-  periodEnd: string;
-  daily: boolean;
-  currency: string | null;
-  warnings: string[];
+export type ParsedKeywordRow = Metrics & {
+  keyword: string;
+  matchType: MatchType;
+  status: string | null;
+  campaignName: string;
+  adGroupName: string;
+  maxCpc: number | null;
+  qualityScore: number | null;
+};
+
+export type ParsedSearchTermRow = Metrics & {
+  searchTerm: string;
+  matchType: MatchType | null;
+  addedExcluded: string | null;
+  keyword: string | null;
+  campaignName: string;
+  adGroupName: string;
+};
+
+type ReportBase = { periodStart: string; periodEnd: string; daily: boolean; currency: string | null; warnings: string[] };
+export type ParsedAdsReport =
+  | (ReportBase & { type: "campaigns"; rows: ParsedAdsRow[] })
+  | (ReportBase & { type: "keywords"; rows: ParsedKeywordRow[] })
+  | (ReportBase & { type: "search_terms"; rows: ParsedSearchTermRow[] });
+
+export const REPORT_LABELS: Record<ReportType, string> = {
+  campaigns: "Campaigns",
+  keywords: "Keywords",
+  search_terms: "Search terms",
 };
 
 export class AdsCsvError extends Error {}
@@ -39,7 +67,7 @@ export const MAX_ROWS = 50_000;
 
 const COLUMNS = {
   campaign: ["campaign", "campaign name"],
-  status: ["campaign status", "campaign state", "status"],
+  status: ["campaign status", "campaign state"],
   day: ["day", "date"],
   currency: ["currency code", "currency"],
   budget: ["budget", "daily budget", "avg. daily budget"],
@@ -49,8 +77,33 @@ const COLUMNS = {
   conversions: ["conversions", "conv."],
   conversionValue: ["conv. value", "conversion value", "total conv. value"],
   searchImpressionShare: ["search impr. share", "search impression share"],
+  searchTerm: ["search term"],
+  keyword: ["keyword", "search keyword", "keyword text"],
+  matchType: ["match type", "search term match type", "keyword match type", "search keyword match type"],
+  adGroup: ["ad group", "ad group name"],
+  addedExcluded: ["added/excluded"],
+  keywordStatus: ["status", "keyword status", "search keyword status"],
+  maxCpc: ["max. cpc", "max cpc", "default max. cpc"],
+  qualityScore: ["quality score", "qual. score"],
 } as const;
 type ColumnKey = keyof typeof COLUMNS;
+
+/** "Exact match (close variant)" → exact */
+export function normalizeMatchType(raw: string | undefined): MatchType | null {
+  const s = (raw ?? "").toLowerCase();
+  if (s.includes("exact")) return "exact";
+  if (s.includes("phrase")) return "phrase";
+  if (s.includes("broad")) return "broad";
+  return null;
+}
+
+/** Strips Google's keyword syntax: [exact], "phrase", +modified. Returns the text and the match type it implies. */
+export function parseKeywordText(raw: string): { text: string; implied: MatchType } {
+  const s = raw.trim();
+  if (/^\[.*\]$/.test(s)) return { text: s.slice(1, -1).trim(), implied: "exact" };
+  if (/^".*"$/.test(s)) return { text: s.slice(1, -1).trim(), implied: "phrase" };
+  return { text: s.replace(/(^|\s)\+/g, "$1").trim(), implied: "broad" };
+}
 
 // ---- Text decoding & CSV splitting ---------------------------------------
 
@@ -183,38 +236,41 @@ export function parseDateRange(line: string): [string, string] | null {
 
 // ---- Report ---------------------------------------------------------------
 
-export function parseAdsReport(
-  text: string,
-  opts: { fallbackPeriod?: [string, string] } = {},
-): ParsedAdsReport {
+export function parseAdsReport(text: string, opts: { fallbackPeriod?: [string, string] } = {}): ParsedAdsReport {
   const delimiter = detectDelimiter(text);
   const table = splitRows(text, delimiter);
+  const has = (r: string[], key: ColumnKey) => r.some((c) => (COLUMNS[key] as readonly string[]).includes(norm(c)));
 
   const headerIndex = table.findIndex(
-    (r, i) => i < 15 && r.some((c) => COLUMNS.campaign.includes(norm(c) as never)) && r.some((c) => COLUMNS.cost.includes(norm(c) as never)),
+    (r, i) => i < 15 && (has(r, "campaign") || has(r, "searchTerm") || has(r, "keyword")) && has(r, "cost"),
   );
   if (headerIndex === -1) {
     throw new AdsCsvError(
-      "Couldn't find the column headings. The file needs at least Campaign, Cost, Impr. and Clicks columns — download it from the Campaigns page in Google Ads.",
+      "Couldn't find the column headings. Download a Campaigns, Keywords or Search terms report from Google Ads — it needs at least Campaign, Cost, Impr. and Clicks columns.",
     );
   }
 
   const header = table[headerIndex].map(norm);
+  const type: ReportType = has(header, "searchTerm") ? "search_terms" : has(header, "keyword") ? "keywords" : "campaigns";
   const col: Partial<Record<ColumnKey, number>> = {};
   for (const key of Object.keys(COLUMNS) as ColumnKey[]) {
     const idx = header.findIndex((h) => (COLUMNS[key] as readonly string[]).includes(h));
     if (idx !== -1) col[key] = idx;
   }
-  const missing = (["impressions", "clicks"] as const).filter((k) => col[k] === undefined);
+  // A bare "Status" column means the campaign's status in a campaign report.
+  if (type === "campaigns" && col.status === undefined && col.keywordStatus !== undefined) col.status = col.keywordStatus;
+
+  const label = { impressions: "Impr.", clicks: "Clicks", campaign: "Campaign" } as const;
+  const required = ["campaign", "impressions", "clicks"] as const;
+  const missing = required.filter((k) => col[k] === undefined);
   if (missing.length) {
-    const label = { impressions: "Impr.", clicks: "Clicks" };
     throw new AdsCsvError(`The file is missing these columns: ${missing.map((k) => label[k]).join(", ")}.`);
   }
 
   const warnings: string[] = [];
   if (col.conversions === undefined) warnings.push("No Conversions column — conversion figures will show as not available.");
+  if (type !== "campaigns" && col.adGroup === undefined) warnings.push("No Ad group column — rows are grouped by campaign only.");
 
-  // Period for non-daily reports: from the date-range line above the header.
   let filePeriod: [string, string] | null = null;
   for (const r of table.slice(0, headerIndex)) {
     filePeriod = parseDateRange(r.join(" ").trim());
@@ -230,22 +286,22 @@ export function parseAdsReport(
   }
 
   const cell = (r: string[], k: ColumnKey) => (col[k] === undefined ? undefined : r[col[k]!]);
-  const merged = new Map<string, ParsedAdsRow & { eligible: number | null; parts: number }>();
+  type Acc = Metrics & { key: string; eligible: number | null; parts: number; base: Record<string, unknown> };
+  const merged = new Map<string, Acc>();
   let boundedShare = 0;
   const badRows: number[] = [];
+  const currencies = new Set<string>();
 
   for (let i = headerIndex + 1; i < table.length; i++) {
     const r = table[i];
     if (r.every((c) => c.trim() === "")) continue;
-    if (r.slice(0, 3).some((c) => /^total\b/i.test(c.trim()))) {
-      continue;
-    }
-    const name = (cell(r, "campaign") ?? "").trim();
-    if (!name) {
+    if (r.slice(0, 3).some((c) => /^total\b/i.test(c.trim()))) continue;
+
+    const campaignName = (cell(r, "campaign") ?? "").trim();
+    if (!campaignName) {
       badRows.push(i + 1);
       continue;
     }
-
     let start: string;
     let end: string;
     if (daily) {
@@ -255,9 +311,7 @@ export function parseAdsReport(
         continue;
       }
       start = end = d;
-    } else {
-      [start, end] = filePeriod!;
-    }
+    } else [start, end] = filePeriod!;
 
     const cost = parseNumber(cell(r, "cost")).value ?? 0;
     const impressions = parseNumber(cell(r, "impressions")).value ?? 0;
@@ -266,15 +320,65 @@ export function parseAdsReport(
       badRows.push(i + 1);
       continue;
     }
+    const currency = cell(r, "currency")?.trim().toUpperCase();
+    if (currency) currencies.add(currency);
+    const adGroupName = (cell(r, "adGroup") ?? "").trim();
+
+    // Identity of the row (what duplicates are merged on) and its descriptive fields.
+    let identity: string;
+    let base: Record<string, unknown>;
+    if (type === "campaigns") {
+      identity = campaignName;
+      base = {
+        campaignName,
+        campaignStatus: cell(r, "status")?.trim() || null,
+        currency: currency || null,
+        budget: parseNumber(cell(r, "budget")).value,
+      };
+    } else if (type === "keywords") {
+      const parsed = parseKeywordText(cell(r, "keyword") ?? "");
+      if (!parsed.text) {
+        badRows.push(i + 1);
+        continue;
+      }
+      const matchType = normalizeMatchType(cell(r, "matchType")) ?? parsed.implied;
+      identity = [campaignName, adGroupName, parsed.text.toLowerCase(), matchType].join("\u0000");
+      const qs = parseNumber(cell(r, "qualityScore")).value;
+      base = {
+        keyword: parsed.text,
+        matchType,
+        status: cell(r, "keywordStatus")?.trim() || null,
+        campaignName,
+        adGroupName,
+        maxCpc: parseNumber(cell(r, "maxCpc")).value,
+        qualityScore: qs !== null && qs >= 1 && qs <= 10 ? Math.round(qs) : null,
+      };
+    } else {
+      const term = (cell(r, "searchTerm") ?? "").trim();
+      if (!term) {
+        badRows.push(i + 1);
+        continue;
+      }
+      identity = [campaignName, adGroupName, term.toLowerCase()].join("\u0000");
+      const kw = cell(r, "keyword")?.trim();
+      base = {
+        searchTerm: term,
+        matchType: normalizeMatchType(cell(r, "matchType")),
+        addedExcluded: cell(r, "addedExcluded")?.trim() || null,
+        keyword: kw ? parseKeywordText(kw).text : null,
+        campaignName,
+        adGroupName,
+      };
+    }
+
     const share = parseNumber(cell(r, "searchImpressionShare"));
     if (share.bound) boundedShare++;
     const conversions = parseNumber(cell(r, "conversions")).value;
     const conversionValue = parseNumber(cell(r, "conversionValue")).value;
-
-    const key = `${name}\u0000${start}\u0000${end}`;
-    const existing = merged.get(key);
-    // Eligible impressions = impressions / share; lets us combine shares correctly.
     const eligible = share.value && share.value > 0 ? impressions / share.value : null;
+
+    const key = `${identity}\u0000${start}\u0000${end}`;
+    const existing = merged.get(key);
     if (existing) {
       existing.cost += cost;
       existing.impressions += impressions;
@@ -284,54 +388,54 @@ export function parseAdsReport(
       existing.eligible = existing.eligible !== null && eligible !== null ? existing.eligible + eligible : null;
       existing.parts++;
     } else {
-      merged.set(key, {
-        campaignName: name,
-        campaignStatus: cell(r, "status")?.trim() || null,
-        periodStart: start,
-        periodEnd: end,
-        currency: cell(r, "currency")?.trim().toUpperCase() || null,
-        budget: parseNumber(cell(r, "budget")).value,
-        cost,
-        impressions,
-        clicks,
-        conversions,
-        conversionValue,
-        searchImpressionShare: null,
-        eligible,
-        parts: 1,
-      });
+      merged.set(key, { key, base, periodStart: start, periodEnd: end, cost, impressions, clicks, conversions, conversionValue, eligible, parts: 1 });
     }
     if (merged.size > MAX_ROWS) throw new AdsCsvError(`The file has more than ${MAX_ROWS.toLocaleString()} rows. Export a shorter date range.`);
   }
 
-  const rows: ParsedAdsRow[] = [...merged.values()].map(({ eligible, parts, ...row }) => ({
-    ...row,
-    cost: round(row.cost, 2),
-    conversions: row.conversions === null ? null : round(row.conversions, 2),
-    conversionValue: row.conversionValue === null ? null : round(row.conversionValue, 2),
-    searchImpressionShare: eligible && eligible > 0 ? round(Math.min(1, row.impressions / eligible), 4) : null,
-    // A budget can't be summed across segments; keep it only when the row wasn't split.
-    budget: parts > 1 ? null : row.budget,
-  }));
+  if (merged.size === 0) throw new AdsCsvError("The file has headings but no rows to import.");
+  if (currencies.size > 1) throw new AdsCsvError(`The file mixes currencies (${[...currencies].join(", ")}). Import one account at a time.`);
 
-  if (rows.length === 0) throw new AdsCsvError("The file has headings but no campaign rows.");
+  const accs = [...merged.values()];
+  const rows = accs.map((a) => {
+    const metrics: Metrics = {
+      periodStart: a.periodStart,
+      periodEnd: a.periodEnd,
+      cost: round(a.cost, 2),
+      impressions: a.impressions,
+      clicks: a.clicks,
+      conversions: a.conversions === null ? null : round(a.conversions, 2),
+      conversionValue: a.conversionValue === null ? null : round(a.conversionValue, 2),
+    };
+    if (type === "campaigns") {
+      return {
+        ...(a.base as Omit<ParsedAdsRow, keyof Metrics | "searchImpressionShare">),
+        ...metrics,
+        searchImpressionShare: a.eligible && a.eligible > 0 ? round(Math.min(1, a.impressions / a.eligible), 4) : null,
+        // A budget can't be summed across segments; keep it only when the row wasn't split.
+        budget: a.parts > 1 ? null : (a.base.budget as number | null),
+      };
+    }
+    // Max CPC can't be summed either.
+    if (type === "keywords" && a.parts > 1) return { ...a.base, ...metrics, maxCpc: null };
+    return { ...a.base, ...metrics };
+  });
 
-  const combined = [...merged.values()].filter((r) => r.parts > 1).length;
-  if (combined) warnings.push(`${combined} campaign rows were split by another segment (e.g. device) and have been added together.`);
+  const combined = accs.filter((a) => a.parts > 1).length;
+  if (combined) warnings.push(`${combined} rows were split by another segment (e.g. device) and have been added together.`);
   if (badRows.length) warnings.push(`Skipped ${badRows.length} row(s) that couldn't be read (lines ${badRows.slice(0, 5).join(", ")}${badRows.length > 5 ? ", …" : ""}).`);
   if (boundedShare) warnings.push(`${boundedShare} row(s) had search impression share reported as a range (like "< 10%"); those are left blank.`);
 
-  const currencies = [...new Set(rows.map((r) => r.currency).filter(Boolean))] as string[];
-  if (currencies.length > 1) throw new AdsCsvError(`The file mixes currencies (${currencies.join(", ")}). Import one account at a time.`);
-
-  const days = rows.map((r) => r.periodStart).sort();
-  const periodStart = filePeriod?.[0] ?? days[0];
-  const periodEnd = filePeriod?.[1] ?? rows.map((r) => r.periodEnd).sort().at(-1)!;
-  if (daily && filePeriod && (days[0] < filePeriod[0] || days.at(-1)! > filePeriod[1])) {
+  const starts = rows.map((r) => r.periodStart).sort();
+  const ends = rows.map((r) => r.periodEnd).sort();
+  const periodStart = filePeriod?.[0] ?? starts[0];
+  const periodEnd = filePeriod?.[1] ?? ends.at(-1)!;
+  if (daily && filePeriod && (starts[0] < filePeriod[0] || ends.at(-1)! > filePeriod[1])) {
     throw new AdsCsvError("Some rows have dates outside the report's own date range. Re-download the report and try again.");
   }
 
-  return { rows, periodStart, periodEnd, daily, currency: currencies[0] ?? null, warnings };
+  const base: ReportBase = { periodStart, periodEnd, daily, currency: [...currencies][0] ?? null, warnings };
+  return { ...base, type, rows } as ParsedAdsReport;
 }
 
 function sumNullable(a: number | null, b: number | null) {

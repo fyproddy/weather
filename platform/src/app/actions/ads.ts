@@ -28,10 +28,16 @@ export async function importAdsAction(clientId: string, _: FormState, formData: 
     const report = parseAdsReport(decodeReport(new Uint8Array(await file.arrayBuffer())), { fallbackPeriod });
     await importAdsReport(db, ctx, clientId, { filename: file.name, report });
     revalidatePath("/", "layout");
-    const campaigns = new Set(report.rows.map((r) => r.campaignName)).size;
+    const n =
+      report.type === "campaigns"
+        ? new Set(report.rows.map((r) => r.campaignName)).size
+        : report.type === "keywords"
+          ? new Set(report.rows.map((r) => `${r.keyword}|${r.matchType}|${r.adGroupName}`)).size
+          : new Set(report.rows.map((r) => r.searchTerm.toLowerCase())).size;
+    const noun = { campaigns: "campaign", keywords: "keyword", search_terms: "search term" }[report.type];
     return {
       ok: true,
-      message: `Imported ${campaigns} campaign${campaigns === 1 ? "" : "s"} for ${formatDate(report.periodStart)} – ${formatDate(report.periodEnd)}${report.daily ? " (daily)" : ""}.`,
+      message: `Imported ${n} ${noun}${n === 1 ? "" : "s"} for ${formatDate(report.periodStart)} – ${formatDate(report.periodEnd)}${report.daily ? " (daily)" : ""}.`,
       warnings: report.warnings,
     };
   } catch (e) {

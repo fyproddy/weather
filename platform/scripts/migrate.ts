@@ -19,7 +19,7 @@ async function main() {
     if (!/_(test|e2e)$/.test(new URL(url).pathname)) {
       throw new Error("Refusing to --reset a database whose name doesn't end in _test or _e2e");
     }
-    await db.execute(sql`truncate table agencies, users, sessions, clients, audit_log, ads_imports, ads_campaign_metrics, ads_coverage cascade`);
+    await db.execute(sql`truncate table agencies, users, sessions, clients, audit_log, ads_imports, ads_campaign_metrics, ads_coverage, ads_keyword_metrics, ads_search_term_metrics, ads_recommendation_decisions cascade`);
   }
   await pool.end();
   console.log("Migrations applied.");

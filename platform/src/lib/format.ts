@@ -10,7 +10,9 @@ export function money(n: number | null | undefined, currency = "ZAR", opts: { co
     notation: opts.compact && Math.abs(n) >= 10_000 ? "compact" : "standard",
     maximumFractionDigits: opts.compact ? (Math.abs(n) >= 10_000 ? 1 : 0) : 2,
     minimumFractionDigits: opts.compact ? 0 : 2,
-  }).format(n);
+  })
+    .format(n)
+    .replace(/\u00a0/g, ""); // "R 210.00" → "R210.00", as in Google Ads
 }
 
 export function count(n: number | null | undefined, opts: { compact?: boolean; decimals?: number } = {}) {

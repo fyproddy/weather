@@ -1,6 +1,20 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { AdsCsvError, decodeReport, parseAdsReport, parseDate, parseDateRange, parseNumber } from "@/lib/ads-csv";
+import {
+  AdsCsvError,
+  decodeReport,
+  parseAdsReport,
+  parseDate,
+  parseDateRange,
+  parseKeywordText,
+  parseNumber,
+  type ParsedAdsReport,
+} from "@/lib/ads-csv";
+
+function as<T extends ParsedAdsReport["type"]>(r: ParsedAdsReport, type: T) {
+  expect(r.type).toBe(type);
+  return r as Extract<ParsedAdsReport, { type: T }>;
+}
 
 const fixture = (name: string) => readFileSync(`tests/fixtures/${name}`, "utf8");
 
@@ -54,7 +68,7 @@ describe("parseDate", () => {
 });
 
 describe("parseAdsReport — daily export", () => {
-  const report = parseAdsReport(fixture("ads-daily.csv"));
+  const report = as(parseAdsReport(fixture("ads-daily.csv")), "campaigns");
 
   it("reads the period, currency and campaign rows, skipping totals", () => {
     expect(report.daily).toBe(true);
@@ -108,7 +122,7 @@ describe("parseAdsReport — other export shapes", () => {
 
   it("adds together rows split by another segment such as device", () => {
     const csv = `Day,Campaign,Device,Cost,Impr.,Clicks,Conversions,Search impr. share\n2026-09-01,A,Mobile,100,800,40,2,40%\n2026-09-01,A,Computers,50,200,10,1,50%\n`;
-    const report = parseAdsReport(csv);
+    const report = as(parseAdsReport(csv), "campaigns");
     expect(report.rows).toHaveLength(1);
     expect(report.rows[0]).toMatchObject({ cost: 150, impressions: 1000, clicks: 50, conversions: 3 });
     // eligible = 800/0.4 + 200/0.5 = 2400 → 1000/2400
@@ -119,7 +133,7 @@ describe("parseAdsReport — other export shapes", () => {
   it("explains what's wrong with files that aren't campaign reports", () => {
     expect(() => parseAdsReport("name,email\nBob,bob@x.com\n")).toThrow(/column headings/);
     expect(() => parseAdsReport("Campaign,Cost,Clicks\nA,1,2\n")).toThrow(/Impr/);
-    expect(() => parseAdsReport("Day,Campaign,Cost,Impr.,Clicks\n")).toThrow(/no campaign rows/);
+    expect(() => parseAdsReport("Day,Campaign,Cost,Impr.,Clicks\n")).toThrow(/no rows/);
   });
 
   it("rejects a file that mixes currencies", () => {
@@ -133,4 +147,61 @@ describe("parseAdsReport — other export shapes", () => {
     expect(report.rows).toHaveLength(1);
     expect(report.warnings.join(" ")).toMatch(/Skipped 1 row/);
   });
+});
+
+const KEYWORDS = `Search keyword report
+"September 1, 2026 - September 30, 2026"
+Search keyword,Match type,Status,Campaign,Ad group,Max. CPC,Quality Score,Cost,Impr.,Clicks,Conversions
+waterproofing johannesburg,Exact match,Enabled,Waterproofing,Core,15.00,7,"1,200.00",900,60,6
+"""roof repairs""",Phrase match,Enabled,Waterproofing,Core,12.00,--,800.00,1500,40,0
+[damp proofing],,Paused,Waterproofing,Damp,10.00,5,0.00,0,0,0
+Total: Account,,,,,,,"2,000.00",2400,100,6
+`;
+
+const SEARCH_TERMS = `Search terms report
+"September 1, 2026 - September 30, 2026"
+Search term,Match type,Added/Excluded,Campaign,Ad group,Keyword,Cost,Impr.,Clicks,Conversions
+waterproofing contractors johannesburg,Phrase match (close variant),None,Waterproofing,Core,waterproofing johannesburg,300.00,200,15,3
+waterproofing jobs,Broad match,None,Waterproofing,Core,waterproofing,"1,250.50",400,30,0
+waterproofing jobs,Broad match,None,Waterproofing,Core,waterproofing,49.50,40,3,0
+`;
+
+describe("parseAdsReport — keywords report", () => {
+  const report = as(parseAdsReport(KEYWORDS), "keywords");
+  it("detects the report type and reads keyword rows", () => {
+    expect(report.rows).toHaveLength(3);
+    expect(report.periodStart).toBe("2026-09-01");
+    expect(report.rows[0]).toMatchObject({
+      keyword: "waterproofing johannesburg",
+      matchType: "exact",
+      status: "Enabled",
+      adGroupName: "Core",
+      maxCpc: 15,
+      qualityScore: 7,
+      cost: 1200,
+      conversions: 6,
+    });
+  });
+  it("strips keyword syntax and uses it when the match type column is blank", () => {
+    expect(report.rows[1]).toMatchObject({ keyword: "roof repairs", matchType: "phrase", qualityScore: null });
+    expect(report.rows[2]).toMatchObject({ keyword: "damp proofing", matchType: "exact" });
+  });
+});
+
+describe("parseAdsReport — search terms report", () => {
+  const report = as(parseAdsReport(SEARCH_TERMS), "search_terms");
+  it("detects the report type, normalises match types and merges duplicates", () => {
+    expect(report.rows).toHaveLength(2);
+    expect(report.rows[0]).toMatchObject({ searchTerm: "waterproofing contractors johannesburg", matchType: "phrase", keyword: "waterproofing johannesburg", conversions: 3 });
+    expect(report.rows[1]).toMatchObject({ searchTerm: "waterproofing jobs", cost: 1300, clicks: 33, conversions: 0 });
+  });
+});
+
+describe("parseKeywordText", () => {
+  it.each([
+    ["[roof repair]", "roof repair", "exact"],
+    ['"roof repair"', "roof repair", "phrase"],
+    ["+roof +repair", "roof repair", "broad"],
+    ["roof repair", "roof repair", "broad"],
+  ])("%s", (raw, text, implied) => expect(parseKeywordText(raw)).toEqual({ text, implied }));
 });
