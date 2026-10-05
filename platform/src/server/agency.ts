@@ -1,7 +1,7 @@
 import { asc, eq, sql } from "drizzle-orm";
 import type { Db } from "@/db";
-import { agencies, users, type UserRole } from "@/db/schema";
-import { hashPassword } from "./auth-core";
+import { agencies, sessions, users, type UserRole } from "@/db/schema";
+import { hashPassword, verifyPassword } from "./auth-core";
 import { audit } from "./clients";
 import { assertRole, type Ctx } from "./permissions";
 
@@ -90,4 +90,34 @@ export async function createUser(
     .returning({ id: users.id, email: users.email, role: users.role });
   await audit(db, ctx, "user.created", null, { email: user.email, role: user.role });
   return user;
+}
+
+export class WrongPasswordError extends Error {
+  constructor(message = "Your current password is incorrect.") {
+    super(message);
+  }
+}
+
+/**
+ * Changes the signed-in user's password. Proof is the current password, or —
+ * for admins who've forgotten it — the server's setup code (checked by the
+ * caller). Every existing session for the user is signed out.
+ */
+export async function changePassword(
+  db: Db,
+  ctx: Ctx,
+  input: { currentPassword?: string; setupCodeOk?: boolean; newPassword: string },
+) {
+  const [user] = await db.select().from(users).where(eq(users.id, ctx.userId)).limit(1);
+  if (!user) throw new WrongPasswordError();
+  const byPassword = !!input.currentPassword && (await verifyPassword(input.currentPassword, user.passwordHash));
+  const bySetupCode = ctx.role === "admin" && input.setupCodeOk === true;
+  if (!byPassword && !bySetupCode) {
+    throw new WrongPasswordError(
+      ctx.role === "admin" ? "Enter your current password or the setup code." : "Your current password is incorrect.",
+    );
+  }
+  await db.update(users).set({ passwordHash: await hashPassword(input.newPassword) }).where(eq(users.id, user.id));
+  await db.delete(sessions).where(eq(sessions.userId, user.id));
+  await audit(db, ctx, "user.password_changed", null, { via: byPassword ? "password" : "setup_code" });
 }

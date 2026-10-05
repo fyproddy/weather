@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { AddUserForm, AgencyForm } from "@/components/settings-forms";
+import { AddUserForm, AgencyForm, ChangePasswordForm } from "@/components/settings-forms";
 import { Badge, Card, CardHeader, PageHeader } from "@/components/ui";
 import { getAgency, listUsers } from "@/server/agency";
 import { hasRole } from "@/server/permissions";
@@ -16,6 +16,13 @@ export default async function SettingsPage() {
     <>
       <PageHeader title="Settings" />
       <div className="space-y-6">
+        <Card>
+          <CardHeader title="Your password" description={`Signed in as ${ctx.email}`} />
+          <div className="p-5">
+            <ChangePasswordForm isAdmin={isAdmin} />
+          </div>
+        </Card>
+
         <Card>
           <CardHeader title="Agency" description={`Currency ${agency.currency} · Time zone ${agency.timezone}`} />
           <div className="p-5">{isAdmin ? <AgencyForm name={agency.name} /> : <p className="text-sm">{agency.name}</p>}</div>

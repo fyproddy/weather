@@ -215,6 +215,7 @@ function describe(action: string, d: Record<string, string | number> | null) {
     "fact.unverified": "Unverified a fact",
     "user.created": `Added user ${d?.email ?? ""}`,
     "agency.updated": "Updated agency settings",
+    "user.password_changed": "Changed a password",
     "ads.imported": `Imported Google Ads report ${d?.filename ?? ""} (${d?.rows ?? 0} rows)`,
     "ads.import_removed": `Removed Google Ads import ${d?.filename ?? ""}`,
   };

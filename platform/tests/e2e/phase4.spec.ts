@@ -162,3 +162,31 @@ test("mobile: analysis and keyword pages fit the screen", async ({ browser }) =>
   await page.goto("/ads/analysis");
   await shot(page, "24-mobile-analysis");
 });
+
+test("change password, including recovery with the setup code", async ({ page }) => {
+  await login(page);
+  await page.goto("/settings");
+  const form = page.locator("form", { has: page.getByLabel("New password", { exact: true }) });
+  await form.getByLabel(/Current password/).fill("not my password");
+  await form.getByLabel("New password", { exact: true }).fill("forgot it password");
+  await form.getByLabel("Confirm new password").fill("forgot it password");
+  await form.getByRole("button", { name: "Change password" }).click();
+  await expect(page.getByText("Enter your current password or the setup code.")).toBeVisible();
+
+  // Forgot the password: the setup code works for an admin.
+  await form.getByLabel(/Current password/).fill("test-setup-code");
+  await form.getByLabel("New password", { exact: true }).fill("forgot it password");
+  await form.getByLabel("Confirm new password").fill("forgot it password");
+  await form.getByRole("button", { name: "Change password" }).click();
+  await expect(page.getByText("Password changed.")).toBeVisible();
+
+  // Still signed in here; the new password works and the old one doesn't.
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await page.getByLabel("Email").fill(ADMIN.email);
+  await page.getByLabel("Password").fill(ADMIN.password);
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "Email or password is incorrect." })).toBeVisible();
+  await login(page, { email: ADMIN.email, password: "forgot it password" });
+});

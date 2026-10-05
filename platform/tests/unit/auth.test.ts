@@ -43,3 +43,31 @@ describe("login and sessions", () => {
     expect(await getUserBySessionToken(db, token)).toBeNull();
   });
 });
+
+describe("changing password", () => {
+  it("needs the current password; ends existing sessions", async () => {
+    const { changePassword, WrongPasswordError } = await import("@/server/agency");
+    const { user, agency } = await setupAgency(db, setup);
+    const ctx = { userId: user.id, agencyId: agency.id, role: "admin" as const };
+    const { token } = await createSession(db, user.id);
+
+    await expect(changePassword(db, ctx, { currentPassword: "wrong", newPassword: "brand new password" })).rejects.toBeInstanceOf(WrongPasswordError);
+    await changePassword(db, ctx, { currentPassword: setup.password, newPassword: "brand new password" });
+
+    expect(await getUserBySessionToken(db, token)).toBeNull();
+    expect(await authenticate(db, setup.email, setup.password)).toBeNull();
+    expect(await authenticate(db, setup.email, "brand new password")).not.toBeNull();
+  });
+
+  it("lets an admin use the setup code instead, but never a non-admin", async () => {
+    const { changePassword, createUser, WrongPasswordError } = await import("@/server/agency");
+    const { user, agency } = await setupAgency(db, setup);
+    const admin = { userId: user.id, agencyId: agency.id, role: "admin" as const };
+    await changePassword(db, admin, { setupCodeOk: true, newPassword: "recovered password" });
+    expect(await authenticate(db, setup.email, "recovered password")).not.toBeNull();
+
+    const v = await createUser(db, admin, { name: "V", email: "v@example.com", password: "viewer password", role: "viewer" });
+    const viewer = { userId: v.id, agencyId: agency.id, role: "viewer" as const };
+    await expect(changePassword(db, viewer, { setupCodeOk: true, newPassword: "hijacked password" })).rejects.toBeInstanceOf(WrongPasswordError);
+  });
+});

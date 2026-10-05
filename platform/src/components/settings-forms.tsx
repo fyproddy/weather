@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
-import { createUserAction, updateAgencyAction } from "@/app/actions/settings";
+import { changePasswordAction, createUserAction, updateAgencyAction } from "@/app/actions/settings";
 import { Button, Field, FormError, Input, Select } from "./ui";
 
 export function AgencyForm({ name }: { name: string }) {
@@ -53,6 +53,37 @@ export function AddUserForm() {
       </div>
       <Button type="submit" variant="secondary" disabled={pending}>
         Add user
+      </Button>
+    </form>
+  );
+}
+
+export function ChangePasswordForm({ isAdmin }: { isAdmin: boolean }) {
+  const [state, action, pending] = useActionState(changePasswordAction, {});
+  const ref = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    if (state.ok) ref.current?.reset();
+  }, [state]);
+  const f = state.fields ?? {};
+  return (
+    <form ref={ref} action={action} className="max-w-md space-y-4">
+      {state.ok && <p role="status" className="text-sm text-good">{state.message}</p>}
+      <Field
+        label={isAdmin ? "Current password (or setup code)" : "Current password"}
+        name="pw-current"
+        error={f.current}
+        hint={isAdmin ? "Forgot it? Enter the SETUP_CODE from your hosting settings instead." : undefined}
+      >
+        <Input id="pw-current" name="current" type="password" autoComplete="current-password" required />
+      </Field>
+      <Field label="New password" name="pw-new" error={f.newPassword} hint="At least 10 characters.">
+        <Input id="pw-new" name="newPassword" type="password" autoComplete="new-password" minLength={10} required />
+      </Field>
+      <Field label="Confirm new password" name="pw-confirm" error={f.confirm}>
+        <Input id="pw-confirm" name="confirm" type="password" autoComplete="new-password" required />
+      </Field>
+      <Button type="submit" variant="secondary" disabled={pending}>
+        {pending ? "Saving…" : "Change password"}
       </Button>
     </form>
   );
