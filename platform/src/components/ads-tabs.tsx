@@ -9,6 +9,7 @@ const TABS = [
   ["/ads/analysis", "Analysis"],
   ["/ads/keywords", "Keywords"],
   ["/ads/search-terms", "Search terms"],
+  ["/ads/creative", "Ad writer"],
 ] as const;
 
 /** Tabs across the Google Ads pages; the date range carries over. */
@@ -21,16 +22,17 @@ export function AdsTabs() {
     if (v) q.set(k, v);
   }
   const suffix = q.size ? `?${q}` : "";
+  const isActive = (href: string) => (href === "/ads" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`));
   return (
     <nav aria-label="Google Ads" className="-mt-2 mb-6 flex gap-1 overflow-x-auto border-b border-border">
       {TABS.map(([href, label]) => (
         <Link
           key={href}
           href={`${href}${suffix}`}
-          aria-current={pathname === href ? "page" : undefined}
+          aria-current={isActive(href) ? "page" : undefined}
           className={cx(
             "-mb-px whitespace-nowrap border-b-2 px-3 py-2 text-sm",
-            pathname === href ? "border-accent font-medium text-accent" : "border-transparent text-muted hover:text-text",
+            isActive(href) ? "border-accent font-medium text-accent" : "border-transparent text-muted hover:text-text",
           )}
         >
           {label}

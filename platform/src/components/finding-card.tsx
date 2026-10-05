@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { decideAction } from "@/app/actions/recommendations";
 import { ACTION_LABELS, type Finding } from "@/lib/ads-analysis";
@@ -85,6 +86,11 @@ export function FindingCard({
           )}
           {error && <span className="text-xs text-bad">{error}</span>}
         </div>
+      )}
+      {finding.action?.type === "test_new_ad" && (
+        <Link href="/ads/creative" className="mt-2 inline-block text-sm text-accent hover:underline">
+          Write a new ad with the ad writer →
+        </Link>
       )}
     </article>
   );

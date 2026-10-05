@@ -84,6 +84,18 @@ only, scoped like all client data, and audit-logged without copying personal
 details. Google Ads cost per lead = imported spend ÷ leads marked "Google Ads",
 shown only when the Ads data covers the whole range.
 
+## AI ad writer
+
+Generates Google Ads headlines, descriptions and callouts with Claude
+(`claude-opus-5-5`, structured output, server-side refusal fallback) from the
+client's services, areas and **verified facts only**. Every line is then checked
+by `src/lib/ad-copy.ts` — character limits, numbers, claim words (guarantee,
+warranty, certified, best, free, 24/7, years…) and place names — and a flagged
+line can't be approved until edited or the fact is verified. Lines are re-checked
+against the current facts whenever a draft is opened. Nothing is published to
+Google Ads. Requires `ANTHROPIC_API_KEY`; e2e tests use a stand-in API
+(`tests/e2e/mock-anthropic.mjs`) via `ANTHROPIC_BASE_URL`.
+
 ## Roles
 
 - **Admin** — everything, including team, agency settings and permanent delete
@@ -98,6 +110,6 @@ AI assistants (from Phase 5) only ever receive a client's facts marked
 ## Phases
 
 1. Foundation ✅ · 2. Agency dashboard + Google Ads CSV import ✅ · 3. Google OAuth + Google Ads (read-only) ·
-4. Ads analysis & recommendations ✅ · 5. Ads creative assistant · 6. Search Console + GA4 ·
+4. Ads analysis & recommendations ✅ · 5. Ads creative assistant ✅ · 6. Search Console + GA4 ·
 7. Business Profile + reviews · 8. SEO, keywords, competitors · 9. Leads ✅, tasks, content ·
 10. Reports & client portal

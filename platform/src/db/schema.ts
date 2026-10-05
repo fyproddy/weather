@@ -392,6 +392,38 @@ export const leads = pgTable(
   (t) => [index("leads_client_received_idx").on(t.clientId, t.receivedAt)],
 );
 
+export type AdDraftItem = {
+  id: string;
+  kind: "headline" | "description" | "callout";
+  text: string;
+  /** What the AI first wrote, kept for reference after edits. */
+  original: string;
+  /** Labels of the verified facts the AI said it used (F1, F2, …). */
+  factIds: string[];
+  status: "pending" | "approved" | "rejected";
+  flags: string[];
+};
+
+/** One AI ad-copy generation for a client, reviewed line by line. Never published automatically. */
+export const adDrafts = pgTable(
+  "ad_drafts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientId: clientRef(),
+    createdById: uuid("created_by_id").references(() => users.id, { onDelete: "set null" }),
+    focus: text("focus").notNull(),
+    instructions: text("instructions"),
+    model: text("model").notNull(),
+    /** The verified facts given to the AI, labelled as it saw them. */
+    facts: jsonb("facts").$type<{ id: string; text: string }[]>().notNull(),
+    items: jsonb("items").$type<AdDraftItem[]>().notNull(),
+    writerNotes: text("writer_notes"),
+    ...timestamps,
+  },
+  (t) => [index("ad_drafts_client_idx").on(t.clientId, t.createdAt)],
+);
+
+export type AdDraft = typeof adDrafts.$inferSelect;
 export type Lead = typeof leads.$inferSelect;
 export type User = typeof users.$inferSelect;
 export type Client = typeof clients.$inferSelect;

@@ -14,11 +14,23 @@ export default defineConfig({
     launchOptions: process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : undefined,
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
-  webServer: {
-    command: `node scripts/migrate.mjs --reset && npx next start -p ${PORT}`,
-    url: `http://localhost:${PORT}/login`,
-    reuseExistingServer: false,
-    env: { DATABASE_URL: E2E_DB, SETUP_CODE: "test-setup-code" },
-    timeout: 60_000,
-  },
+  webServer: [
+    {
+      command: "node tests/e2e/mock-anthropic.mjs",
+      url: "http://localhost:3199/health",
+      reuseExistingServer: false,
+    },
+    {
+      command: `node scripts/migrate.mjs --reset && npx next start -p ${PORT}`,
+      url: `http://localhost:${PORT}/login`,
+      reuseExistingServer: false,
+      env: {
+        DATABASE_URL: E2E_DB,
+        SETUP_CODE: "test-setup-code",
+        ANTHROPIC_API_KEY: "test-key",
+        ANTHROPIC_BASE_URL: "http://localhost:3199",
+      },
+      timeout: 60_000,
+    },
+  ],
 });
