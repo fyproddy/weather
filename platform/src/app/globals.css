@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f1f3f6;
+  --border: #e2e6ec;
+  --text: #111827;
+  --muted: #5f6b7a;
+  --accent: #1a73e8;
+  --accent-fg: #ffffff;
+  --accent-soft: #e8f0fe;
+  --good: #137333;
+  --good-soft: #e6f4ea;
+  --warn: #b06000;
+  --warn-soft: #fef7e0;
+  --bad: #c5221f;
+  --bad-soft: #fce8e6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1116;
+    --surface: #161b22;
+    --surface-2: #1d232c;
+    --border: #2a313c;
+    --text: #e6eaf0;
+    --muted: #96a1b0;
+    --accent: #6ea8fe;
+    --accent-fg: #0e1116;
+    --accent-soft: #1b2a40;
+    --good: #81c995;
+    --good-soft: #17301f;
+    --warn: #fdd663;
+    --warn-soft: #3a3014;
+    --bad: #f28b82;
+    --bad-soft: #3c1c1b;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
