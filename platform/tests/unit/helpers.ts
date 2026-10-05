@@ -4,7 +4,7 @@ import { setupAgency, createUser } from "@/server/agency";
 import type { Ctx } from "@/server/permissions";
 
 export async function resetDb() {
-  await db.execute(sql`truncate table agencies, users, sessions, clients, audit_log cascade`);
+  await db.execute(sql`truncate table agencies, users, sessions, clients, audit_log, ads_imports, ads_campaign_metrics, ads_coverage cascade`);
 }
 
 let n = 0;

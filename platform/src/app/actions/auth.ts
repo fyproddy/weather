@@ -15,6 +15,7 @@ export type FormState = {
   values?: Record<string, string>;
   ok?: boolean;
   message?: string;
+  warnings?: string[];
 };
 
 const loginInput = z.object({

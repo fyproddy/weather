@@ -121,16 +121,21 @@ test("fill in services, locations, competitors and verified facts", async ({ pag
 
 test("dashboard and section pages show honest empty states", async ({ page }) => {
   await login(page, ADMIN);
-  const card = page.locator("div.rounded-xl").filter({ hasText: "WeatherGuard Waterproofing SA" }).first();
-  await expect(card.getByText("0/4 connected")).toBeVisible();
-  await expect(card.getByText("No data yet")).toBeVisible();
+  const card = page.locator("div.rounded-xl").filter({ has: page.getByRole("link", { name: "WeatherGuard Waterproofing SA" }) });
+  await expect(card.getByText("Google Ads not connected")).toBeVisible();
+  await expect(card.getByText("No Google Ads data yet")).toBeVisible();
   await shot(page, "04-dashboard");
 
   await page.getByRole("link", { name: /^Google Ads/ }).click();
-  await expect(page.getByRole("heading", { name: "Google Ads" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Google Ads", exact: true })).toBeVisible();
+  await expect(page.getByText("Not connected — Phase 3")).toBeVisible();
+
+  await page.getByRole("link", { name: /^SEO/ }).click();
+  await expect(page.getByRole("heading", { name: "SEO", exact: true })).toBeVisible();
   await expect(page.getByText("Showing WeatherGuard Waterproofing SA")).toBeVisible();
   await expect(page.getByText("Not connected")).toBeVisible();
-  await shot(page, "05-google-ads-section");
+  await expect(page.getByText("Coming in Phase 8")).toBeVisible();
+  await shot(page, "05-section-placeholder");
 
   await page.goto("/not-a-real-section");
   await expect(page.getByText("Page not found")).toBeVisible();

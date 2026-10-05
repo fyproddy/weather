@@ -9,6 +9,9 @@ import {
   integer,
   index,
   uniqueIndex,
+  date,
+  numeric,
+  bigint,
 } from "drizzle-orm/pg-core";
 
 export const userRole = pgEnum("user_role", ["admin", "manager", "viewer"]);
@@ -198,6 +201,79 @@ export const auditLog = pgTable(
     createdAt: timestamps.createdAt,
   },
   (t) => [index("audit_log_agency_idx").on(t.agencyId, t.createdAt)],
+);
+
+/** One uploaded Google Ads report file. */
+export const adsImports = pgTable(
+  "ads_imports",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientId: clientRef(),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+    filename: text("filename").notNull(),
+    rowCount: integer("row_count").notNull(),
+    /** The span the file covers (from its date-range line, or its first/last day). */
+    periodStart: date("period_start").notNull(),
+    periodEnd: date("period_end").notNull(),
+    daily: boolean("daily").notNull(),
+    currency: text("currency"),
+    warnings: jsonb("warnings").$type<string[]>().notNull().default([]),
+    createdAt: timestamps.createdAt,
+  },
+  (t) => [index("ads_imports_client_idx").on(t.clientId, t.createdAt)],
+);
+
+/**
+ * Campaign metrics exactly as exported by Google Ads. A row covers one day
+ * (daily reports) or one whole period (non-segmented reports). Ratios such as
+ * CTR and CPC are not stored; they are recomputed from the sums.
+ */
+export const adsCampaignMetrics = pgTable(
+  "ads_campaign_metrics",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientId: clientRef(),
+    importId: uuid("import_id")
+      .notNull()
+      .references(() => adsImports.id, { onDelete: "cascade" }),
+    campaignName: text("campaign_name").notNull(),
+    campaignStatus: text("campaign_status"),
+    periodStart: date("period_start").notNull(),
+    periodEnd: date("period_end").notNull(),
+    currency: text("currency"),
+    budget: numeric("budget", { precision: 14, scale: 2, mode: "number" }),
+    cost: numeric("cost", { precision: 14, scale: 2, mode: "number" }).notNull(),
+    impressions: bigint("impressions", { mode: "number" }).notNull(),
+    clicks: bigint("clicks", { mode: "number" }).notNull(),
+    conversions: numeric("conversions", { precision: 14, scale: 2, mode: "number" }),
+    conversionValue: numeric("conversion_value", { precision: 14, scale: 2, mode: "number" }),
+    /** 0–1. Null when Google reported a bound like "< 10%" rather than a value. */
+    searchImpressionShare: numeric("search_impression_share", { precision: 6, scale: 4, mode: "number" }),
+  },
+  (t) => [
+    uniqueIndex("ads_metrics_unique_idx").on(t.clientId, t.campaignName, t.periodStart, t.periodEnd),
+    index("ads_metrics_range_idx").on(t.clientId, t.periodStart, t.periodEnd),
+  ],
+);
+
+/**
+ * Which dates each import still provides data for. A later import of the same
+ * days replaces earlier data and trims the earlier import's coverage, so
+ * coverage always matches the rows actually stored.
+ */
+export const adsCoverage = pgTable(
+  "ads_coverage",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientId: clientRef(),
+    importId: uuid("import_id")
+      .notNull()
+      .references(() => adsImports.id, { onDelete: "cascade" }),
+    periodStart: date("period_start").notNull(),
+    periodEnd: date("period_end").notNull(),
+    daily: boolean("daily").notNull(),
+  },
+  (t) => [index("ads_coverage_client_idx").on(t.clientId, t.periodStart)],
 );
 
 export type User = typeof users.$inferSelect;

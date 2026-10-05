@@ -1,0 +1,9 @@
+Campaign report
+"September 1, 2026 - September 3, 2026"
+Day,Campaign,Campaign status,Currency code,Budget,Cost,Impr.,Clicks,CTR,Avg. CPC,Conversions,Cost / conv.,Search impr. share
+2026-09-01,Waterproofing - Johannesburg,Enabled,ZAR,500.00,"1,234.50","2,000",80,4.00%,15.43,4.00,308.63,45.50%
+2026-09-01,Roof Repairs - Brand,Paused,ZAR,200.00,0.00,0,0,--,--,0.00,--,--
+2026-09-02,Waterproofing - Johannesburg,Enabled,ZAR,500.00,800.00,"1,500",50,3.33%,16.00,2.00,400.00,< 10%
+2026-09-03,Waterproofing - Johannesburg,Enabled,ZAR,500.00,600.25,900,30,3.33%,20.01,0.00,--,60.00%
+Total: Account,,,,,"2,634.75","4,400",160,3.64%,16.47,6.00,439.13,
+Total: Search,,,,,"2,634.75","4,400",160,3.64%,16.47,6.00,439.13,

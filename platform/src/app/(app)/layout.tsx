@@ -10,7 +10,8 @@ import { SECTIONS } from "@/lib/sections";
 
 const section = (slug: string): NavItem => {
   const s = SECTIONS.find((x) => x.slug === slug)!;
-  return { href: `/${s.slug}`, label: s.label, phase: s.phase };
+  // Google Ads has a working page (CSV imports) ahead of its API phase.
+  return { href: `/${s.slug}`, label: s.label, phase: s.slug === "ads" ? undefined : s.phase };
 };
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
