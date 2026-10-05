@@ -423,6 +423,27 @@ export const adDrafts = pgTable(
   (t) => [index("ad_drafts_client_idx").on(t.clientId, t.createdAt)],
 );
 
+/** A client report. Numbers are a frozen snapshot (`data`) so a sent report never changes underneath the client. */
+export const reports = pgTable(
+  "reports",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientId: clientRef(),
+    createdById: uuid("created_by_id").references(() => users.id, { onDelete: "set null" }),
+    title: text("title").notNull(),
+    periodStart: date("period_start").notNull(),
+    periodEnd: date("period_end").notNull(),
+    data: jsonb("data").notNull(),
+    summary: text("summary"),
+    /** Random token for the private share link; null when sharing is off. */
+    shareToken: text("share_token"),
+    sharedAt: timestamp("shared_at", { withTimezone: true }),
+    ...timestamps,
+  },
+  (t) => [index("reports_client_idx").on(t.clientId, t.periodEnd), uniqueIndex("reports_share_token_idx").on(t.shareToken)],
+);
+
+export type Report = typeof reports.$inferSelect;
 export type AdDraft = typeof adDrafts.$inferSelect;
 export type Lead = typeof leads.$inferSelect;
 export type User = typeof users.$inferSelect;

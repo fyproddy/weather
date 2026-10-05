@@ -44,7 +44,7 @@ export function Sidebar({ groups, agencyName }: { groups: { title?: string; item
     <>
       <button
         type="button"
-        className="fixed left-3 top-3 z-40 rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm lg:hidden"
+        className="fixed left-3 top-3 z-40 rounded-md border print:hidden border-border bg-surface px-2.5 py-1.5 text-sm lg:hidden"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-controls="sidebar"
@@ -55,7 +55,7 @@ export function Sidebar({ groups, agencyName }: { groups: { title?: string; item
       <aside
         id="sidebar"
         className={cx(
-          "fixed inset-y-0 left-0 z-40 w-60 overflow-y-auto border-r border-border bg-surface transition-transform lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 w-60 overflow-y-auto border-r border-border bg-surface transition-transform lg:translate-x-0 print:hidden",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >

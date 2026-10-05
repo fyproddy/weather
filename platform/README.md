@@ -96,6 +96,16 @@ against the current facts whenever a draft is opened. Nothing is published to
 Google Ads. Requires `ANTHROPIC_API_KEY`; e2e tests use a stand-in API
 (`tests/e2e/mock-anthropic.mjs`) via `ANTHROPIC_BASE_URL`.
 
+## Client reports
+
+`/reports` creates a report for a client and period (last month, last 30 days,
+or custom). Numbers are frozen into a snapshot when created (refresh on demand)
+so a sent report never changes underneath the client. Reports show leads, jobs
+won, value, Google Ads results (comparisons only when fair), lead sources and
+work marked done — never a lead's name or contact details. A private share link
+(`/r/<token>`, random 24-byte token, no login, `noindex`) can be turned off at
+any time; reports print cleanly to PDF.
+
 ## Roles
 
 - **Admin** — everything, including team, agency settings and permanent delete
@@ -112,4 +122,4 @@ AI assistants (from Phase 5) only ever receive a client's facts marked
 1. Foundation ✅ · 2. Agency dashboard + Google Ads CSV import ✅ · 3. Google OAuth + Google Ads (read-only) ·
 4. Ads analysis & recommendations ✅ · 5. Ads creative assistant ✅ · 6. Search Console + GA4 ·
 7. Business Profile + reviews · 8. SEO, keywords, competitors · 9. Leads ✅, tasks, content ·
-10. Reports & client portal
+10. Reports ✅ & client portal

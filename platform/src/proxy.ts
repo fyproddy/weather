@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/login", "/setup", "/reset-password", "/api/health"];
+const PUBLIC_PATHS = ["/login", "/setup", "/reset-password", "/api/health", "/r"];
 
 /**
  * Optimistic check only: sends visitors without a session cookie to /login.

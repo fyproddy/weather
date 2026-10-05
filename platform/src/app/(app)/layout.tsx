@@ -11,7 +11,7 @@ import { SECTIONS } from "@/lib/sections";
 const section = (slug: string): NavItem => {
   const s = SECTIONS.find((x) => x.slug === slug)!;
   // Google Ads (CSV imports) and Leads have working pages.
-  return { href: `/${s.slug}`, label: s.label, phase: ["ads", "leads"].includes(s.slug) ? undefined : s.phase };
+  return { href: `/${s.slug}`, label: s.label, phase: ["ads", "leads", "reports"].includes(s.slug) ? undefined : s.phase };
 };
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
@@ -32,8 +32,8 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="min-h-screen">
       <Sidebar groups={groups} agencyName={agency?.name ?? ""} />
-      <div className="lg:pl-60">
-        <header className="sticky top-0 z-20 flex h-14 items-center justify-end gap-4 border-b border-border bg-surface/90 px-4 backdrop-blur sm:px-6">
+      <div className="lg:pl-60 print:pl-0">
+        <header className="sticky top-0 z-20 flex print:hidden h-14 items-center justify-end gap-4 border-b border-border bg-surface/90 px-4 backdrop-blur sm:px-6">
           <ClientSwitcher clients={clients.map((c) => ({ id: c.id, name: c.name }))} activeId={active?.id ?? null} />
           <div className="flex items-center gap-3 text-sm">
             <span className="hidden text-muted md:inline">
@@ -46,7 +46,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
             </form>
           </div>
         </header>
-        <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">{children}</main>
+        <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 print:p-0">{children}</main>
       </div>
     </div>
   );
