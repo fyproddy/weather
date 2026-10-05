@@ -190,3 +190,39 @@ test("change password, including recovery with the setup code", async ({ page })
   await expect(page.getByRole("alert").filter({ hasText: "Email or password is incorrect." })).toBeVisible();
   await login(page, { email: ADMIN.email, password: "forgot it password" });
 });
+
+test("forgot password page resets the admin with the setup code", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByRole("link", { name: "Forgot password?" }).click();
+  await expect(page).toHaveURL(/\/reset-password$/);
+
+  const fill = async (code: string) => {
+    await page.getByLabel("Email").fill(ADMIN.email);
+    await page.getByLabel("Setup code").fill(code);
+    await page.getByLabel("New password", { exact: true }).fill("reset from page 1");
+    await page.getByLabel("Confirm new password").fill("reset from page 1");
+    await page.getByRole("button", { name: "Set new password" }).click();
+  };
+  await fill("wrong code");
+  await expect(page.getByRole("alert").filter({ hasText: "That email and setup code don't match an admin account." })).toBeVisible();
+  await fill("test-setup-code");
+  await expect(page.getByText("Password changed. You can sign in now.")).toBeVisible();
+  await page.getByRole("link", { name: "Go to sign in" }).click();
+  await page.getByLabel("Email").fill(ADMIN.email);
+  await page.getByLabel("Password").fill("reset from page 1");
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+});
+
+test("the reset page blocks repeated guessing", async ({ page }) => {
+  await page.goto("/reset-password");
+  for (let i = 0; i < 4; i++) {
+    await page.getByLabel("Email").fill(ADMIN.email);
+    await page.getByLabel("Setup code").fill(`guess ${i}`);
+    await page.getByLabel("New password", { exact: true }).fill("guessing password");
+    await page.getByLabel("Confirm new password").fill("guessing password");
+    await page.getByRole("button", { name: "Set new password" }).click();
+    await expect(page.getByRole("alert").filter({ hasText: /don't match|Too many/ })).toBeVisible();
+  }
+  await expect(page.getByRole("alert").filter({ hasText: "Too many attempts" })).toBeVisible();
+});

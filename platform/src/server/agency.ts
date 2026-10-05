@@ -1,6 +1,6 @@
 import { asc, eq, sql } from "drizzle-orm";
 import type { Db } from "@/db";
-import { agencies, sessions, users, type UserRole } from "@/db/schema";
+import { agencies, auditLog, sessions, users, type UserRole } from "@/db/schema";
 import { hashPassword, verifyPassword } from "./auth-core";
 import { audit } from "./clients";
 import { assertRole, type Ctx } from "./permissions";
@@ -120,4 +120,18 @@ export async function changePassword(
   await db.update(users).set({ passwordHash: await hashPassword(input.newPassword) }).where(eq(users.id, user.id));
   await db.delete(sessions).where(eq(sessions.userId, user.id));
   await audit(db, ctx, "user.password_changed", null, { via: byPassword ? "password" : "setup_code" });
+}
+
+/**
+ * Signed-out recovery for admins: sets a new password for the admin with this
+ * email. The caller must already have checked the server's setup code.
+ * Returns false (without saying why) when no admin has that email.
+ */
+export async function resetAdminPassword(db: Db, email: string, newPassword: string) {
+  const [user] = await db.select().from(users).where(eq(users.email, email.trim().toLowerCase())).limit(1);
+  if (!user || user.role !== "admin") return false;
+  await db.update(users).set({ passwordHash: await hashPassword(newPassword) }).where(eq(users.id, user.id));
+  await db.delete(sessions).where(eq(sessions.userId, user.id));
+  await db.insert(auditLog).values({ agencyId: user.agencyId, userId: user.id, action: "user.password_changed", details: { via: "reset_page" } });
+  return true;
 }

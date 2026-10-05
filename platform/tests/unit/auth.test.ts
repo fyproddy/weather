@@ -71,3 +71,19 @@ describe("changing password", () => {
     await expect(changePassword(db, viewer, { setupCodeOk: true, newPassword: "hijacked password" })).rejects.toBeInstanceOf(WrongPasswordError);
   });
 });
+
+describe("signed-out admin reset", () => {
+  it("resets only admins, and ends their sessions", async () => {
+    const { resetAdminPassword, createUser } = await import("@/server/agency");
+    const { user, agency } = await setupAgency(db, setup);
+    const { token } = await createSession(db, user.id);
+    expect(await resetAdminPassword(db, "OWNER@example.com", "reset via page 1")).toBe(true);
+    expect(await getUserBySessionToken(db, token)).toBeNull();
+    expect(await authenticate(db, setup.email, "reset via page 1")).not.toBeNull();
+
+    const admin = { userId: user.id, agencyId: agency.id, role: "admin" as const };
+    await createUser(db, admin, { name: "M", email: "m@example.com", password: "manager password", role: "manager" });
+    expect(await resetAdminPassword(db, "m@example.com", "hijacked password")).toBe(false);
+    expect(await resetAdminPassword(db, "nobody@example.com", "whatever password")).toBe(false);
+  });
+});
