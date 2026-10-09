@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Covet | Sneakers & Designer</title>
+  <meta name="description" content="Covet: streetwear retail and curated designer fashion. Sportswear, designer and rare sneakers in South Africa.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="notice">Free delivery in South Africa on orders over R 2 500</div>
+
+  <header class="header">
+    <div class="wrap header-inner">
+      <a href="#top" class="logo" aria-label="Covet home"><img src="assets/covet-logo-white.png" alt="Covet" width="141" height="36"></a>
+      <nav class="nav" aria-label="Main">
+        <a href="#shop" data-cat="all">Shop all</a>
+        <a href="#shop" data-cat="sportswear">Sportswear</a>
+        <a href="#shop" data-cat="designer">Designer</a>
+        <a href="#shop" data-cat="rare">Rare</a>
+        <a href="#brands">Brands</a>
+      </nav>
+      <button class="bag-btn" id="bagOpen" type="button">Bag (<span id="bagCount">0</span>)</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow">Streetwear retail / Curated designer fashion</p>
+        <h1>Every pair<br>worth wanting.</h1>
+        <p class="lede">From everyday classics to designer runners and the grails you only hear about. Authenticated, sized in UK, delivered across South Africa.</p>
+        <div class="hero-links">
+          <a href="#shop" class="btn" data-cat="all">Shop all sneakers</a>
+          <a href="#shop" class="btn btn-outline" data-cat="rare">See the rare drops</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cats wrap" aria-label="Categories">
+      <a href="#shop" class="cat" data-cat="sportswear"><span class="cat-num">01</span><span class="cat-name">Sportswear</span><span class="cat-desc">Nike, Jordan, adidas, New Balance and more</span></a>
+      <a href="#shop" class="cat" data-cat="designer"><span class="cat-num">02</span><span class="cat-name">Designer</span><span class="cat-desc">Gucci, Louis Vuitton, Balenciaga, Dior and more</span></a>
+      <a href="#shop" class="cat" data-cat="rare"><span class="cat-num">03</span><span class="cat-name">Rare &amp; Hype</span><span class="cat-desc">Collaborations, limited releases and grails</span></a>
+    </section>
+
+    <section id="shop" class="shop wrap">
+      <div class="shop-head">
+        <h2 id="shopTitle">All sneakers</h2>
+        <p id="resultCount" class="muted"></p>
+      </div>
+
+      <div class="filters">
+        <div class="tabs" role="tablist" aria-label="Category">
+          <button type="button" class="tab is-active" data-cat="all">All</button>
+          <button type="button" class="tab" data-cat="sportswear">Sportswear</button>
+          <button type="button" class="tab" data-cat="designer">Designer</button>
+          <button type="button" class="tab" data-cat="rare">Rare &amp; Hype</button>
+        </div>
+        <div class="controls">
+          <label class="field"><span class="sr-only">Search</span><input id="search" type="search" placeholder="Search model or colourway"></label>
+          <label class="field"><span class="sr-only">Brand</span><select id="brand"><option value="all">All brands</option></select></label>
+          <label class="field"><span class="sr-only">Sort</span>
+            <select id="sort">
+              <option value="featured">Featured</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="name">Name: A to Z</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <ul id="grid" class="grid" aria-live="polite"></ul>
+      <p id="empty" class="empty" hidden>No sneakers match that search.</p>
+    </section>
+
+    <section id="brands" class="brands wrap">
+      <h2>Brands</h2>
+      <ul id="brandList" class="brand-list"></ul>
+    </section>
+
+    <section class="promise wrap">
+      <div><h3>Authenticated</h3><p>Every rare and designer pair is checked before it ships.</p></div>
+      <div><h3>Nationwide delivery</h3><p>Door to door across South Africa, tracked from dispatch.</p></div>
+      <div><h3>Easy returns</h3><p>Unworn pairs in original packaging can be returned within 14 days.</p></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <img src="assets/covet-logo-white.png" alt="Covet" width="110" height="28">
+      <p>Streetwear retail. Curated designer fashion.</p>
+      <p class="muted">&copy; <span id="year"></span> Covet. All prices in ZAR, VAT included.</p>
+    </div>
+  </footer>
+
+  <!-- Product dialog -->
+  <dialog id="product" class="product-dialog" aria-labelledby="pdTitle">
+    <button type="button" class="close" data-close>Close</button>
+    <div class="pd">
+      <div class="pd-media" id="pdMedia"></div>
+      <div class="pd-info">
+        <p class="pd-brand" id="pdBrand"></p>
+        <h2 id="pdTitle"></h2>
+        <p class="pd-price" id="pdPrice"></p>
+        <p class="pd-cat" id="pdCat"></p>
+        <p class="label">Select size</p>
+        <div class="sizes" id="pdSizes"></div>
+        <button type="button" class="btn btn-block" id="pdAdd" disabled>Select a size</button>
+        <p class="muted small">Sizes shown in UK. Stock is confirmed at checkout.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Bag drawer -->
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="bag" id="bag" aria-label="Shopping bag" aria-hidden="true">
+    <div class="bag-head">
+      <h2>Bag</h2>
+      <button type="button" class="close" id="bagClose">Close</button>
+    </div>
+    <ul class="bag-items" id="bagItems"></ul>
+    <p class="empty" id="bagEmpty">Your bag is empty.</p>
+    <div class="bag-foot">
+      <div class="bag-total"><span>Subtotal</span><span id="bagTotal">R 0</span></div>
+      <button type="button" class="btn btn-block" id="checkout">Checkout</button>
+      <p class="muted small" id="checkoutNote">Online checkout opens soon.</p>
+    </div>
+  </aside>
+
+  <script src="data/products.js"></script>
+  <script src="store.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
