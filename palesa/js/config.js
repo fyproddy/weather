@@ -20,14 +20,24 @@ window.PALESA_CONFIG = {
   // Business email address. Leave '' to hide.
   email: 'info@palesavisuals.co.za',
 
-  // Confirmed service areas, e.g. ['Soweto', 'Johannesburg South', 'Roodepoort'].
-  // Leave empty until confirmed — the site will ask customers for their area instead.
-  serviceAreas: [],
+  // Short description of where the business works — shown in the hero, footer and FAQ.
+  serviceAreaSummary: 'Johannesburg and surrounding areas',
+
+  // Areas customers can pick in the quote form, grouped by region.
+  // Add, remove or move places freely. Customers can always choose "Other area" and type their own.
+  serviceAreas: [
+    { region: 'Soweto', places: ['Orlando', 'Diepkloof', 'Meadowlands', 'Dobsonville', 'Protea Glen', 'Pimville', 'Jabulani', 'Naledi', 'Zola', 'Chiawelo', 'Other Soweto area'] },
+    { region: 'Johannesburg Central & South', places: ['Johannesburg CBD', 'Braamfontein', 'Auckland Park', 'Melville', 'Rosettenville', 'Turffontein', 'Mondeor', 'Glenvista', 'Naturena', 'Eldorado Park', 'Lenasia', 'Ennerdale', 'Orange Farm'] },
+    { region: 'Johannesburg North', places: ['Sandton', 'Rosebank', 'Randburg', 'Northcliff', 'Fourways', 'Bryanston', 'Sunninghill', 'Midrand', 'Alexandra', 'Diepsloot', 'Cosmo City'] },
+    { region: 'West Rand', places: ['Roodepoort', 'Florida', 'Honeydew', 'Krugersdorp', 'Randfontein'] },
+    { region: 'East Rand (Ekurhuleni)', places: ['Bedfordview', 'Edenvale', 'Germiston', 'Alberton', 'Kempton Park', 'Tembisa', 'Boksburg', 'Benoni', 'Brakpan', 'Springs', 'Katlehong', 'Thokoza', 'Vosloorus'] }
+  ],
 
   // Confirmed operating hours, e.g. 'Mon–Sat, 08:00–17:00'. Leave '' to hide.
   businessHours: '',
 
-  // Live site address once the domain is known, e.g. 'https://www.palesavisuals.co.za/'.
+  // Live site address — set this once the domain is registered and the site is live on it.
+  // Planned: 'https://www.palesavisuals.co.za/' (not registered yet, so left empty for now).
   // Used for the canonical URL and Open Graph links.
   siteUrl: '',
 
@@ -35,7 +45,7 @@ window.PALESA_CONFIG = {
   whatsappGreeting: "Hi Palesa Visuals, I'd like to ask about a DStv installation.",
 
   // Set to true once the business has checked the service list below.
-  servicesConfirmed: false,
+  servicesConfirmed: true,
 
   /*
    * SERVICES

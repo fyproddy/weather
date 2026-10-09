@@ -83,7 +83,7 @@
     if (CFG.phoneNumber) items.push({ k: 'Phone', v: CFG.phoneNumber, href: telHref(CFG.phoneNumber) });
     if (CFG.email) items.push({ k: 'Email', v: CFG.email, href: 'mailto:' + CFG.email });
     if (CFG.businessHours) items.push({ k: 'Hours', v: CFG.businessHours });
-    if (areas().length) items.push({ k: 'Service areas', v: areas().join(', ') });
+    if (CFG.serviceAreaSummary) items.push({ k: 'Service areas', v: CFG.serviceAreaSummary });
 
     var html = items.map(function (it) {
       var v = it.href
@@ -94,19 +94,23 @@
     if (!items.length) html = '<li><span class="k">The quickest way to reach us</span><a class="v" href="#quote">Request a quote</a></li>';
     $('[data-contact-list]').innerHTML = html;
 
-    var a = areas();
-    if (a.length) {
+    if (CFG.serviceAreaSummary) {
       var line = $('[data-areas-line]');
-      line.innerHTML = 'Serving <strong>' + esc(listJoin(a)) + '</strong>';
+      line.innerHTML = 'Serving <strong>' + esc(CFG.serviceAreaSummary) + '</strong>';
       line.hidden = false;
-      $('[data-areas-faq]').textContent = 'We currently work in ' + listJoin(a) + '. If you are nearby but not listed, include your suburb or town in the quotation form and we’ll let you know whether we can assist.';
+      var regions = areas().map(function (g) { return g.region; });
+      $('[data-areas-faq]').textContent = 'We work across ' + CFG.serviceAreaSummary +
+        (regions.length ? ', including ' + listJoin(regions) : '') +
+        '. Choose your area in the quotation form. If yours isn’t listed, select “Other area” and type it in, and we’ll let you know whether we can assist.';
     }
     $('[data-year]').textContent = new Date().getFullYear();
   }
   // tel: links work best in +27 international format.
   function telHref(n) { return 'tel:+' + digits(n); }
   function waDisplay() { return CFG.phoneNumber && digits(CFG.phoneNumber) === waNumber ? CFG.phoneNumber : '+' + waNumber; }
-  function areas() { return (CFG.serviceAreas || []).filter(Boolean); }
+  function areas() {
+    return (CFG.serviceAreas || []).filter(function (g) { return g && g.region && g.places && g.places.length; });
+  }
   function digits(s) { var d = String(s).replace(/\D/g, ''); return d.charAt(0) === '0' ? '27' + d.slice(1) : d; }
   function listJoin(arr) { return arr.length < 2 ? arr.join('') : arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length - 1]; }
 
@@ -223,6 +227,7 @@
     var d = new Date();
     $('#f-date').min = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
 
+    setupAreas();
     serviceSelect.addEventListener('change', updateConditional);
     updateConditional();
 
@@ -254,6 +259,39 @@
     form.addEventListener('submit', onSubmit);
   }
 
+  /* ---------- Area picker ---------- */
+  var OTHER_AREA = 'Other area';
+  function setupAreas() {
+    var sel = $('#f-area');
+    areas().forEach(function (g) {
+      var og = document.createElement('optgroup');
+      og.label = g.region;
+      g.places.forEach(function (place) {
+        var o = document.createElement('option');
+        // "Other Soweto area" → send just the region name
+        o.value = /^Other /.test(place) ? g.region : place + (g.region === 'Soweto' ? ', Soweto' : '');
+        o.textContent = place;
+        og.appendChild(o);
+      });
+      sel.appendChild(og);
+    });
+    var other = document.createElement('option');
+    other.value = OTHER_AREA; other.textContent = 'Other area (type it in)';
+    sel.appendChild(other);
+
+    var suburb = $('#f-suburb');
+    sel.addEventListener('change', function () {
+      var isOther = sel.value === OTHER_AREA;
+      suburb.required = isOther;
+      $('[data-suburb-label]').textContent = isOther ? 'Your suburb or town' : 'Suburb or extension';
+      $('[data-suburb-optional]').hidden = isOther;
+      $('[data-suburb-req]').hidden = !isOther;
+      suburb.placeholder = isOther ? 'e.g. Vereeniging' : 'e.g. Protea Glen Ext 11';
+      if (!isOther) clearError(suburb);
+      if (isOther) suburb.focus();
+    });
+  }
+
   function updateConditional() {
     var s = findService(serviceSelect.value);
     var group = s ? s.questions : null;
@@ -274,7 +312,8 @@
       if (!v) return 'Please enter a WhatsApp or contact number so we can reply.';
       if (!validPhone(v)) return 'That number doesn’t look right. Use a format like 082 123 4567 or +27 82 123 4567.';
     },
-    suburb: function (v) { if (!v) return 'Please tell us your suburb or town.'; },
+    area: function (v) { if (!v) return 'Please choose your area, or “Other area”.'; },
+    suburb: function (v) { if (!v) return 'Please type your suburb or town.'; },
     service: function (v) { if (!v) return 'Please choose a service, or “Other / Not sure”.'; },
     property: function (v) { if (!v) return 'Please choose the type of property.'; },
     status: function (v) { if (!v) return 'Please choose the option closest to your current setup.'; },
@@ -358,7 +397,8 @@
 
   function buildMessage() {
     var service = findService(val('service'));
-    var location = [val('suburb'), val('city')].filter(Boolean).join(', ');
+    var area = val('area') === OTHER_AREA ? '' : val('area');
+    var location = [val('suburb'), area].filter(Boolean).join(', ');
     var lines = [];
     var add = function (label, value) { if (value) lines.push(label + ': ' + value); };
     var gap = function () { if (lines.length && lines[lines.length - 1] !== '') lines.push(''); };
@@ -470,6 +510,7 @@
     if (!CFG.phoneNumber) missing.push('<code>phoneNumber</code>');
     if (!CFG.email) missing.push('<code>email</code> (optional)');
     if (!areas().length) missing.push('<code>serviceAreas</code>');
+    if (!CFG.serviceAreaSummary) missing.push('<code>serviceAreaSummary</code>');
     if (!CFG.businessHours) missing.push('<code>businessHours</code> (optional)');
     if (!CFG.siteUrl) missing.push('<code>siteUrl</code> (for SEO, once the domain is known)');
     if (!CFG.servicesConfirmed) missing.push('confirm the service list, then set <code>servicesConfirmed: true</code>');

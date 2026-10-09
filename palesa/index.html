@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DStv Installation, Signal Repairs &amp; Extra View | Palesa Visuals</title>
-  <meta name="description" content="Palesa Visuals handles DStv installations, satellite dish alignment, signal problems, extra TV points and Extra View setups. Request a DStv installation quotation on WhatsApp.">
+  <title>DStv Installation Johannesburg | Signal Repairs &amp; Extra View | Palesa Visuals</title>
+  <meta name="description" content="DStv installer in Johannesburg and surrounding areas. New DStv installations, satellite dish alignment, signal problems, extra TV points and Extra View. Request a quotation on WhatsApp.">
   <meta name="theme-color" content="#0b1f57">
 
   <!-- Canonical + absolute OG URLs are filled from siteUrl in js/config.js once the domain is known. -->
@@ -236,16 +236,21 @@
             </div>
             <div class="field-row">
               <div class="field">
-                <label for="f-suburb">Suburb or town <span class="req" aria-hidden="true">*</span></label>
-                <input id="f-suburb" name="suburb" type="text" autocomplete="address-level3" required maxlength="80">
-                <p class="field-error" id="f-suburb-error" hidden></p>
+                <label for="f-area">Your area <span class="req" aria-hidden="true">*</span></label>
+                <div class="select-wrap">
+                  <select id="f-area" name="area" required>
+                    <option value="">Select your area</option>
+                  </select>
+                </div>
+                <p class="field-error" id="f-area-error" hidden></p>
               </div>
               <div class="field">
-                <label for="f-city">City <span class="optional">(optional)</span></label>
-                <input id="f-city" name="city" type="text" autocomplete="address-level2" maxlength="80">
+                <label for="f-suburb"><span data-suburb-label>Suburb or extension</span> <span class="optional" data-suburb-optional>(optional)</span><span class="req" aria-hidden="true" data-suburb-req hidden>*</span></label>
+                <input id="f-suburb" name="suburb" type="text" autocomplete="address-level3" maxlength="80" placeholder="e.g. Protea Glen Ext 11">
+                <p class="field-error" id="f-suburb-error" hidden></p>
               </div>
             </div>
-            <p class="field-hint">No street address needed yet — your area is enough for a quotation.</p>
+            <p class="field-hint">No street address needed yet — your area is enough for a quotation. Not listed? Choose “Other area”.</p>
           </fieldset>
 
           <fieldset>

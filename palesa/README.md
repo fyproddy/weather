@@ -26,7 +26,8 @@ Everything lives in `js/config.js`:
 | `whatsappNumber` | International format, digits only. For example, 082 123 4567 becomes `27821234567` |
 | `phoneNumber` | As it should be displayed, e.g. `082 123 4567` |
 | `email` | Optional |
-| `serviceAreas` | Confirmed areas, e.g. `['Soweto', 'Roodepoort']` |
+| `serviceAreaSummary` | Short line shown in the hero, footer and FAQ, e.g. `Johannesburg and surrounding areas` |
+| `serviceAreas` | Places customers can pick in the quote form, grouped by region. Customers can always choose "Other area" and type their own |
 | `businessHours` | Optional, e.g. `Mon–Sat, 08:00–17:00` |
 | `siteUrl` | The live address once the domain is known (sets the canonical URL and social links) |
 | `services` | Edit, reorder or delete services. The quote form's dropdown updates automatically |
