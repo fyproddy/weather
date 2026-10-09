@@ -121,10 +121,35 @@ window.PALESA_CONFIG = {
       questions: null
     },
     {
+      id: 'cctv',
+      name: 'CCTV Installation',
+      formLabel: 'CCTV Installation',
+      description: 'Security cameras positioned to cover the areas that matter, with cabling run neatly and the recorder set up so you can view footage.',
+      questions: 'cctv',
+      featured: true,
+      photo: { src: 'assets/photos/cctv.jpg', srcset: 'assets/photos/cctv-800.jpg 800w, assets/photos/cctv.jpg 1400w', width: 1400, height: 1050, position: '50% 45%', alt: 'Outdoor CCTV camera mounted below the roofline of a house' }
+    },
+    {
+      id: 'projector',
+      name: 'Projector and Screen Installation',
+      formLabel: 'Projector Installation',
+      description: 'Ceiling-mounted projectors and screens for a home cinema or lounge, with cables kept out of sight where possible.',
+      questions: 'projector',
+      featured: true,
+      photo: { src: 'assets/photos/projector.jpg', srcset: 'assets/photos/projector-800.jpg 800w, assets/photos/projector.jpg 1400w', width: 1400, height: 1050, position: '50% 50%', alt: 'Ceiling-mounted projector and pull-down screen in a lounge' }
+    },
+    {
+      id: 'home-sound',
+      name: 'Home Sound Installation',
+      formLabel: 'Home Sound Installation',
+      description: 'Soundbars, surround sound and speaker setups connected to your TV or projector and tuned to the room.',
+      questions: 'sound'
+    },
+    {
       id: 'tv-wall-mounting',
-      name: 'TV Wall Mounting',
-      formLabel: 'TV Wall Mounting',
-      description: 'Mounting your television securely on a suitable wall, with cables kept tidy.',
+      name: 'TV Installation and Wall Mounting',
+      formLabel: 'TV Installation / Wall Mounting',
+      description: 'Mounting your television securely on a suitable wall, connecting it to your decoder and other devices, with cables kept tidy.',
       questions: 'mount'
     },
     {

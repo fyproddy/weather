@@ -40,7 +40,7 @@
   function renderServices() {
     var featuredEl = $('[data-featured-services]');
     var listEl = $('[data-service-list]');
-    var featured = services.filter(function (s) { return s.featured && s.photo; }).slice(0, 3);
+    var featured = services.filter(function (s) { return s.featured && s.photo; }).slice(0, 4);
     var rest = services.filter(function (s) { return featured.indexOf(s) === -1; });
     var n = 0;
 
@@ -428,6 +428,14 @@
     add('Wall bracket available', val('bracket'));
     var commercial = [val('premises'), val('commercialPoints') ? 'approx. ' + val('commercialPoints') + ' TV points' : ''].filter(Boolean).join(', ');
     add('Commercial requirements', commercial);
+    add('Number of cameras', val('cameras'));
+    add('Existing CCTV system', val('cctvExisting'));
+    add('View cameras on phone', val('remoteView'));
+    add('Projector', val('projectorHave'));
+    add('Screen', val('screenHave'));
+    add('Room', val('projectorRoom'));
+    add('Sound setup wanted', val('soundType'));
+    add('Sound equipment', val('soundHave'));
     gap();
 
     add('Preferred date', formatDate(val('date')));

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DStv Installation Johannesburg | Signal Repairs &amp; Extra View | Palesa Visuals</title>
-  <meta name="description" content="DStv installer in Johannesburg and surrounding areas. New DStv installations, satellite dish alignment, signal problems, extra TV points and Extra View. Request a quotation on WhatsApp.">
+  <meta name="description" content="DStv installer in Johannesburg and surrounding areas. DStv installations, signal problems, Extra View, TV wall mounting, CCTV, projector and home sound installation. Request a quotation on WhatsApp.">
   <meta name="theme-color" content="#0b1f57">
 
   <!-- Canonical + absolute OG URLs are filled from siteUrl in js/config.js once the domain is known. -->
@@ -12,7 +12,7 @@
   <meta property="og:locale" content="en_ZA">
   <meta property="og:site_name" content="Palesa Visuals">
   <meta property="og:title" content="Palesa Visuals — DStv Installation &amp; Technical Services">
-  <meta property="og:description" content="New DStv installations, signal problems, extra TV points and Extra View. Request a quotation on WhatsApp.">
+  <meta property="og:description" content="DStv installations, signal problems, Extra View, TV mounting, CCTV, projectors and home sound in Johannesburg. Request a quotation on WhatsApp.">
   <meta property="og:image" content="assets/img/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -75,7 +75,7 @@
       <div class="hero-copy">
         <p class="eyebrow">DStv Installation &amp; Technical Services</p>
         <h1 id="hero-title">Reliable DStv Installation. <span>Done Properly.</span></h1>
-        <p class="lead">From new installations to signal problems and additional TV points, Palesa Visuals helps you get your entertainment setup connected and working properly.</p>
+        <p class="lead">From new DStv installations and signal problems to TV mounting, CCTV, projectors and home sound, Palesa Visuals helps you get your setup connected and working properly.</p>
         <div class="btn-row">
           <a class="btn btn-primary btn-lg" href="#quote">Get a Quote
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -98,7 +98,7 @@
         <li>New DStv installations</li>
         <li>Signal &amp; reception problems</li>
         <li>Extra View &amp; extra TV points</li>
-        <li>Dish alignment &amp; cabling</li>
+        <li>TV, CCTV, projectors &amp; sound</li>
       </ul>
     </div>
 
@@ -380,6 +380,97 @@
                   <label class="choice"><input type="radio" name="bracket" value="Yes"><span>Yes</span></label>
                   <label class="choice"><input type="radio" name="bracket" value="No"><span>No</span></label>
                   <label class="choice"><input type="radio" name="bracket" value="Not sure"><span>Not sure</span></label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="conditional" data-group="cctv" hidden>
+            <legend>About the CCTV system <span class="optional">(optional)</span></legend>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-cameras">How many cameras?</label>
+                <div class="select-wrap">
+                  <select id="f-cameras" name="cameras">
+                    <option value="">Select</option>
+                    <option>1–2</option><option>3–4</option><option>5–8</option><option>More than 8</option><option>Not sure</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-cctv-existing">Existing system?</label>
+                <div class="select-wrap">
+                  <select id="f-cctv-existing" name="cctvExisting">
+                    <option value="">Select</option>
+                    <option>New system</option>
+                    <option>Adding to an existing system</option>
+                    <option>Existing system needs repair</option>
+                    <option>Not sure</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <span class="label" id="l-remote">Do you want to view the cameras on your phone?</span>
+              <div class="choice-row" role="radiogroup" aria-labelledby="l-remote">
+                <label class="choice"><input type="radio" name="remoteView" value="Yes"><span>Yes</span></label>
+                <label class="choice"><input type="radio" name="remoteView" value="No"><span>No</span></label>
+                <label class="choice"><input type="radio" name="remoteView" value="Not sure"><span>Not sure</span></label>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="conditional" data-group="projector" hidden>
+            <legend>About the projector setup <span class="optional">(optional)</span></legend>
+            <div class="field-row">
+              <div class="field">
+                <span class="label" id="l-projector">Do you already have a projector?</span>
+                <div class="choice-row" role="radiogroup" aria-labelledby="l-projector">
+                  <label class="choice"><input type="radio" name="projectorHave" value="Already have one"><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="projectorHave" value="Needs one"><span>No</span></label>
+                  <label class="choice"><input type="radio" name="projectorHave" value="Not sure"><span>Not sure</span></label>
+                </div>
+              </div>
+              <div class="field">
+                <span class="label" id="l-screen">And a screen?</span>
+                <div class="choice-row" role="radiogroup" aria-labelledby="l-screen">
+                  <label class="choice"><input type="radio" name="screenHave" value="Already have one"><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="screenHave" value="Needs one"><span>No</span></label>
+                  <label class="choice"><input type="radio" name="screenHave" value="Not sure"><span>Not sure</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-proom">Which room?</label>
+              <input id="f-proom" name="projectorRoom" type="text" maxlength="80" placeholder="e.g. lounge, about 5 m × 4 m">
+            </div>
+          </fieldset>
+
+          <fieldset class="conditional" data-group="sound" hidden>
+            <legend>About the sound setup <span class="optional">(optional)</span></legend>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-soundtype">What would you like?</label>
+                <div class="select-wrap">
+                  <select id="f-soundtype" name="soundType">
+                    <option value="">Select</option>
+                    <option>Soundbar</option>
+                    <option>Surround sound (e.g. 5.1)</option>
+                    <option>Ceiling or wall speakers</option>
+                    <option>Music in more than one room</option>
+                    <option>Not sure</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-soundhave">Equipment</label>
+                <div class="select-wrap">
+                  <select id="f-soundhave" name="soundHave">
+                    <option value="">Select</option>
+                    <option>I already have the equipment</option>
+                    <option>I need equipment as well</option>
+                    <option>Not sure</option>
+                  </select>
                 </div>
               </div>
             </div>
