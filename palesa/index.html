@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DStv Installation, Signal Repairs &amp; Extra View | Palesa Visuals</title>
+  <meta name="description" content="Palesa Visuals handles DStv installations, satellite dish alignment, signal problems, extra TV points and Extra View setups. Request a DStv installation quotation on WhatsApp.">
+  <meta name="theme-color" content="#0b1f57">
+
+  <!-- Canonical + absolute OG URLs are filled from siteUrl in js/config.js once the domain is known. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_ZA">
+  <meta property="og:site_name" content="Palesa Visuals">
+  <meta property="og:title" content="Palesa Visuals — DStv Installation &amp; Technical Services">
+  <meta property="og:description" content="New DStv installations, signal problems, extra TV points and Extra View. Request a quotation on WhatsApp.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preload" as="image" href="assets/photos/hero.jpg">
+
+  <script>
+    // Mark any photo that fails to load so its frame shows a neutral panel instead of a broken image.
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) {
+      var t = e.target;
+      if (t && t.tagName === 'IMG' && t.closest('.photo')) t.closest('.photo').classList.add('photo--pending');
+    }, true);
+  </script>
+  <script src="js/config.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="#home" aria-label="Palesa Visuals — home">
+        <img src="assets/img/palesa-visuals-logo-240.png" srcset="assets/img/palesa-visuals-logo-240.png 240w, assets/img/palesa-visuals-logo-480.png 480w" sizes="88px" width="240" height="225" alt="Palesa Visuals — DStv Installation">
+      </a>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Main">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a class="btn btn-primary nav-cta" href="#quote">Get a Quote</a>
+      </nav>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="menu-toggle-label">Menu</span>
+        <svg class="icon icon-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <svg class="icon icon-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">DStv Installation &amp; Technical Services</p>
+        <h1 id="hero-title">Reliable DStv Installation. <span>Done Properly.</span></h1>
+        <p class="lead">From new installations to signal problems and additional TV points, Palesa Visuals helps you get your entertainment setup connected and working properly.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary btn-lg" href="#quote">Get a Quote
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-outline btn-lg" href="#quote" data-whatsapp>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+        <p class="hero-areas" data-areas-line hidden></p>
+      </div>
+      <figure class="hero-media photo">
+        <img src="assets/photos/hero.jpg" width="1600" height="1200" alt="Technician installing a satellite dish on the roof of a house" fetchpriority="high">
+        <span class="photo-note">Hero photo: technician installing a satellite dish on a residential roof — add assets/photos/hero.jpg</span>
+      </figure>
+    </section>
+
+    <div class="container">
+      <ul class="service-strip" aria-label="What we help with">
+        <li>New DStv installations</li>
+        <li>Signal &amp; reception problems</li>
+        <li>Extra View &amp; extra TV points</li>
+        <li>Dish alignment &amp; cabling</li>
+      </ul>
+    </div>
+
+    <!-- ============ SERVICES ============ -->
+    <section class="section services" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="section-head split">
+          <div>
+            <p class="eyebrow">Services</p>
+            <h2 id="services-title">Installation and Support You Can Count On</h2>
+          </div>
+          <p class="section-intro">Tell us what you need, and we'll help you work out the right solution for your setup.</p>
+        </div>
+
+        <div class="featured-services" data-featured-services></div>
+
+        <div class="service-index">
+          <h3 class="index-title">More services</h3>
+          <ol class="service-list" data-service-list></ol>
+        </div>
+        <p class="services-note">Not sure which service you need? Choose <a href="#quote" data-service="other">“Other / Not sure”</a> in the quote form and describe the problem.</p>
+      </div>
+    </section>
+
+    <!-- ============ WHY / ABOUT ============ -->
+    <section class="section about" id="about" aria-labelledby="about-title">
+      <div class="container about-grid">
+        <figure class="about-media photo">
+          <img src="assets/photos/cabling.jpg" width="1200" height="1500" loading="lazy" alt="Neatly routed satellite cable clipped along an exterior wall">
+          <span class="photo-note">About photo: neatly routed satellite cabling or a technician at work — add assets/photos/cabling.jpg</span>
+        </figure>
+
+        <div class="about-copy">
+          <p class="eyebrow">Why Palesa Visuals</p>
+          <h2 id="about-title">Good Installation Makes the Difference.</h2>
+          <p class="section-intro">A DStv setup that is rushed tends to come back as a signal problem. Palesa Visuals takes the time to assess the job, explain what is needed and finish the work neatly, so your setup keeps working long after the installation is done.</p>
+
+          <h3 class="commit-title">What you can expect from us</h3>
+          <ol class="commitments">
+            <li>
+              <h4>A proper assessment first</h4>
+              <p>We look at your property, the dish position and your existing equipment before recommending anything.</p>
+            </li>
+            <li>
+              <h4>Clear communication before work begins</h4>
+              <p>You know what will be done and why before anyone climbs a ladder.</p>
+            </li>
+            <li>
+              <h4>Careful cable routing and finishing</h4>
+              <p>Cables are routed and secured neatly, not left hanging across walls and windows.</p>
+            </li>
+            <li>
+              <h4>The right equipment for the job</h4>
+              <p>Brackets, cabling and connectors suited to your installation and the number of TVs.</p>
+            </li>
+            <li>
+              <h4>Tested before we finish</h4>
+              <p>Signal and picture are checked on every connected TV point before the job is complete.</p>
+            </li>
+            <li>
+              <h4>A quotation based on your needs</h4>
+              <p>Your quote reflects the work your setup actually requires, discussed with you upfront.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section process" id="how-it-works" aria-labelledby="process-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">How It Works</p>
+          <h2 id="process-title">Getting Connected Is Simple.</h2>
+        </div>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num" aria-hidden="true">01</span>
+            <h3>Tell Us What You Need</h3>
+            <p>Choose your service, provide your location and explain the installation or problem.</p>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">02</span>
+            <h3>Receive Your Quotation</h3>
+            <p>We review your requirements and contact you to discuss the work and applicable costs.</p>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">03</span>
+            <h3>Arrange Your Installation</h3>
+            <p>Once the quotation and appointment are confirmed, the installation can be arranged.</p>
+          </li>
+        </ol>
+        <p class="process-note">Sending a request doesn't commit you to anything. Nothing is booked until you've agreed to the quotation and an appointment.</p>
+      </div>
+    </section>
+
+    <!-- ============ QUOTE FORM ============ -->
+    <section class="section quote" id="quote" aria-labelledby="quote-title">
+      <div class="container quote-grid">
+        <div class="quote-aside">
+          <p class="eyebrow">Quotation</p>
+          <h2 id="quote-title">Request Your Installation Quote</h2>
+          <p class="section-intro">Give us a few details about your installation. We'll use them to understand the job and follow up with you on WhatsApp.</p>
+
+          <div class="aside-block">
+            <h3>What happens when you send</h3>
+            <ol class="aside-steps">
+              <li><span>Your details are turned into a ready-to-send WhatsApp message.</span></li>
+              <li><span>WhatsApp opens. Check the message and press <strong>Send</strong>.</span></li>
+              <li><span>We reply to discuss the job and your quotation.</span></li>
+            </ol>
+          </div>
+
+          <p class="privacy-inline" id="privacy-inline">
+            <strong>Your privacy:</strong> the details you enter are only used to respond to your quotation request. Nothing is stored on this website — the form simply prepares a WhatsApp message that you choose to send.
+            <button type="button" class="link-btn" data-open-privacy>Read the privacy notice</button>
+          </p>
+        </div>
+
+        <form class="quote-form" id="quote-form" novalidate aria-describedby="form-required-note">
+          <p class="form-required-note" id="form-required-note">Fields marked <span class="req" aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required.</p>
+
+          <fieldset>
+            <legend>Your details</legend>
+            <div class="field">
+              <label for="f-name">Full name <span class="req" aria-hidden="true">*</span></label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="80">
+              <p class="field-error" id="f-name-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="f-phone">WhatsApp / contact number <span class="req" aria-hidden="true">*</span></label>
+              <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="24" placeholder="e.g. 082 123 4567" aria-describedby="f-phone-hint">
+              <p class="field-hint" id="f-phone-hint">South African or international numbers are fine.</p>
+              <p class="field-error" id="f-phone-error" hidden></p>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-suburb">Suburb or town <span class="req" aria-hidden="true">*</span></label>
+                <input id="f-suburb" name="suburb" type="text" autocomplete="address-level3" required maxlength="80">
+                <p class="field-error" id="f-suburb-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="f-city">City <span class="optional">(optional)</span></label>
+                <input id="f-city" name="city" type="text" autocomplete="address-level2" maxlength="80">
+              </div>
+            </div>
+            <p class="field-hint">No street address needed yet — your area is enough for a quotation.</p>
+          </fieldset>
+
+          <fieldset>
+            <legend>The job</legend>
+            <div class="field">
+              <label for="f-service">Service required <span class="req" aria-hidden="true">*</span></label>
+              <div class="select-wrap">
+                <select id="f-service" name="service" required>
+                  <option value="">Select a service</option>
+                </select>
+              </div>
+              <p class="field-error" id="f-service-error" hidden></p>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-property">Property type <span class="req" aria-hidden="true">*</span></label>
+                <div class="select-wrap">
+                  <select id="f-property" name="property" required>
+                    <option value="">Select</option>
+                    <option>House</option>
+                    <option>Apartment / Flat</option>
+                    <option>Complex / Estate</option>
+                    <option>Business / Office</option>
+                    <option>Guesthouse / Lodge</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <p class="field-error" id="f-property-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="f-status">Current setup <span class="req" aria-hidden="true">*</span></label>
+                <div class="select-wrap">
+                  <select id="f-status" name="status" required>
+                    <option value="">Select</option>
+                    <option>Existing DStv setup</option>
+                    <option>Completely new setup</option>
+                    <option>Equipment bought, not yet installed</option>
+                    <option>Existing setup that needs repair</option>
+                    <option>Not sure what is needed</option>
+                  </select>
+                </div>
+                <p class="field-error" id="f-status-error" hidden></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Conditional questions: shown depending on the selected service. All optional. -->
+          <fieldset class="conditional" data-group="new" hidden>
+            <legend>About the new installation <span class="optional">(optional)</span></legend>
+            <div class="field">
+              <span class="label" id="l-decoder">Have you already bought a decoder?</span>
+              <div class="choice-row" role="radiogroup" aria-labelledby="l-decoder">
+                <label class="choice"><input type="radio" name="decoderPurchased" value="Yes"><span>Yes</span></label>
+                <label class="choice"><input type="radio" name="decoderPurchased" value="No"><span>No</span></label>
+                <label class="choice"><input type="radio" name="decoderPurchased" value="Not sure"><span>Not sure</span></label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-tvpoints">How many TV points need to be connected?</label>
+              <div class="select-wrap">
+                <select id="f-tvpoints" name="tvPoints">
+                  <option value="">Select</option>
+                  <option>1</option><option>2</option><option>3</option><option>4</option><option>5 or more</option><option>Not sure</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="conditional" data-group="signal" hidden>
+            <legend>About the signal problem <span class="optional">(optional)</span></legend>
+            <div class="field">
+              <label for="f-issue">What is happening?</label>
+              <div class="select-wrap">
+                <select id="f-issue" name="issue">
+                  <option value="">Select</option>
+                  <option>No signal at all</option>
+                  <option>Signal comes and goes</option>
+                  <option>Some channels missing</option>
+                  <option>Damaged cables</option>
+                  <option>Something else / Not sure</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-since">When did it start? <span class="optional">(if known)</span></label>
+              <input id="f-since" name="problemStart" type="text" maxlength="80" placeholder="e.g. after the storm last week">
+            </div>
+          </fieldset>
+
+          <fieldset class="conditional" data-group="multiroom" hidden>
+            <legend>About the extra rooms <span class="optional">(optional)</span></legend>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-rooms">How many TVs or rooms?</label>
+                <div class="select-wrap">
+                  <select id="f-rooms" name="rooms">
+                    <option value="">Select</option>
+                    <option>1 extra</option><option>2 extra</option><option>3 extra</option><option>4 or more extra</option><option>Not sure</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-existing">Existing decoder or installation?</label>
+                <div class="select-wrap">
+                  <select id="f-existing" name="existingSetup">
+                    <option value="">Select</option>
+                    <option>Yes, dish and decoder installed</option>
+                    <option>Decoder only</option>
+                    <option>No</option>
+                    <option>Not sure</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="conditional" data-group="mount" hidden>
+            <legend>About the TV <span class="optional">(optional)</span></legend>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-tvsize">TV size <span class="optional">(if known)</span></label>
+                <input id="f-tvsize" name="tvSize" type="text" maxlength="40" placeholder="e.g. 55 inch">
+              </div>
+              <div class="field">
+                <span class="label" id="l-bracket">Do you have a wall bracket?</span>
+                <div class="choice-row" role="radiogroup" aria-labelledby="l-bracket">
+                  <label class="choice"><input type="radio" name="bracket" value="Yes"><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="bracket" value="No"><span>No</span></label>
+                  <label class="choice"><input type="radio" name="bracket" value="Not sure"><span>Not sure</span></label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="conditional" data-group="commercial" hidden>
+            <legend>About the premises <span class="optional">(optional)</span></legend>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-premises">Type of premises</label>
+                <div class="select-wrap">
+                  <select id="f-premises" name="premises">
+                    <option value="">Select</option>
+                    <option>Office</option>
+                    <option>Guesthouse / Lodge</option>
+                    <option>Rental units / Flats</option>
+                    <option>Shop / Restaurant / Bar</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-cpoints">Approx. number of TV points</label>
+                <input id="f-cpoints" name="commercialPoints" type="text" inputmode="numeric" maxlength="20" placeholder="e.g. 8, or not sure">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Timing</legend>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-date">Preferred date <span class="optional">(optional)</span></label>
+                <input id="f-date" name="date" type="date">
+              </div>
+              <div class="field">
+                <span class="label" id="l-urgency">How urgent is it? <span class="optional">(optional)</span></span>
+                <div class="choice-row" role="radiogroup" aria-labelledby="l-urgency">
+                  <label class="choice"><input type="radio" name="urgency" value="Flexible"><span>Flexible</span></label>
+                  <label class="choice"><input type="radio" name="urgency" value="Within a few days"><span>Within a few days</span></label>
+                  <label class="choice"><input type="radio" name="urgency" value="Urgent"><span>Urgent</span></label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Tell us about the job</legend>
+            <div class="field">
+              <label for="f-details">Additional details <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="f-details" name="details" rows="5" required maxlength="1200" placeholder="For example: I need a new installation in two rooms, or my current setup has no signal."></textarea>
+              <p class="field-error" id="f-details-error" hidden></p>
+            </div>
+          </fieldset>
+
+          <div class="form-submit">
+            <p class="form-summary" id="form-summary" role="alert" hidden></p>
+            <button class="btn btn-primary btn-lg btn-block" type="submit">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
+              Send Quote Request on WhatsApp
+            </button>
+            <p class="submit-note">This opens WhatsApp with your request written out. Your request is only sent once you press <strong>Send</strong> in WhatsApp.</p>
+          </div>
+
+          <div class="form-result" id="form-result" tabindex="-1" hidden></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section faq" id="faq" aria-labelledby="faq-title">
+      <div class="container faq-grid">
+        <div>
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Questions Customers Ask</h2>
+          <p class="section-intro">Can't find what you're looking for? Ask us directly in your quote request.</p>
+        </div>
+        <div class="accordion">
+          <details>
+            <summary>How do I request a quotation?</summary>
+            <div class="answer"><p>Fill in the <a href="#quote">quotation form</a> on this page. When you press the button, WhatsApp opens with your details written out as a message — press Send and we'll reply to discuss the job. You can also chat to us on WhatsApp directly.</p></div>
+          </details>
+          <details>
+            <summary>What information do you need for an installation?</summary>
+            <div class="answer"><p>Your suburb or town, the type of property, which service you need, whether you already have equipment, and how many TVs should be connected. If you're not sure about the technical details, that's fine — describe what you want in your own words. Photos of your current setup can help, and you can send them in the WhatsApp chat after your message.</p></div>
+          </details>
+          <details>
+            <summary>Can you help with an existing DStv signal problem?</summary>
+            <div class="answer"><p>Yes. Signal problems are often caused by a dish that has moved out of alignment, a faulty LNB, or damaged or loose cabling, and these can be checked on site. Problems related to your subscription or account need to be resolved with DStv directly.</p></div>
+          </details>
+          <details>
+            <summary>Can I request additional TV points?</summary>
+            <div class="answer"><p>Yes. Additional TV points and Extra View setups depend on your existing dish, decoder and how your home is laid out. Tell us how many rooms you'd like connected and what equipment you currently have, and we'll advise on what is possible.</p></div>
+          </details>
+          <details>
+            <summary>Do you supply the equipment as well as the installation?</summary>
+            <div class="answer"><p>It depends on the job. Let us know in your request whether you already have a decoder, dish or cabling, and we'll confirm what equipment would be needed and include it in the quotation where applicable.</p></div>
+          </details>
+          <details>
+            <summary>How soon can an installation be arranged?</summary>
+            <div class="answer"><p>That depends on your location, the type of work and availability at the time. Add a preferred date and how urgent the job is in your request, and we'll discuss timing when we contact you. A submitted request is not a confirmed booking — the appointment is arranged once the quotation is agreed.</p></div>
+          </details>
+          <details>
+            <summary>Which areas do you service?</summary>
+            <div class="answer"><p data-areas-faq>Tell us your suburb or town in the quotation form and we'll confirm whether we can assist in your area.</p></div>
+          </details>
+          <details>
+            <summary>How will I know the final cost?</summary>
+            <div class="answer"><p>You'll receive a quotation after we understand the job. The cost depends on the property, the equipment needed, cable runs, roof access and how complex the installation or repair is. We'll discuss the quotation with you before any work begins.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="cta" id="contact" aria-labelledby="cta-title">
+      <div class="container cta-inner">
+        <div>
+          <h2 id="cta-title">Need an Installation or Have a Signal Problem?</h2>
+          <p>Tell us what you need, and let's get your quotation started.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-light btn-lg" href="#quote">Request a Quote</a>
+          <a class="btn btn-outline-light btn-lg" href="#quote" data-whatsapp>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="assets/img/palesa-visuals-logo-240.png" srcset="assets/img/palesa-visuals-logo-240.png 240w, assets/img/palesa-visuals-logo-480.png 480w" sizes="132px" width="240" height="225" loading="lazy" alt="Palesa Visuals — DStv Installation">
+        <p>Palesa Visuals handles DStv installations, signal problems, extra TV points and related technical work for homes and businesses.</p>
+      </div>
+      <nav class="footer-col" aria-label="Footer">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#quote">Request a Quote</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h2>Contact</h2>
+        <ul class="contact-list" data-contact-list></ul>
+      </div>
+    </div>
+    <div class="container"><div class="footer-base">
+      <p>&copy; <span data-year></span> Palesa Visuals. All rights reserved.</p>
+      <p>DStv is a trademark of MultiChoice.</p>
+      <button type="button" class="link-btn" data-open-privacy>Privacy notice</button>
+    </div></div>
+  </footer>
+
+  <!-- ============ PRIVACY NOTICE ============ -->
+  <dialog class="privacy-dialog" id="privacy-dialog" aria-labelledby="privacy-title">
+    <div class="dialog-body">
+      <h2 id="privacy-title">Privacy notice</h2>
+      <p>When you request a quotation, we ask for your name, contact number, area and details about the job. We use this information only to respond to your request, prepare a quotation and arrange the work if you go ahead.</p>
+      <p>This website does not store the information you type into the form. The form prepares a WhatsApp message on your device, and the information is only shared with Palesa Visuals if you choose to send that message. WhatsApp's own terms and privacy policy apply to messages sent through it.</p>
+      <p>We don't sell your information or use it for unrelated marketing. You can ask us to delete your details at any time by messaging us.</p>
+      <form method="dialog"><button class="btn btn-primary" type="submit">Close</button></form>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <div class="setup-bar" id="setup-bar" hidden></div>
+</body>
+</html>
