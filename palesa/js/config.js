@@ -66,7 +66,7 @@ window.PALESA_CONFIG = {
       name: 'New DStv Installation',
       showcase: 'DStv Installation',
       formLabel: 'New DStv Installation',
-      description: 'A new satellite dish and decoder set up for your home or business, with the dish positioned, cabling routed and the system tested before we leave.',
+      description: 'New dish and decoder, installed and tested.',
       questions: 'new',
       featured: true,
       photo: { src: 'assets/photos/new-installation.jpg', srcset: 'assets/photos/new-installation-800.jpg 800w, assets/photos/new-installation.jpg 1400w', width: 1400, height: 933, position: '62% 50%', alt: 'Installer setting up a wall-mounted DStv satellite dish with a signal meter' }
@@ -77,7 +77,7 @@ window.PALESA_CONFIG = {
       showcase: 'Signal Repairs',
       showcasePhoto: 'assets/photos/hero-960.jpg',
       formLabel: 'Signal Problem / No Signal',
-      description: 'Lost signal, poor reception or channels dropping out. We check the dish alignment, LNB and cabling to find where the fault is.',
+      description: 'No signal or channels dropping? We find the fault.',
       questions: 'signal',
       featured: false
     },
@@ -86,7 +86,7 @@ window.PALESA_CONFIG = {
       name: 'Extra View Installation',
       showcase: 'Extra View',
       formLabel: 'Extra View',
-      description: 'Setting up compatible decoders so you can watch in more than one room, depending on your equipment and configuration.',
+      description: 'Watch DStv in more than one room.',
       questions: 'multiroom',
       featured: true,
       photo: { src: 'assets/photos/tv-room.jpg', srcset: 'assets/photos/tv-room-800.jpg 800w, assets/photos/tv-room.jpg 1400w', width: 1400, height: 1050, position: '60% 45%', alt: 'Wall-mounted television above a TV cabinet in a living room' }
@@ -95,35 +95,35 @@ window.PALESA_CONFIG = {
       id: 'extra-tv-points',
       name: 'Extra TV Points',
       formLabel: 'Extra TV Point',
-      description: 'Extending an existing installation to another room or television location.',
+      description: 'Add DStv to another room.',
       questions: 'multiroom'
     },
     {
       id: 'dish-alignment',
       name: 'Satellite Dish Alignment',
       formLabel: 'Dish Alignment',
-      description: 'Checking the dish position and correcting it where wind, building work or a loose bracket has moved it.',
+      description: 'Dish moved? We realign it.',
       questions: null
     },
     {
       id: 'dish-relocation',
       name: 'Dish Relocation',
       formLabel: 'Dish Relocation',
-      description: 'Moving an existing dish when you renovate, move rooms around or need a clearer line of sight.',
+      description: 'Move your dish to a better spot.',
       questions: null
     },
     {
       id: 'decoder-setup',
       name: 'Decoder Setup and Replacement',
       formLabel: 'Decoder Setup / Replacement',
-      description: 'Connecting and configuring compatible decoders and associated equipment.',
+      description: 'Connect or swap your decoder.',
       questions: null
     },
     {
       id: 'cable-repairs',
       name: 'Cable Repairs and Replacement',
       formLabel: 'Cable Repair / Replacement',
-      description: 'Finding and fixing damaged, loose or poorly installed cabling and connectors.',
+      description: 'Fix damaged or loose cables.',
       questions: null
     },
     {
@@ -131,7 +131,7 @@ window.PALESA_CONFIG = {
       name: 'CCTV Installation',
       showcase: 'CCTV',
       formLabel: 'CCTV Installation',
-      description: 'Security cameras positioned to cover the areas that matter, with cabling run neatly and the recorder set up so you can view footage.',
+      description: 'Cameras installed, wired and on your phone.',
       questions: 'cctv',
       featured: true,
       photo: { src: 'assets/photos/cctv.jpg', srcset: 'assets/photos/cctv-800.jpg 800w, assets/photos/cctv.jpg 1400w', width: 1400, height: 1050, position: '50% 45%', alt: 'Outdoor CCTV camera mounted below the roofline of a house' }
@@ -141,7 +141,7 @@ window.PALESA_CONFIG = {
       name: 'Projector and Screen Installation',
       showcase: 'Projectors',
       formLabel: 'Projector Installation',
-      description: 'Ceiling-mounted projectors and screens for a home cinema or lounge, with cables kept out of sight where possible.',
+      description: 'Projector and screen, mounted and connected.',
       questions: 'projector',
       featured: true,
       photo: { src: 'assets/photos/projector.jpg', srcset: 'assets/photos/projector-800.jpg 800w, assets/photos/projector.jpg 1400w', width: 1400, height: 1050, position: '50% 50%', alt: 'Ceiling-mounted projector and pull-down screen in a lounge' }
@@ -150,7 +150,7 @@ window.PALESA_CONFIG = {
       id: 'home-sound',
       name: 'Home Sound Installation',
       formLabel: 'Home Sound Installation',
-      description: 'Soundbars, surround sound and speaker setups connected to your TV or projector and tuned to the room.',
+      description: 'Soundbars, surround sound and speakers.',
       questions: 'sound'
     },
     {
@@ -159,14 +159,14 @@ window.PALESA_CONFIG = {
       showcase: 'TV Mounting',
       showcasePhoto: 'assets/photos/cabling-640.jpg',
       formLabel: 'TV Installation / Wall Mounting',
-      description: 'Mounting your television securely on a suitable wall, connecting it to your decoder and other devices, with cables kept tidy.',
+      description: 'TV mounted, connected and cables hidden.',
       questions: 'mount'
     },
     {
       id: 'commercial',
       name: 'Commercial Installations',
       formLabel: 'Commercial Installation',
-      description: 'Installations for offices, guesthouses, rental properties and other commercial premises.',
+      description: 'Offices, guesthouses and rentals.',
       questions: 'commercial'
     }
   ]

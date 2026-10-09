@@ -252,7 +252,9 @@
         else p = 1 - (el.getBoundingClientRect().top - hh) / (vh * 0.6);
         el.style.setProperty('--p', Math.max(0, Math.min(1, p)).toFixed(3));
       });
+      var small = window.innerWidth < 641;
       drifters.forEach(function (el) {
+        if (small) { el.style.transform = ''; return; }
         var r = el.getBoundingClientRect();
         if (r.bottom < -200 || r.top > vh + 200) return;
         var offset = (r.top + r.height / 2 - vh / 2) * parseFloat(el.getAttribute('data-speed'));
@@ -262,6 +264,17 @@
     window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
     window.addEventListener('resize', update);
     update();
+  }
+
+  /* Phones: the service card in the middle of the screen "pops" — text fades,
+     photo brightens, only the name stays. Scrolling on returns it to normal. */
+  function setupShowcaseFocus() {
+    var rows = $$('.show-row');
+    if (!rows.length || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { en.target.classList.toggle('is-active', en.isIntersecting); });
+    }, { rootMargin: '-42% 0px -42% 0px' });
+    rows.forEach(function (r) { io.observe(r); });
   }
 
   /* Statement: words light up as the paragraph scrolls through the viewport. */
@@ -333,6 +346,13 @@
       }
       revalidate(e.target);
       updateSummary();
+      // Step 2 is two taps when the service has no extra questions: move on once both are answered.
+      if (step === 2 && (e.target.name === 'property' || e.target.name === 'status')) {
+        var svc = findService(val('service'));
+        if (svc && !svc.questions && val('property') && val('status')) {
+          setTimeout(function () { if (step === 2 && validateStep(2)) goStep(3); }, 300);
+        }
+      }
     });
     form.addEventListener('input', function (e) { revalidate(e.target); });
     form.addEventListener('focusout', function (e) {
@@ -722,6 +742,7 @@
   setupPrivacy();
   setupStatement();
   setupScrollMotion();
+  setupShowcaseFocus();
   setupReveals();
   setupNotice();
 })();

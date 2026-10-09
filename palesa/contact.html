@@ -68,40 +68,11 @@
 
   <main id="main">
 
-    <!-- ============ PAGE HERO ============ -->
-    <section class="page-hero page-hero--compact" aria-labelledby="page-title">
-      <div class="container">
-        <p class="kicker hero-rise" style="--d:0">Contact</p>
-        <div class="hero-grid">
-          <h1 id="page-title" class="display">
-            <span class="line"><span class="hero-rise" style="--d:1">Request your installation quote.</span></span>
-            <span class="line"><span class="hero-rise soft" style="--d:2">Four quick steps.</span></span>
-          </h1>
-          <div class="hero-side hero-rise" style="--d:3"><p>Your request opens in WhatsApp, ready to send. Prefer to talk? Our details are right here too.</p></div>
-        </div>
-      </div>
-    </section>
-
 <!-- ============ QUOTE ============ -->
     <section class="quote quote-page" id="quote" aria-labelledby="quote-title">
       <div class="container quote-grid">
-        <div class="quote-aside">
-          <p class="kicker" data-reveal id="quote-title">Prefer to talk?</p>
-
-          <div class="live-summary" data-live-summary hidden>
-            <p class="ls-title">Your request so far</p>
-            <dl></dl>
-          </div>
-
-          <ul class="contact-direct contact-direct--top" data-contact-direct></ul>
-
-          <ol class="aside-steps" data-reveal style="--d:3">
-            <li><span>Answer four quick steps. Takes about a minute.</span></li>
-            <li><span>WhatsApp opens with your request written out. Press <strong>Send</strong>.</span></li>
-            <li><span>We reply to discuss the job and your quotation.</span></li>
-          </ol>
-        </div>
-
+        <div class="quote-main">
+          <h1 class="quote-h1" id="quote-title">Get a quote <span class="soft">in four taps.</span></h1>
         <form class="quote-card" id="quote-form" novalidate>
           <div class="stepper-wrap">
             <ol class="stepper" aria-label="Quote request steps">
@@ -116,7 +87,7 @@
           <!-- STEP 1 -->
           <section class="step-panel" data-step="1" aria-labelledby="s1-title">
             <h3 class="step-title" id="s1-title">What do you need?</h3>
-            <p class="step-sub">Pick the closest match. You can explain more later.</p>
+            <p class="step-sub">Tap the closest match.</p>
             <div class="tiles" role="radiogroup" aria-labelledby="s1-title" aria-describedby="err-service" data-required-group="service" data-service-tiles></div>
             <p class="field-error" id="err-service" data-error-for="service" hidden></p>
             <div class="step-nav">
@@ -366,7 +337,7 @@
           <!-- STEP 3 -->
           <section class="step-panel" data-step="3" aria-labelledby="s3-title">
             <h3 class="step-title" id="s3-title">Where and when?</h3>
-            <p class="step-sub">No street address needed yet. Your area is enough for a quotation.</p>
+            <p class="step-sub">Your area is enough. No street address needed.</p>
             <div class="field-row">
               <div class="field">
                 <label for="f-area">Your area <span class="req" aria-hidden="true">*</span></label>
@@ -406,7 +377,7 @@
           <!-- STEP 4 -->
           <section class="step-panel" data-step="4" aria-labelledby="s4-title">
             <h3 class="step-title" id="s4-title">Your details</h3>
-            <p class="step-sub">So we know who to reply to.</p>
+            <p class="step-sub">Last step.</p>
             <div class="field-row">
               <div class="field">
                 <label for="f-name">Full name <span class="req" aria-hidden="true">*</span></label>
@@ -421,10 +392,10 @@
             </div>
             <div class="field">
               <label for="f-details">Tell us about the job <span class="req" aria-hidden="true">*</span></label>
-              <textarea id="f-details" name="details" rows="4" required maxlength="1200" placeholder="For example: I need a new installation in two rooms, or my current setup has no signal." aria-describedby="err-details"></textarea>
+              <textarea id="f-details" name="details" rows="4" required maxlength="1200" placeholder="e.g. New installation in two rooms" aria-describedby="err-details"></textarea>
               <p class="field-error" id="err-details" data-error-for="details" hidden></p>
             </div>
-            <p class="privacy-inline">Your details are only used to respond to your quotation request. Nothing is stored on this website. <button type="button" class="link-btn" data-open-privacy>Privacy notice</button></p>
+            <p class="privacy-inline">We only use your details to reply. <button type="button" class="link-btn" data-open-privacy>Privacy</button></p>
             <p class="form-summary" id="form-summary" role="alert" hidden></p>
             <div class="step-nav">
               <button type="button" class="btn btn-text" data-back><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back</span></button>
@@ -433,11 +404,31 @@
                 <span>Send on WhatsApp</span>
               </button>
             </div>
-            <p class="submit-note">This opens WhatsApp with your request written out. It's only sent once you press <strong>Send</strong> in WhatsApp.</p>
+            <p class="submit-note">WhatsApp opens. Press <strong>Send</strong> there to finish.</p>
           </section>
 
           <div class="form-result" id="form-result" tabindex="-1" hidden></div>
         </form>
+        </div>
+
+        <div class="quote-aside">
+          
+          <div class="live-summary" data-live-summary hidden>
+            <p class="ls-title">Your request so far</p>
+            <dl></dl>
+          </div>
+
+          <p class="kicker">Prefer to talk?</p>
+          <ul class="contact-direct contact-direct--top" data-contact-direct></ul>
+
+          <p class="kicker aside-kicker">What happens next</p>
+          <ol class="aside-steps">
+            <li><span>Tap through four quick steps.</span></li>
+            <li><span>Press <strong>Send</strong> in WhatsApp.</span></li>
+            <li><span>We reply with your quote.</span></li>
+          </ol>
+        </div>
+
       </div>
     </section>
 
