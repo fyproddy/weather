@@ -24,7 +24,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/styles.css">
 
   <script>
@@ -70,13 +70,20 @@
 
     <!-- ============ PAGE HERO ============ -->
     <section class="page-hero" aria-labelledby="page-title">
-      <figure class="hero-media photo">
-        <img src="assets/photos/new-installation.jpg" srcset="assets/photos/new-installation-800.jpg 800w, assets/photos/new-installation.jpg 1400w" sizes="100vw" width="1400" height="1050" alt="Installer setting up a wall-mounted DStv satellite dish" fetchpriority="high">
-      </figure>
       <div class="container">
-        <p class="eyebrow eyebrow-light hero-rise" style="--d:0">About Palesa Visuals</p>
-        <h1 id="page-title"><span class="line"><span class="hero-rise" style="--d:1">Good Installation Makes the Difference.</span></span></h1>
-        <p class="page-intro hero-rise" style="--d:2">A setup that is rushed tends to come back as a signal problem. Here is how we make sure yours keeps working.</p>
+        <p class="kicker hero-rise" style="--d:0">About Palesa Visuals</p>
+        <div class="hero-grid">
+          <h1 id="page-title" class="display">
+            <span class="line"><span class="hero-rise" style="--d:1">Good installation</span></span>
+            <span class="line"><span class="hero-rise soft" style="--d:2">makes the difference.</span></span>
+          </h1>
+          <div class="hero-side hero-rise" style="--d:3"><p>A setup that is rushed tends to come back as a signal problem. Here is how we make sure yours keeps working.</p></div>
+        </div>
+      </div>
+      <div class="expand expand-page" data-expand>
+        <figure class="expand-media photo">
+          <img src="assets/photos/new-installation.jpg" srcset="assets/photos/new-installation-800.jpg 800w, assets/photos/new-installation.jpg 1400w" sizes="100vw" width="1400" height="933" alt="Installer setting up a wall-mounted DStv satellite dish" fetchpriority="high" style="object-position:62% 50%">
+        </figure>
       </div>
     </section>
 
@@ -96,7 +103,7 @@
       <div class="container why-grid">
         <div class="why-side">
           <p class="eyebrow eyebrow-light" data-reveal>Why Palesa Visuals</p>
-          <h2 id="why-title" data-reveal style="--d:1">What you can expect from us.</h2>
+          <h2 id="why-title" data-reveal style="--d:1">What you can expect <span class="soft">from us.</span></h2>
           <p class="why-intro" data-reveal style="--d:2">A setup that is rushed tends to come back as a signal problem. We take the time to assess the job, explain what is needed and finish the work neatly, so your setup keeps working long after we've gone.</p>
           <figure class="why-media photo reveal-img">
             <img src="assets/photos/cabling.jpg" srcset="assets/photos/cabling-640.jpg 640w, assets/photos/cabling.jpg 1100w" sizes="(max-width: 960px) 100vw, 40vw" width="1100" height="1650" loading="lazy" alt="Wall-mounted TV with its cables clipped neatly down the wall">
@@ -139,60 +146,47 @@
       </div>
     </section>
 
-<!-- ============ HOW IT WORKS ============ -->
-    <section class="section process" id="how-it-works" aria-labelledby="process-title">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow" data-reveal>How It Works</p>
-          <h2 id="process-title" data-reveal style="--d:1">Getting Connected Is Simple.</h2>
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section how" id="how-it-works" aria-labelledby="how-title">
+      <div class="container how-grid">
+        <div class="how-side">
+          <p class="kicker" data-reveal>How it works</p>
+          <h2 id="how-title" data-reveal style="--d:1">Getting connected. <span class="soft">Made simple.</span></h2>
+          <a class="btn btn-primary" href="contact.html" data-reveal style="--d:2"><span>Start your quote</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <ol class="steps" data-steps>
-          <li class="step" data-reveal style="--d:0">
-            <span class="step-num" aria-hidden="true">01</span>
-            <h3>Tell Us What You Need</h3>
-            <p>Choose your service, provide your location and explain the installation or problem.</p>
+          <li class="step" data-reveal>
+            <span class="step-n">01</span>
+            <p><strong>Tell us what you need.</strong> <span class="soft">Choose your service, give us your area and explain the installation or problem.</span></p>
           </li>
           <li class="step" data-reveal style="--d:2">
-            <span class="step-num" aria-hidden="true">02</span>
-            <h3>Receive Your Quotation</h3>
-            <p>We review your requirements and contact you to discuss the work and applicable costs.</p>
+            <span class="step-n">02</span>
+            <p><strong>Receive your quotation.</strong> <span class="soft">We review your requirements and contact you to discuss the work and the costs involved.</span></p>
           </li>
           <li class="step" data-reveal style="--d:4">
-            <span class="step-num" aria-hidden="true">03</span>
-            <h3>Arrange Your Installation</h3>
-            <p>Once the quotation and appointment are confirmed, the installation can be arranged.</p>
+            <span class="step-n">03</span>
+            <p><strong>Arrange your installation.</strong> <span class="soft">Once the quotation and appointment are confirmed, the installation can be arranged.</span></p>
           </li>
         </ol>
-        <p class="process-note" data-reveal>Sending a request doesn't commit you to anything. Nothing is booked until you've agreed to the quotation and an appointment.</p>
       </div>
     </section>
 
-<!-- ============ FINAL CTA ============ -->
-    <section class="cta" id="contact" aria-labelledby="cta-title">
-      <svg class="cta-waves" viewBox="0 0 400 400" aria-hidden="true">
-        <path d="M60 340a80 80 0 0 1 80-80"/>
-        <path d="M60 340a150 150 0 0 1 150-150"/>
-        <path d="M60 340a220 220 0 0 1 220-220"/>
-        <path d="M60 340a290 290 0 0 1 290-290"/>
-      </svg>
-      <div class="container cta-inner">
-        <div>
-          <p class="eyebrow eyebrow-light" data-reveal>Get in touch</p>
-          <h2 id="cta-title" data-reveal style="--d:1">Need an Installation or Have a Signal Problem?</h2>
-          <p class="cta-text" data-reveal style="--d:2">Tell us what you need, and let's get your quotation started.</p>
-          <div class="btn-row" data-reveal style="--d:3">
-            <a class="btn btn-light btn-lg" href="contact.html"><span>Request a Quote</span>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <a class="btn btn-ghost-light btn-lg" href="contact.html" data-whatsapp>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
-              <span>Chat on WhatsApp</span>
-            </a>
+    <!-- ============ FINAL CTA ============ -->
+    <section class="cta-photo" id="contact" aria-labelledby="cta-title">
+      <div class="expand" data-expand>
+        <figure class="expand-media photo">
+          <img src="assets/photos/cctv.jpg" srcset="assets/photos/cctv-800.jpg 800w, assets/photos/cctv.jpg 1400w" sizes="100vw" width="1400" height="1050" alt="" loading="lazy">
+        </figure>
+        <div class="cta-photo-copy">
+          <h2 id="cta-title" data-reveal>Need an installation? <span class="soft">Let's get you connected.</span></h2>
+          <div class="btn-row" data-reveal style="--d:2">
+            <a class="btn btn-light" href="contact.html"><span>Request a Quote</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-ghost-light" href="contact.html" data-whatsapp><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg><span>Chat on WhatsApp</span></a>
           </div>
         </div>
-        <ul class="cta-contact" data-cta-contact data-reveal style="--d:3"></ul>
       </div>
     </section>
-  </main>
+  
 
   </main>
 

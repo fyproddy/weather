@@ -24,7 +24,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/styles.css">
 
   <script>
@@ -69,14 +69,16 @@
   <main id="main">
 
     <!-- ============ PAGE HERO ============ -->
-    <section class="page-hero" aria-labelledby="page-title">
-      <figure class="hero-media photo">
-        <img src="assets/photos/tv-room.jpg" srcset="assets/photos/tv-room-800.jpg 800w, assets/photos/tv-room.jpg 1400w" sizes="100vw" width="1400" height="1050" alt="Wall-mounted television above a TV cabinet in a living room" fetchpriority="high">
-      </figure>
+    <section class="page-hero page-hero--compact" aria-labelledby="page-title">
       <div class="container">
-        <p class="eyebrow eyebrow-light hero-rise" style="--d:0">Contact</p>
-        <h1 id="page-title"><span class="line"><span class="hero-rise" style="--d:1">Request Your Installation Quote</span></span></h1>
-        <p class="page-intro hero-rise" style="--d:2">Four quick steps, then your request opens in WhatsApp, ready to send. Prefer to talk? Our details are right here too.</p>
+        <p class="kicker hero-rise" style="--d:0">Contact</p>
+        <div class="hero-grid">
+          <h1 id="page-title" class="display">
+            <span class="line"><span class="hero-rise" style="--d:1">Request your installation quote.</span></span>
+            <span class="line"><span class="hero-rise soft" style="--d:2">Four quick steps.</span></span>
+          </h1>
+          <div class="hero-side hero-rise" style="--d:3"><p>Your request opens in WhatsApp, ready to send. Prefer to talk? Our details are right here too.</p></div>
+        </div>
       </div>
     </section>
 
@@ -84,16 +86,14 @@
     <section class="quote quote-page" id="quote" aria-labelledby="quote-title">
       <div class="container quote-grid">
         <div class="quote-aside">
-          <p class="eyebrow" data-reveal>Quotation</p>
-          <h2 id="quote-title" data-reveal style="--d:1">Tell us about the job</h2>
-          <p class="quote-intro" data-reveal style="--d:2">Give us a few details about your installation. We'll use them to understand the job and follow up with you on WhatsApp.</p>
+          <p class="kicker" data-reveal id="quote-title">Prefer to talk?</p>
 
           <div class="live-summary" data-live-summary hidden>
             <p class="ls-title">Your request so far</p>
             <dl></dl>
           </div>
 
-          <ul class="contact-direct" data-contact-direct></ul>
+          <ul class="contact-direct contact-direct--top" data-contact-direct></ul>
 
           <ol class="aside-steps" data-reveal style="--d:3">
             <li><span>Answer four quick steps. Takes about a minute.</span></li>

@@ -24,7 +24,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="preload" as="image" href="assets/photos/hero.jpg" imagesrcset="assets/photos/hero-960.jpg 960w, assets/photos/hero.jpg 1920w" imagesizes="100vw">
 
@@ -69,35 +69,31 @@
 
   <main id="main">
 
-<!-- ============ HERO ============ -->
+    <!-- ============ HERO ============ -->
     <section class="hero" id="home" aria-labelledby="hero-title">
-      <figure class="hero-media photo">
-        <img src="assets/photos/hero.jpg" srcset="assets/photos/hero-960.jpg 960w, assets/photos/hero.jpg 1920w" sizes="100vw" width="1920" height="1206" alt="Technician tightening the mounting bracket of a satellite dish on a rooftop" fetchpriority="high">
-        <span class="photo-note">Hero photo — add assets/photos/hero.jpg</span>
-      </figure>
-
-      <div class="container hero-inner">
-        <div class="hero-copy">
-          <p class="eyebrow eyebrow-light hero-rise" style="--d:0">DStv Installation &amp; Technical Services</p>
-          <h1 id="hero-title">
-            <span class="line"><span class="hero-rise" style="--d:1">Reliable DStv</span></span>
-            <span class="line"><span class="hero-rise" style="--d:2">Installation.</span></span>
-            <span class="line accent"><span class="hero-rise" style="--d:3">Done Properly.</span></span>
+      <div class="container">
+        <p class="kicker hero-rise" style="--d:0">DStv Installation &amp; Technical Services <span class="kicker-sep">/</span> <span data-area-kicker>Johannesburg</span></p>
+        <div class="hero-grid">
+          <h1 id="hero-title" class="display">
+            <span class="line"><span class="hero-rise" style="--d:1">Reliable DStv installation.</span></span>
+            <span class="line"><span class="hero-rise soft" style="--d:2">Done properly.</span></span>
           </h1>
-          <p class="lead hero-rise" style="--d:4">From new DStv installations and signal problems to TV mounting, CCTV, projectors and home sound, Palesa Visuals helps you get your setup connected and working properly.</p>
-          <div class="btn-row hero-rise" style="--d:5">
-            <a class="btn btn-primary btn-lg" href="contact.html"><span>Get a Quote</span>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-            <a class="btn btn-ghost-light btn-lg" href="contact.html" data-whatsapp>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
-              <span>Chat on WhatsApp</span>
-            </a>
+          <div class="hero-side hero-rise" style="--d:3">
+            <p>From new DStv installations and signal problems to TV mounting, CCTV, projectors and home sound, we get your setup connected and working properly.</p>
+            <div class="btn-row">
+              <a class="btn btn-primary" href="contact.html"><span>Get a Quote</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <a class="btn btn-outline" href="contact.html" data-whatsapp><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg><span>WhatsApp</span></a>
+            </div>
           </div>
-          <p class="hero-areas hero-rise" style="--d:6" data-areas-line hidden></p>
         </div>
+      </div>
 
-        <aside class="signal-card hero-rise" style="--d:7" aria-label="Our testing commitment">
+      <div class="expand" data-expand>
+        <figure class="expand-media photo">
+          <img src="assets/photos/hero.jpg" srcset="assets/photos/hero-960.jpg 960w, assets/photos/hero.jpg 1920w" sizes="100vw" width="1920" height="1206" alt="Technician tightening the mounting bracket of a satellite dish on a rooftop" fetchpriority="high">
+          <span class="photo-note">Hero photo — add assets/photos/hero.jpg</span>
+        </figure>
+        <aside class="signal-card" aria-label="Our testing commitment">
           <svg class="signal-icon" viewBox="0 0 48 48" aria-hidden="true">
             <circle cx="12" cy="36" r="4"/>
             <path class="arc a1" d="M12 24a12 12 0 0 1 12 12"/>
@@ -110,138 +106,95 @@
           </div>
         </aside>
       </div>
-
-      <a class="scroll-cue" href="#intro" aria-label="Scroll down"><span></span></a>
     </section>
 
-<!-- ============ SERVICE MARQUEE ============ -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track" data-marquee></div>
-    </div>
-
-<!-- ============ STATEMENT / ABOUT ============ -->
-    <section class="statement" id="intro" aria-labelledby="about-title">
-      <div class="container statement-grid">
-        <div class="statement-side">
-          <p class="eyebrow" id="about-title">About Palesa Visuals</p>
-          <p class="statement-note" data-reveal>Installations and repairs for homes and businesses across Johannesburg and surrounding areas.</p>
-          <a class="text-link" href="about.html" data-reveal>More about us →</a>
+    <!-- ============ INTRO ============ -->
+    <section class="intro" id="intro" aria-labelledby="intro-label">
+      <div class="container intro-grid">
+        <p class="kicker" id="intro-label" data-reveal>About us</p>
+        <div>
+          <p class="statement-text" data-words>It isn't just a dish on the roof. It's the match on Saturday, the series the whole house is watching, and a signal that holds when the weather turns. We assess every job first, explain the work upfront and test every TV point before we leave.</p>
+          <a class="text-link" href="about.html" data-reveal>More about how we work <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-        <p class="statement-text" data-words>Palesa Visuals installs, aligns and repairs DStv, and sets up the TVs, cameras, projectors and sound that go with it. Every job is assessed first, quoted clearly and tested before we leave.</p>
+      </div>
+
+      <div class="strip" aria-hidden="true">
+        <figure class="strip-item s1 photo" data-speed="-0.06"><img src="assets/photos/new-installation-800.jpg" width="800" height="533" alt="" loading="lazy" style="object-position:62% 50%"></figure>
+        <figure class="strip-item s2 photo" data-speed="0.08"><img src="assets/photos/cabling-640.jpg" width="640" height="960" alt="" loading="lazy" style="object-position:40% 30%"></figure>
+        <figure class="strip-item s3 photo" data-speed="-0.03"><img src="assets/photos/tv-room-800.jpg" width="800" height="600" alt="" loading="lazy" style="object-position:60% 45%"></figure>
       </div>
     </section>
 
-<!-- ============ SERVICES ============ -->
-    <section class="section services" id="services" aria-labelledby="services-title">
-      <div class="container">
-        <div class="section-head split">
-          <div>
-            <p class="eyebrow" data-reveal>Services</p>
-            <h2 id="services-title" data-reveal style="--d:1">Installation and Support You Can Count On</h2>
-          </div>
-          <p class="section-intro" data-reveal style="--d:2">Tell us what you need, and we'll help you work out the right solution for your setup.</p>
-        </div>
-
-        <div class="bento" data-featured-services></div>
-
-        <div class="more-row" data-reveal>
-          <p>Plus signal repairs, dish alignment, extra TV points, decoders, cabling, home sound, TV mounting and commercial installations.</p>
-          <a class="btn btn-outline btn-lg" href="services.html"><span>View all services</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-      </div>
-    </section>
-
-<!-- ============ WHY ============ -->
-    <section class="why" id="why" aria-labelledby="why-title">
-      <div class="container why-grid">
-        <div class="why-side">
-          <p class="eyebrow eyebrow-light" data-reveal>Why Palesa Visuals</p>
-          <h2 id="why-title" data-reveal style="--d:1">Good Installation Makes the Difference.</h2>
-          <p class="why-intro" data-reveal style="--d:2">A setup that is rushed tends to come back as a signal problem. We take the time to assess the job, explain what is needed and finish the work neatly, so your setup keeps working long after we've gone.</p>
-          <figure class="why-media photo reveal-img">
-            <img src="assets/photos/cabling.jpg" srcset="assets/photos/cabling-640.jpg 640w, assets/photos/cabling.jpg 1100w" sizes="(max-width: 960px) 100vw, 40vw" width="1100" height="1650" loading="lazy" alt="Wall-mounted TV with its cables clipped neatly down the wall">
-            <span class="photo-note">About photo — add assets/photos/cabling.jpg</span>
-          </figure>
-        </div>
-
-        <div class="why-list">
-        <ol class="commitments">
-          <li data-reveal>
-            <span class="c-num" aria-hidden="true">01</span>
-            <div><h3>A proper assessment first</h3>
-            <p>We look at your property, the dish position and your existing equipment before recommending anything.</p></div>
-          </li>
-          <li data-reveal>
-            <span class="c-num" aria-hidden="true">02</span>
-            <div><h3>Careful cable routing and finishing</h3>
-            <p>Cables are routed and secured neatly, not left hanging across walls and windows.</p></div>
-          </li>
-          <li data-reveal>
-            <span class="c-num" aria-hidden="true">03</span>
-            <div><h3>Tested before we finish</h3>
-            <p>Signal and picture are checked on every connected TV point before the job is complete.</p></div>
-          </li>
-        </ol>
-        <a class="btn btn-ghost-light btn-lg why-more" href="about.html" data-reveal><span>How we work</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-      </div>
-    </section>
-
-<!-- ============ HOW IT WORKS ============ -->
-    <section class="section process" id="how-it-works" aria-labelledby="process-title">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow" data-reveal>How It Works</p>
-          <h2 id="process-title" data-reveal style="--d:1">Getting Connected Is Simple.</h2>
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section how" id="how-it-works" aria-labelledby="how-title">
+      <div class="container how-grid">
+        <div class="how-side">
+          <p class="kicker" data-reveal>How it works</p>
+          <h2 id="how-title" data-reveal style="--d:1">Getting connected. <span class="soft">Made simple.</span></h2>
+          <a class="btn btn-primary" href="contact.html" data-reveal style="--d:2"><span>Start your quote</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <ol class="steps" data-steps>
-          <li class="step" data-reveal style="--d:0">
-            <span class="step-num" aria-hidden="true">01</span>
-            <h3>Tell Us What You Need</h3>
-            <p>Choose your service, provide your location and explain the installation or problem.</p>
+          <li class="step" data-reveal>
+            <span class="step-n">01</span>
+            <p><strong>Tell us what you need.</strong> <span class="soft">Choose your service, give us your area and explain the installation or problem.</span></p>
           </li>
           <li class="step" data-reveal style="--d:2">
-            <span class="step-num" aria-hidden="true">02</span>
-            <h3>Receive Your Quotation</h3>
-            <p>We review your requirements and contact you to discuss the work and applicable costs.</p>
+            <span class="step-n">02</span>
+            <p><strong>Receive your quotation.</strong> <span class="soft">We review your requirements and contact you to discuss the work and the costs involved.</span></p>
           </li>
           <li class="step" data-reveal style="--d:4">
-            <span class="step-num" aria-hidden="true">03</span>
-            <h3>Arrange Your Installation</h3>
-            <p>Once the quotation and appointment are confirmed, the installation can be arranged.</p>
+            <span class="step-n">03</span>
+            <p><strong>Arrange your installation.</strong> <span class="soft">Once the quotation and appointment are confirmed, the installation can be arranged.</span></p>
           </li>
         </ol>
-        <p class="process-note" data-reveal>Sending a request doesn't commit you to anything. Nothing is booked until you've agreed to the quotation and an appointment.</p>
       </div>
     </section>
 
-<!-- ============ FINAL CTA ============ -->
-    <section class="cta" id="contact" aria-labelledby="cta-title">
-      <svg class="cta-waves" viewBox="0 0 400 400" aria-hidden="true">
-        <path d="M60 340a80 80 0 0 1 80-80"/>
-        <path d="M60 340a150 150 0 0 1 150-150"/>
-        <path d="M60 340a220 220 0 0 1 220-220"/>
-        <path d="M60 340a290 290 0 0 1 290-290"/>
-      </svg>
-      <div class="container cta-inner">
-        <div>
-          <p class="eyebrow eyebrow-light" data-reveal>Get in touch</p>
-          <h2 id="cta-title" data-reveal style="--d:1">Need an Installation or Have a Signal Problem?</h2>
-          <p class="cta-text" data-reveal style="--d:2">Tell us what you need, and let's get your quotation started.</p>
-          <div class="btn-row" data-reveal style="--d:3">
-            <a class="btn btn-light btn-lg" href="contact.html"><span>Request a Quote</span>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <a class="btn btn-ghost-light btn-lg" href="contact.html" data-whatsapp>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
-              <span>Chat on WhatsApp</span>
-            </a>
+    <!-- ============ SERVICES SHOWCASE ============ -->
+    <section class="showcase" id="services" aria-labelledby="showcase-title">
+      <div class="container">
+        <div class="showcase-head">
+          <p class="kicker kicker-light" data-reveal>Services</p>
+          <h2 id="showcase-title" data-reveal style="--d:1">How Palesa Visuals <span class="soft">can help you.</span></h2>
+        </div>
+        <ul class="show-list" data-showcase></ul>
+        <div class="showcase-foot" data-reveal>
+          <p>Also: extra TV points, dish alignment and relocation, decoders, cabling, home sound and commercial installations.</p>
+          <a class="btn btn-light" href="services.html"><span>All services</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHY ============ -->
+    <section class="section why-lite" aria-labelledby="why-title">
+      <div class="container">
+        <div class="why-head">
+          <p class="kicker" data-reveal>Why Palesa Visuals</p>
+          <h2 id="why-title" data-reveal style="--d:1">Good installation <span class="soft">makes the difference.</span></h2>
+        </div>
+        <ol class="why-cols">
+          <li data-reveal><span class="step-n">01</span><h3>Assessed first</h3><p>We look at your property, the dish position and your existing equipment before recommending anything.</p></li>
+          <li data-reveal style="--d:2"><span class="step-n">02</span><h3>Finished neatly</h3><p>Cables are routed and secured properly, not left hanging across walls and windows.</p></li>
+          <li data-reveal style="--d:4"><span class="step-n">03</span><h3>Tested before we go</h3><p>Signal and picture are checked on every connected TV point before the job is complete.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="cta-photo" id="contact" aria-labelledby="cta-title">
+      <div class="expand" data-expand>
+        <figure class="expand-media photo">
+          <img src="assets/photos/cctv.jpg" srcset="assets/photos/cctv-800.jpg 800w, assets/photos/cctv.jpg 1400w" sizes="100vw" width="1400" height="1050" alt="" loading="lazy" style="object-position:50% 40%">
+        </figure>
+        <div class="cta-photo-copy">
+          <h2 id="cta-title" data-reveal>Need an installation? <span class="soft">Let's get you connected.</span></h2>
+          <div class="btn-row" data-reveal style="--d:2">
+            <a class="btn btn-light" href="contact.html"><span>Request a Quote</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-ghost-light" href="contact.html" data-whatsapp><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg><span>Chat on WhatsApp</span></a>
           </div>
         </div>
-        <ul class="cta-contact" data-cta-contact data-reveal style="--d:3"></ul>
       </div>
     </section>
-  </main>
-
   </main>
 
   <!-- ============ FOOTER ============ -->

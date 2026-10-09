@@ -56,12 +56,15 @@ window.PALESA_CONFIG = {
    *  description – one or two plain sentences
    *  questions   – extra form questions: 'new' | 'signal' | 'multiroom' | 'mount' | 'commercial' | null
    *  photo       – shown for featured services; file lives in assets/photos/
-   *  featured    – featured services get a large photo block (up to three; needs a photo)
+   *  featured    – featured services get a large photo card on the Services page (up to four; needs a photo)
+   *  showcase    – short name for the big hover list on the home page (leave out to skip)
+   *  showcasePhoto – photo revealed on hover in that list (defaults to the service photo)
    */
   services: [
     {
       id: 'new-installation',
       name: 'New DStv Installation',
+      showcase: 'DStv Installation',
       formLabel: 'New DStv Installation',
       description: 'A new satellite dish and decoder set up for your home or business, with the dish positioned, cabling routed and the system tested before we leave.',
       questions: 'new',
@@ -71,6 +74,8 @@ window.PALESA_CONFIG = {
     {
       id: 'signal-problems',
       name: 'DStv Signal Problems',
+      showcase: 'Signal Repairs',
+      showcasePhoto: 'assets/photos/hero-960.jpg',
       formLabel: 'Signal Problem / No Signal',
       description: 'Lost signal, poor reception or channels dropping out. We check the dish alignment, LNB and cabling to find where the fault is.',
       questions: 'signal',
@@ -79,6 +84,7 @@ window.PALESA_CONFIG = {
     {
       id: 'extra-view',
       name: 'Extra View Installation',
+      showcase: 'Extra View',
       formLabel: 'Extra View',
       description: 'Setting up compatible decoders so you can watch in more than one room, depending on your equipment and configuration.',
       questions: 'multiroom',
@@ -123,6 +129,7 @@ window.PALESA_CONFIG = {
     {
       id: 'cctv',
       name: 'CCTV Installation',
+      showcase: 'CCTV',
       formLabel: 'CCTV Installation',
       description: 'Security cameras positioned to cover the areas that matter, with cabling run neatly and the recorder set up so you can view footage.',
       questions: 'cctv',
@@ -132,6 +139,7 @@ window.PALESA_CONFIG = {
     {
       id: 'projector',
       name: 'Projector and Screen Installation',
+      showcase: 'Projectors',
       formLabel: 'Projector Installation',
       description: 'Ceiling-mounted projectors and screens for a home cinema or lounge, with cables kept out of sight where possible.',
       questions: 'projector',
@@ -148,6 +156,8 @@ window.PALESA_CONFIG = {
     {
       id: 'tv-wall-mounting',
       name: 'TV Installation and Wall Mounting',
+      showcase: 'TV Mounting',
+      showcasePhoto: 'assets/photos/cabling-640.jpg',
       formLabel: 'TV Installation / Wall Mounting',
       description: 'Mounting your television securely on a suitable wall, connecting it to your decoder and other devices, with cables kept tidy.',
       questions: 'mount'

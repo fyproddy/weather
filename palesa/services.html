@@ -24,7 +24,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/styles.css">
 
   <script>
@@ -70,13 +70,20 @@
 
     <!-- ============ PAGE HERO ============ -->
     <section class="page-hero" aria-labelledby="page-title">
-      <figure class="hero-media photo">
-        <img src="assets/photos/cctv.jpg" srcset="assets/photos/cctv-800.jpg 800w, assets/photos/cctv.jpg 1400w" sizes="100vw" width="1400" height="1050" alt="Outdoor CCTV camera mounted below the roofline of a house" fetchpriority="high">
-      </figure>
       <div class="container">
-        <p class="eyebrow eyebrow-light hero-rise" style="--d:0">Services</p>
-        <h1 id="page-title"><span class="line"><span class="hero-rise" style="--d:1">Installation and Support You Can Count On</span></span></h1>
-        <p class="page-intro hero-rise" style="--d:2">Tell us what you need, and we'll help you work out the right solution for your setup.</p>
+        <p class="kicker hero-rise" style="--d:0">Services</p>
+        <div class="hero-grid">
+          <h1 id="page-title" class="display">
+            <span class="line"><span class="hero-rise" style="--d:1">Installation and support</span></span>
+            <span class="line"><span class="hero-rise soft" style="--d:2">you can count on.</span></span>
+          </h1>
+          <div class="hero-side hero-rise" style="--d:3"><p>Tell us what you need, and we'll help you work out the right solution for your setup.</p></div>
+        </div>
+      </div>
+      <div class="expand expand-page" data-expand>
+        <figure class="expand-media photo">
+          <img src="assets/photos/hero.jpg" srcset="assets/photos/hero-960.jpg 960w, assets/photos/hero.jpg 1920w" sizes="100vw" width="1920" height="1206" alt="Technician tightening the mounting bracket of a satellite dish on a rooftop" fetchpriority="high" style="object-position:35% 50%">
+        </figure>
       </div>
     </section>
 
@@ -96,37 +103,22 @@
       </div>
     </section>
 
-<!-- ============ SERVICE MARQUEE ============ -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track" data-marquee></div>
-    </div>
-
-<!-- ============ FINAL CTA ============ -->
-    <section class="cta" id="contact" aria-labelledby="cta-title">
-      <svg class="cta-waves" viewBox="0 0 400 400" aria-hidden="true">
-        <path d="M60 340a80 80 0 0 1 80-80"/>
-        <path d="M60 340a150 150 0 0 1 150-150"/>
-        <path d="M60 340a220 220 0 0 1 220-220"/>
-        <path d="M60 340a290 290 0 0 1 290-290"/>
-      </svg>
-      <div class="container cta-inner">
-        <div>
-          <p class="eyebrow eyebrow-light" data-reveal>Get in touch</p>
-          <h2 id="cta-title" data-reveal style="--d:1">Need an Installation or Have a Signal Problem?</h2>
-          <p class="cta-text" data-reveal style="--d:2">Tell us what you need, and let's get your quotation started.</p>
-          <div class="btn-row" data-reveal style="--d:3">
-            <a class="btn btn-light btn-lg" href="contact.html"><span>Request a Quote</span>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <a class="btn btn-ghost-light btn-lg" href="contact.html" data-whatsapp>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
-              <span>Chat on WhatsApp</span>
-            </a>
+    <!-- ============ FINAL CTA ============ -->
+    <section class="cta-photo" id="contact" aria-labelledby="cta-title">
+      <div class="expand" data-expand>
+        <figure class="expand-media photo">
+          <img src="assets/photos/cabling.jpg" srcset="assets/photos/cabling-640.jpg 640w, assets/photos/cabling.jpg 1100w" sizes="100vw" width="1100" height="1650" alt="" loading="lazy" style="object-position:50% 30%">
+        </figure>
+        <div class="cta-photo-copy">
+          <h2 id="cta-title" data-reveal>Need an installation? <span class="soft">Let's get you connected.</span></h2>
+          <div class="btn-row" data-reveal style="--d:2">
+            <a class="btn btn-light" href="contact.html"><span>Request a Quote</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-ghost-light" href="contact.html" data-whatsapp><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg><span>Chat on WhatsApp</span></a>
           </div>
         </div>
-        <ul class="cta-contact" data-cta-contact data-reveal style="--d:3"></ul>
       </div>
     </section>
-  </main>
+  
 
   </main>
 
