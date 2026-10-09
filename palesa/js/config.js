@@ -12,13 +12,13 @@ window.PALESA_CONFIG = {
 
   // WhatsApp number in international format, digits only — no "+", spaces or dashes.
   // Example format: South African mobile 082 123 4567 becomes '27821234567'.
-  whatsappNumber: '',
+  whatsappNumber: '27684987944',
 
   // Telephone number exactly as it should be displayed, e.g. '082 123 4567'. Leave '' to hide.
-  phoneNumber: '',
+  phoneNumber: '068 498 7944',
 
   // Business email address. Leave '' to hide.
-  email: '',
+  email: 'info@palesavisuals.co.za',
 
   // Confirmed service areas, e.g. ['Soweto', 'Johannesburg South', 'Roodepoort'].
   // Leave empty until confirmed — the site will ask customers for their area instead.

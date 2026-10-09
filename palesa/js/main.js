@@ -79,8 +79,8 @@
   /* ---------------- Contact details, areas, meta ---------------- */
   function renderContact() {
     var items = [];
-    if (waConfigured) items.push({ k: 'WhatsApp', v: CFG.phoneNumber && digits(CFG.phoneNumber) === waNumber ? CFG.phoneNumber : '+' + waNumber, href: waUrl(CFG.whatsappGreeting) , ext: true });
-    if (CFG.phoneNumber) items.push({ k: 'Phone', v: CFG.phoneNumber, href: 'tel:' + String(CFG.phoneNumber).replace(/[^\d+]/g, '') });
+    if (waConfigured) items.push({ k: 'WhatsApp', v: waDisplay(), href: waUrl(CFG.whatsappGreeting) , ext: true });
+    if (CFG.phoneNumber) items.push({ k: 'Phone', v: CFG.phoneNumber, href: telHref(CFG.phoneNumber) });
     if (CFG.email) items.push({ k: 'Email', v: CFG.email, href: 'mailto:' + CFG.email });
     if (CFG.businessHours) items.push({ k: 'Hours', v: CFG.businessHours });
     if (areas().length) items.push({ k: 'Service areas', v: areas().join(', ') });
@@ -103,6 +103,9 @@
     }
     $('[data-year]').textContent = new Date().getFullYear();
   }
+  // tel: links work best in +27 international format.
+  function telHref(n) { return 'tel:+' + digits(n); }
+  function waDisplay() { return CFG.phoneNumber && digits(CFG.phoneNumber) === waNumber ? CFG.phoneNumber : '+' + waNumber; }
   function areas() { return (CFG.serviceAreas || []).filter(Boolean); }
   function digits(s) { var d = String(s).replace(/\D/g, ''); return d.charAt(0) === '0' ? '27' + d.slice(1) : d; }
   function listJoin(arr) { return arr.length < 2 ? arr.join('') : arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length - 1]; }
@@ -413,7 +416,7 @@
 
   function showResult(kind, message, url) {
     var fallbackContact = [];
-    if (CFG.phoneNumber) fallbackContact.push('call us on <a href="tel:' + esc(String(CFG.phoneNumber).replace(/[^\d+]/g, '')) + '">' + esc(CFG.phoneNumber) + '</a>');
+    if (CFG.phoneNumber) fallbackContact.push('call us on <a href="' + esc(telHref(CFG.phoneNumber)) + '">' + esc(CFG.phoneNumber) + '</a>');
     if (CFG.email) fallbackContact.push('email <a href="mailto:' + esc(CFG.email) + '?subject=' + encodeURIComponent('Quotation request') + '&body=' + encodeURIComponent(message) + '">' + esc(CFG.email) + '</a>');
 
     var html;
@@ -426,7 +429,7 @@
       result.classList.remove('is-warning');
       html = '<h3>Almost done — press Send in WhatsApp</h3>' +
         '<p>WhatsApp should now be open with your quotation request written out. <strong>Your request is only sent once you press Send in WhatsApp.</strong></p>' +
-        '<p>WhatsApp didn’t open? Use the button below, or copy the message and send it to <strong>+' + esc(waNumber) + '</strong>' +
+        '<p>WhatsApp didn’t open? Use the button below, or copy the message and send it to <strong>' + esc(waDisplay()) + '</strong>' +
         (fallbackContact.length ? '. You can also ' + fallbackContact.join(' or ') : '') + '.</p>' +
         '<div class="btn-row"><a class="btn btn-primary" href="' + esc(url) + '" target="_blank" rel="noopener">Open WhatsApp again</a>';
     }
