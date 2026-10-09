@@ -1,12 +1,16 @@
 # Palesa Visuals — website
 
-A single-page site for Palesa Visuals (DStv installation and technical services).
+A five-page site for Palesa Visuals (DStv installation and technical services).
 It is plain HTML, CSS and JavaScript with no build step or dependencies, so it can be hosted on any
 static host (GitHub Pages, Netlify, cPanel and so on).
 
 ```
 palesa/
-├── index.html          page content and structure
+├── index.html          home (landing page)
+├── services.html       all services
+├── about.html          how we work, commitments, process
+├── faq.html            questions and answers
+├── contact.html        4-step quote form + contact details
 ├── css/styles.css      all styling (brand colours are at the top)
 ├── js/config.js        ← business details and the service list (edit this)
 ├── js/main.js          menu, services, quote form, WhatsApp message
@@ -16,6 +20,10 @@ palesa/
 ```
 
 Preview locally: `cd palesa && python3 -m http.server 8000`, then open http://localhost:8000.
+
+The header and footer are repeated in each of the five HTML files. If you change a menu link or footer text,
+change it in all five. Services, contact details and areas come from `js/config.js`, so those update everywhere
+automatically. "Request a Quote" links open `contact.html?service=<id>`, which preselects that service.
 
 ## 1. Fill in the business details
 

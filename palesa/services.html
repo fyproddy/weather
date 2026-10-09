@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Services | DStv Installation, CCTV, Projectors &amp; Home Sound | Palesa Visuals</title>
+  <meta name="description" content="DStv installation, signal repairs, Extra View, extra TV points, dish alignment, decoder setup, cabling, CCTV, projector, home sound and TV mounting in Johannesburg.">
+  <meta name="theme-color" content="#0b1f57">
+
+  <!-- Canonical + absolute OG URLs are filled from siteUrl in js/config.js once the domain is known. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_ZA">
+  <meta property="og:site_name" content="Palesa Visuals">
+  <meta property="og:title" content="Services | DStv Installation, CCTV, Projectors &amp; Home Sound | Palesa Visuals">
+  <meta property="og:description" content="DStv installation, signal repairs, Extra View, extra TV points, dish alignment, decoder setup, cabling, CCTV, projector, home sound and TV mounting in Johannesburg.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    // Mark any photo that fails to load so its frame shows a neutral panel instead of a broken image.
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) {
+      var t = e.target;
+      if (t && t.tagName === 'IMG' && t.closest('.photo')) t.closest('.photo').classList.add('photo--pending');
+    }, true);
+  </script>
+  <script src="js/config.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body data-page="services">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Palesa Visuals — home">
+        <img src="assets/img/palesa-visuals-logo-240.png" srcset="assets/img/palesa-visuals-logo-240.png 240w, assets/img/palesa-visuals-logo-480.png 480w" sizes="88px" width="240" height="225" alt="Palesa Visuals — DStv Installation">
+      </a>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html" aria-current="page">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <a class="btn btn-primary nav-cta" href="contact.html"><span>Get a Quote</span></a>
+      </nav>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="menu-toggle-label">Menu</span>
+        <span class="burger" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ PAGE HERO ============ -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <figure class="hero-media photo">
+        <img src="assets/photos/cctv.jpg" srcset="assets/photos/cctv-800.jpg 800w, assets/photos/cctv.jpg 1400w" sizes="100vw" width="1400" height="1050" alt="Outdoor CCTV camera mounted below the roofline of a house" fetchpriority="high">
+      </figure>
+      <div class="container">
+        <p class="eyebrow eyebrow-light hero-rise" style="--d:0">Services</p>
+        <h1 id="page-title"><span class="line"><span class="hero-rise" style="--d:1">Installation and Support You Can Count On</span></span></h1>
+        <p class="page-intro hero-rise" style="--d:2">Tell us what you need, and we'll help you work out the right solution for your setup.</p>
+      </div>
+    </section>
+
+<!-- ============ SERVICES ============ -->
+    <section class="section services services-page" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="bento" data-featured-services></div>
+
+        <div class="service-index">
+          <div class="index-head" data-reveal>
+            <h3 class="index-title">Also available</h3>
+            <p>Tap any service to start a quote.</p>
+          </div>
+          <ol class="service-list" data-service-list></ol>
+        </div>
+        <p class="services-note" data-reveal>Not sure which service you need? Choose <a href="contact.html?service=other">“Other / Not sure”</a> in the quote form and describe the problem.</p>
+      </div>
+    </section>
+
+<!-- ============ SERVICE MARQUEE ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track" data-marquee></div>
+    </div>
+
+<!-- ============ FINAL CTA ============ -->
+    <section class="cta" id="contact" aria-labelledby="cta-title">
+      <svg class="cta-waves" viewBox="0 0 400 400" aria-hidden="true">
+        <path d="M60 340a80 80 0 0 1 80-80"/>
+        <path d="M60 340a150 150 0 0 1 150-150"/>
+        <path d="M60 340a220 220 0 0 1 220-220"/>
+        <path d="M60 340a290 290 0 0 1 290-290"/>
+      </svg>
+      <div class="container cta-inner">
+        <div>
+          <p class="eyebrow eyebrow-light" data-reveal>Get in touch</p>
+          <h2 id="cta-title" data-reveal style="--d:1">Need an Installation or Have a Signal Problem?</h2>
+          <p class="cta-text" data-reveal style="--d:2">Tell us what you need, and let's get your quotation started.</p>
+          <div class="btn-row" data-reveal style="--d:3">
+            <a class="btn btn-light btn-lg" href="contact.html"><span>Request a Quote</span>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-ghost-light btn-lg" href="contact.html" data-whatsapp>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
+              <span>Chat on WhatsApp</span>
+            </a>
+          </div>
+        </div>
+        <ul class="cta-contact" data-cta-contact data-reveal style="--d:3"></ul>
+      </div>
+    </section>
+  </main>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="assets/img/palesa-visuals-logo-240.png" srcset="assets/img/palesa-visuals-logo-240.png 240w, assets/img/palesa-visuals-logo-480.png 480w" sizes="132px" width="240" height="225" loading="lazy" alt="Palesa Visuals — DStv Installation">
+        <p>DStv installations, signal repairs, TV mounting, CCTV, projectors and home sound for homes and businesses.</p>
+      </div>
+      <nav class="footer-col" aria-label="Footer">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Get a Quote</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h2>Contact</h2>
+        <ul class="contact-list" data-contact-list></ul>
+      </div>
+    </div>
+    <div class="container"><div class="footer-base">
+      <p>&copy; <span data-year></span> Palesa Visuals. All rights reserved.</p>
+      <p>DStv is a trademark of MultiChoice.</p>
+      <button type="button" class="link-btn" data-open-privacy>Privacy notice</button>
+      <a class="to-top" href="#top">Back to top ↑</a>
+    </div></div>
+  </footer>
+
+<!-- ============ PRIVACY NOTICE ============ -->
+  <dialog class="privacy-dialog" id="privacy-dialog" aria-labelledby="privacy-title">
+    <div class="dialog-body">
+      <h2 id="privacy-title">Privacy notice</h2>
+      <p>When you request a quotation, we ask for your name, contact number, area and details about the job. We use this information only to respond to your request, prepare a quotation and arrange the work if you go ahead.</p>
+      <p>This website does not store the information you type into the form. The form prepares a WhatsApp message on your device, and the information is only shared with Palesa Visuals if you choose to send that message. WhatsApp's own terms and privacy policy apply to messages sent through it.</p>
+      <p>We don't sell your information or use it for unrelated marketing. You can ask us to delete your details at any time by messaging us.</p>
+      <form method="dialog"><button class="btn btn-primary" type="submit"><span>Close</span></button></form>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <div class="setup-bar" id="setup-bar" hidden></div>
+</body>
+</html>

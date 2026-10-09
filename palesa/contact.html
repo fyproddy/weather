@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get a Quote | Contact Palesa Visuals | DStv Installation Johannesburg</title>
+  <meta name="description" content="Request a quotation for DStv installation, signal repairs, CCTV, projectors, home sound or TV mounting. Four quick steps, then send it on WhatsApp.">
+  <meta name="theme-color" content="#0b1f57">
+
+  <!-- Canonical + absolute OG URLs are filled from siteUrl in js/config.js once the domain is known. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_ZA">
+  <meta property="og:site_name" content="Palesa Visuals">
+  <meta property="og:title" content="Get a Quote | Contact Palesa Visuals | DStv Installation Johannesburg">
+  <meta property="og:description" content="Request a quotation for DStv installation, signal repairs, CCTV, projectors, home sound or TV mounting. Four quick steps, then send it on WhatsApp.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    // Mark any photo that fails to load so its frame shows a neutral panel instead of a broken image.
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) {
+      var t = e.target;
+      if (t && t.tagName === 'IMG' && t.closest('.photo')) t.closest('.photo').classList.add('photo--pending');
+    }, true);
+  </script>
+  <script src="js/config.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body data-page="contact">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Palesa Visuals — home">
+        <img src="assets/img/palesa-visuals-logo-240.png" srcset="assets/img/palesa-visuals-logo-240.png 240w, assets/img/palesa-visuals-logo-480.png 480w" sizes="88px" width="240" height="225" alt="Palesa Visuals — DStv Installation">
+      </a>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html" aria-current="page">Contact</a></li>
+        </ul>
+        <a class="btn btn-primary nav-cta" href="contact.html"><span>Get a Quote</span></a>
+      </nav>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="menu-toggle-label">Menu</span>
+        <span class="burger" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ PAGE HERO ============ -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <figure class="hero-media photo">
+        <img src="assets/photos/tv-room.jpg" srcset="assets/photos/tv-room-800.jpg 800w, assets/photos/tv-room.jpg 1400w" sizes="100vw" width="1400" height="1050" alt="Wall-mounted television above a TV cabinet in a living room" fetchpriority="high">
+      </figure>
+      <div class="container">
+        <p class="eyebrow eyebrow-light hero-rise" style="--d:0">Contact</p>
+        <h1 id="page-title"><span class="line"><span class="hero-rise" style="--d:1">Request Your Installation Quote</span></span></h1>
+        <p class="page-intro hero-rise" style="--d:2">Four quick steps, then your request opens in WhatsApp, ready to send. Prefer to talk? Our details are right here too.</p>
+      </div>
+    </section>
+
+<!-- ============ QUOTE ============ -->
+    <section class="quote quote-page" id="quote" aria-labelledby="quote-title">
+      <div class="container quote-grid">
+        <div class="quote-aside">
+          <p class="eyebrow" data-reveal>Quotation</p>
+          <h2 id="quote-title" data-reveal style="--d:1">Tell us about the job</h2>
+          <p class="quote-intro" data-reveal style="--d:2">Give us a few details about your installation. We'll use them to understand the job and follow up with you on WhatsApp.</p>
+
+          <div class="live-summary" data-live-summary hidden>
+            <p class="ls-title">Your request so far</p>
+            <dl></dl>
+          </div>
+
+          <ul class="contact-direct" data-contact-direct></ul>
+
+          <ol class="aside-steps" data-reveal style="--d:3">
+            <li><span>Answer four quick steps. Takes about a minute.</span></li>
+            <li><span>WhatsApp opens with your request written out. Press <strong>Send</strong>.</span></li>
+            <li><span>We reply to discuss the job and your quotation.</span></li>
+          </ol>
+        </div>
+
+        <form class="quote-card" id="quote-form" novalidate>
+          <div class="stepper-wrap">
+            <ol class="stepper" aria-label="Quote request steps">
+              <li><button type="button" data-goto="1" aria-current="step"><b>1</b><span>Service</span></button></li>
+              <li><button type="button" data-goto="2" disabled><b>2</b><span>The job</span></button></li>
+              <li><button type="button" data-goto="3" disabled><b>3</b><span>Where &amp; when</span></button></li>
+              <li><button type="button" data-goto="4" disabled><b>4</b><span>Your details</span></button></li>
+            </ol>
+            <div class="progress" aria-hidden="true"><span data-progress></span></div>
+          </div>
+
+          <!-- STEP 1 -->
+          <section class="step-panel" data-step="1" aria-labelledby="s1-title">
+            <h3 class="step-title" id="s1-title">What do you need?</h3>
+            <p class="step-sub">Pick the closest match. You can explain more later.</p>
+            <div class="tiles" role="radiogroup" aria-labelledby="s1-title" aria-describedby="err-service" data-required-group="service" data-service-tiles></div>
+            <p class="field-error" id="err-service" data-error-for="service" hidden></p>
+            <div class="step-nav">
+              <span></span>
+              <button type="button" class="btn btn-primary" data-next><span>Next</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+          </section>
+
+          <!-- STEP 2 -->
+          <section class="step-panel" data-step="2" aria-labelledby="s2-title">
+            <h3 class="step-title" id="s2-title">About the job</h3>
+            <p class="step-sub" data-chosen-service></p>
+
+            <div class="field">
+              <span class="label" id="l-property">Property type <span class="req" aria-hidden="true">*</span></span>
+              <div class="choice-row" role="radiogroup" aria-labelledby="l-property" aria-describedby="err-property" data-required-group="property">
+                <label class="choice"><input type="radio" name="property" value="House"><span>House</span></label>
+                <label class="choice"><input type="radio" name="property" value="Apartment / Flat"><span>Apartment / Flat</span></label>
+                <label class="choice"><input type="radio" name="property" value="Complex / Estate"><span>Complex / Estate</span></label>
+                <label class="choice"><input type="radio" name="property" value="Business / Office"><span>Business / Office</span></label>
+                <label class="choice"><input type="radio" name="property" value="Guesthouse / Lodge"><span>Guesthouse / Lodge</span></label>
+                <label class="choice"><input type="radio" name="property" value="Other"><span>Other</span></label>
+              </div>
+              <p class="field-error" id="err-property" data-error-for="property" hidden></p>
+            </div>
+
+            <div class="field">
+              <span class="label" id="l-status">Current setup <span class="req" aria-hidden="true">*</span></span>
+              <div class="choice-row" role="radiogroup" aria-labelledby="l-status" aria-describedby="err-status" data-required-group="status">
+                <label class="choice"><input type="radio" name="status" value="Existing setup"><span>I have an existing setup</span></label>
+                <label class="choice"><input type="radio" name="status" value="Completely new setup"><span>Completely new</span></label>
+                <label class="choice"><input type="radio" name="status" value="Equipment bought, not yet installed"><span>Bought, not installed</span></label>
+                <label class="choice"><input type="radio" name="status" value="Existing setup that needs repair"><span>Needs repair</span></label>
+                <label class="choice"><input type="radio" name="status" value="Not sure what is needed"><span>Not sure</span></label>
+              </div>
+              <p class="field-error" id="err-status" data-error-for="status" hidden></p>
+            </div>
+
+            <!-- Conditional questions: shown depending on the selected service. All optional. -->
+            <fieldset class="conditional" data-group="new" hidden>
+              <legend>About the new installation <span class="optional">(optional)</span></legend>
+              <div class="field">
+                <span class="label" id="l-decoder">Have you already bought a decoder?</span>
+                <div class="choice-row" role="radiogroup" aria-labelledby="l-decoder">
+                  <label class="choice"><input type="radio" name="decoderPurchased" value="Yes"><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="decoderPurchased" value="No"><span>No</span></label>
+                  <label class="choice"><input type="radio" name="decoderPurchased" value="Not sure"><span>Not sure</span></label>
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-tvpoints">How many TV points need to be connected?</label>
+                <div class="select-wrap">
+                  <select id="f-tvpoints" name="tvPoints">
+                    <option value="">Select</option>
+                    <option>1</option><option>2</option><option>3</option><option>4</option><option>5 or more</option><option>Not sure</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="conditional" data-group="signal" hidden>
+              <legend>About the signal problem <span class="optional">(optional)</span></legend>
+              <div class="field">
+                <label for="f-issue">What is happening?</label>
+                <div class="select-wrap">
+                  <select id="f-issue" name="issue">
+                    <option value="">Select</option>
+                    <option>No signal at all</option>
+                    <option>Signal comes and goes</option>
+                    <option>Some channels missing</option>
+                    <option>Damaged cables</option>
+                    <option>Something else / Not sure</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-since">When did it start? <span class="optional">(if known)</span></label>
+                <input id="f-since" name="problemStart" type="text" maxlength="80" placeholder="e.g. after the storm last week">
+              </div>
+            </fieldset>
+
+            <fieldset class="conditional" data-group="multiroom" hidden>
+              <legend>About the extra rooms <span class="optional">(optional)</span></legend>
+              <div class="field-row">
+                <div class="field">
+                  <label for="f-rooms">How many TVs or rooms?</label>
+                  <div class="select-wrap">
+                    <select id="f-rooms" name="rooms">
+                      <option value="">Select</option>
+                      <option>1 extra</option><option>2 extra</option><option>3 extra</option><option>4 or more extra</option><option>Not sure</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="f-existing">Existing decoder or installation?</label>
+                  <div class="select-wrap">
+                    <select id="f-existing" name="existingSetup">
+                      <option value="">Select</option>
+                      <option>Yes, dish and decoder installed</option>
+                      <option>Decoder only</option>
+                      <option>No</option>
+                      <option>Not sure</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="conditional" data-group="mount" hidden>
+              <legend>About the TV <span class="optional">(optional)</span></legend>
+              <div class="field-row">
+                <div class="field">
+                  <label for="f-tvsize">TV size <span class="optional">(if known)</span></label>
+                  <input id="f-tvsize" name="tvSize" type="text" maxlength="40" placeholder="e.g. 55 inch">
+                </div>
+                <div class="field">
+                  <span class="label" id="l-bracket">Do you have a wall bracket?</span>
+                  <div class="choice-row" role="radiogroup" aria-labelledby="l-bracket">
+                    <label class="choice"><input type="radio" name="bracket" value="Yes"><span>Yes</span></label>
+                    <label class="choice"><input type="radio" name="bracket" value="No"><span>No</span></label>
+                    <label class="choice"><input type="radio" name="bracket" value="Not sure"><span>Not sure</span></label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="conditional" data-group="cctv" hidden>
+              <legend>About the CCTV system <span class="optional">(optional)</span></legend>
+              <div class="field-row">
+                <div class="field">
+                  <label for="f-cameras">How many cameras?</label>
+                  <div class="select-wrap">
+                    <select id="f-cameras" name="cameras">
+                      <option value="">Select</option>
+                      <option>1–2</option><option>3–4</option><option>5–8</option><option>More than 8</option><option>Not sure</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="f-cctv-existing">Existing system?</label>
+                  <div class="select-wrap">
+                    <select id="f-cctv-existing" name="cctvExisting">
+                      <option value="">Select</option>
+                      <option>New system</option>
+                      <option>Adding to an existing system</option>
+                      <option>Existing system needs repair</option>
+                      <option>Not sure</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <span class="label" id="l-remote">Do you want to view the cameras on your phone?</span>
+                <div class="choice-row" role="radiogroup" aria-labelledby="l-remote">
+                  <label class="choice"><input type="radio" name="remoteView" value="Yes"><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="remoteView" value="No"><span>No</span></label>
+                  <label class="choice"><input type="radio" name="remoteView" value="Not sure"><span>Not sure</span></label>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="conditional" data-group="projector" hidden>
+              <legend>About the projector setup <span class="optional">(optional)</span></legend>
+              <div class="field-row">
+                <div class="field">
+                  <span class="label" id="l-projector">Do you already have a projector?</span>
+                  <div class="choice-row" role="radiogroup" aria-labelledby="l-projector">
+                    <label class="choice"><input type="radio" name="projectorHave" value="Already have one"><span>Yes</span></label>
+                    <label class="choice"><input type="radio" name="projectorHave" value="Needs one"><span>No</span></label>
+                    <label class="choice"><input type="radio" name="projectorHave" value="Not sure"><span>Not sure</span></label>
+                  </div>
+                </div>
+                <div class="field">
+                  <span class="label" id="l-screen">And a screen?</span>
+                  <div class="choice-row" role="radiogroup" aria-labelledby="l-screen">
+                    <label class="choice"><input type="radio" name="screenHave" value="Already have one"><span>Yes</span></label>
+                    <label class="choice"><input type="radio" name="screenHave" value="Needs one"><span>No</span></label>
+                    <label class="choice"><input type="radio" name="screenHave" value="Not sure"><span>Not sure</span></label>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-proom">Which room?</label>
+                <input id="f-proom" name="projectorRoom" type="text" maxlength="80" placeholder="e.g. lounge, about 5 m × 4 m">
+              </div>
+            </fieldset>
+
+            <fieldset class="conditional" data-group="sound" hidden>
+              <legend>About the sound setup <span class="optional">(optional)</span></legend>
+              <div class="field-row">
+                <div class="field">
+                  <label for="f-soundtype">What would you like?</label>
+                  <div class="select-wrap">
+                    <select id="f-soundtype" name="soundType">
+                      <option value="">Select</option>
+                      <option>Soundbar</option>
+                      <option>Surround sound (e.g. 5.1)</option>
+                      <option>Ceiling or wall speakers</option>
+                      <option>Music in more than one room</option>
+                      <option>Not sure</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="f-soundhave">Equipment</label>
+                  <div class="select-wrap">
+                    <select id="f-soundhave" name="soundHave">
+                      <option value="">Select</option>
+                      <option>I already have the equipment</option>
+                      <option>I need equipment as well</option>
+                      <option>Not sure</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="conditional" data-group="commercial" hidden>
+              <legend>About the premises <span class="optional">(optional)</span></legend>
+              <div class="field-row">
+                <div class="field">
+                  <label for="f-premises">Type of premises</label>
+                  <div class="select-wrap">
+                    <select id="f-premises" name="premises">
+                      <option value="">Select</option>
+                      <option>Office</option>
+                      <option>Guesthouse / Lodge</option>
+                      <option>Rental units / Flats</option>
+                      <option>Shop / Restaurant / Bar</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="f-cpoints">Approx. number of TV points</label>
+                  <input id="f-cpoints" name="commercialPoints" type="text" inputmode="numeric" maxlength="20" placeholder="e.g. 8, or not sure">
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="step-nav">
+              <button type="button" class="btn btn-text" data-back><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back</span></button>
+              <button type="button" class="btn btn-primary" data-next><span>Next</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+          </section>
+
+          <!-- STEP 3 -->
+          <section class="step-panel" data-step="3" aria-labelledby="s3-title">
+            <h3 class="step-title" id="s3-title">Where and when?</h3>
+            <p class="step-sub">No street address needed yet. Your area is enough for a quotation.</p>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-area">Your area <span class="req" aria-hidden="true">*</span></label>
+                <div class="select-wrap">
+                  <select id="f-area" name="area" required aria-describedby="err-area">
+                    <option value="">Select your area</option>
+                  </select>
+                </div>
+                <p class="field-error" id="err-area" data-error-for="area" hidden></p>
+              </div>
+              <div class="field">
+                <label for="f-suburb"><span data-suburb-label>Suburb or extension</span> <span class="optional" data-suburb-optional>(optional)</span><span class="req" aria-hidden="true" data-suburb-req hidden>*</span></label>
+                <input id="f-suburb" name="suburb" type="text" autocomplete="address-level3" maxlength="80" placeholder="e.g. Protea Glen Ext 11" aria-describedby="err-suburb">
+                <p class="field-error" id="err-suburb" data-error-for="suburb" hidden></p>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-date">Preferred date <span class="optional">(optional)</span></label>
+                <input id="f-date" name="date" type="date">
+              </div>
+              <div class="field">
+                <span class="label" id="l-urgency">How urgent is it? <span class="optional">(optional)</span></span>
+                <div class="choice-row" role="radiogroup" aria-labelledby="l-urgency">
+                  <label class="choice"><input type="radio" name="urgency" value="Flexible"><span>Flexible</span></label>
+                  <label class="choice"><input type="radio" name="urgency" value="Within a few days"><span>In a few days</span></label>
+                  <label class="choice"><input type="radio" name="urgency" value="Urgent"><span>Urgent</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn btn-text" data-back><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back</span></button>
+              <button type="button" class="btn btn-primary" data-next><span>Next</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+          </section>
+
+          <!-- STEP 4 -->
+          <section class="step-panel" data-step="4" aria-labelledby="s4-title">
+            <h3 class="step-title" id="s4-title">Your details</h3>
+            <p class="step-sub">So we know who to reply to.</p>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-name">Full name <span class="req" aria-hidden="true">*</span></label>
+                <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby="err-name">
+                <p class="field-error" id="err-name" data-error-for="name" hidden></p>
+              </div>
+              <div class="field">
+                <label for="f-phone">WhatsApp / contact number <span class="req" aria-hidden="true">*</span></label>
+                <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="24" placeholder="e.g. 082 123 4567" aria-describedby="err-phone">
+                <p class="field-error" id="err-phone" data-error-for="phone" hidden></p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-details">Tell us about the job <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="f-details" name="details" rows="4" required maxlength="1200" placeholder="For example: I need a new installation in two rooms, or my current setup has no signal." aria-describedby="err-details"></textarea>
+              <p class="field-error" id="err-details" data-error-for="details" hidden></p>
+            </div>
+            <p class="privacy-inline">Your details are only used to respond to your quotation request. Nothing is stored on this website. <button type="button" class="link-btn" data-open-privacy>Privacy notice</button></p>
+            <p class="form-summary" id="form-summary" role="alert" hidden></p>
+            <div class="step-nav">
+              <button type="button" class="btn btn-text" data-back><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back</span></button>
+              <button class="btn btn-primary btn-send" type="submit">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
+                <span>Send on WhatsApp</span>
+              </button>
+            </div>
+            <p class="submit-note">This opens WhatsApp with your request written out. It's only sent once you press <strong>Send</strong> in WhatsApp.</p>
+          </section>
+
+          <div class="form-result" id="form-result" tabindex="-1" hidden></div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="assets/img/palesa-visuals-logo-240.png" srcset="assets/img/palesa-visuals-logo-240.png 240w, assets/img/palesa-visuals-logo-480.png 480w" sizes="132px" width="240" height="225" loading="lazy" alt="Palesa Visuals — DStv Installation">
+        <p>DStv installations, signal repairs, TV mounting, CCTV, projectors and home sound for homes and businesses.</p>
+      </div>
+      <nav class="footer-col" aria-label="Footer">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Get a Quote</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h2>Contact</h2>
+        <ul class="contact-list" data-contact-list></ul>
+      </div>
+    </div>
+    <div class="container"><div class="footer-base">
+      <p>&copy; <span data-year></span> Palesa Visuals. All rights reserved.</p>
+      <p>DStv is a trademark of MultiChoice.</p>
+      <button type="button" class="link-btn" data-open-privacy>Privacy notice</button>
+      <a class="to-top" href="#top">Back to top ↑</a>
+    </div></div>
+  </footer>
+
+<!-- ============ PRIVACY NOTICE ============ -->
+  <dialog class="privacy-dialog" id="privacy-dialog" aria-labelledby="privacy-title">
+    <div class="dialog-body">
+      <h2 id="privacy-title">Privacy notice</h2>
+      <p>When you request a quotation, we ask for your name, contact number, area and details about the job. We use this information only to respond to your request, prepare a quotation and arrange the work if you go ahead.</p>
+      <p>This website does not store the information you type into the form. The form prepares a WhatsApp message on your device, and the information is only shared with Palesa Visuals if you choose to send that message. WhatsApp's own terms and privacy policy apply to messages sent through it.</p>
+      <p>We don't sell your information or use it for unrelated marketing. You can ask us to delete your details at any time by messaging us.</p>
+      <form method="dialog"><button class="btn btn-primary" type="submit"><span>Close</span></button></form>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <div class="setup-bar" id="setup-bar" hidden></div>
+</body>
+</html>

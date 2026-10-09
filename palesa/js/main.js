@@ -5,6 +5,7 @@
   var CFG = window.PALESA_CONFIG || {};
   var services = (CFG.services || []).filter(function (s) { return s && s.id && s.name; });
   var OTHER = { id: 'other', name: 'Other / Not sure', formLabel: 'Other / Not Sure', questions: null };
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
@@ -14,17 +15,17 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function pad(i) { return i < 10 ? '0' + i : String(i); }
+  function scrollToEl(el, block) { el.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: block || 'start' }); }
 
   var ARROW = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  var WAVES = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="18" r="2" fill="currentColor" stroke="none"/><path d="M6 12a6 6 0 0 1 6 6M6 6a12 12 0 0 1 12 12"/></svg>';
 
   /* ---------------- WhatsApp number ---------------- */
   var waNumber = String(CFG.whatsappNumber || '').replace(/\D/g, '');
   // wa.me needs full international format: country code + number, no leading 0.
   var waConfigured = /^[1-9]\d{7,14}$/.test(waNumber);
-
-  function waUrl(text) {
-    return 'https://wa.me/' + waNumber + (text ? '?text=' + encodeURIComponent(text) : '');
-  }
+  function waUrl(text) { return 'https://wa.me/' + waNumber + (text ? '?text=' + encodeURIComponent(text) : ''); }
 
   /* ---------------- Toast ---------------- */
   var toastTimer;
@@ -40,39 +41,42 @@
   function renderServices() {
     var featuredEl = $('[data-featured-services]');
     var listEl = $('[data-service-list]');
+    if (!featuredEl) return;
     var featured = services.filter(function (s) { return s.featured && s.photo; }).slice(0, 4);
     var rest = services.filter(function (s) { return featured.indexOf(s) === -1; });
     var n = 0;
 
-    featuredEl.innerHTML = featured.map(function (s) {
+    featuredEl.innerHTML = featured.map(function (s, i) {
       n++;
-      return '<article class="feature">' +
+      return '<a class="card" href="' + quoteHref(s.id) + '" data-service="' + esc(s.id) + '" style="--d:' + (i % 2) + '">' +
         '<figure class="photo"><img src="' + esc(s.photo.src) + '"' +
-        (s.photo.srcset ? ' srcset="' + esc(s.photo.srcset) + '" sizes="(max-width: 860px) 100vw, 640px"' : '') +
+        (s.photo.srcset ? ' srcset="' + esc(s.photo.srcset) + '" sizes="(max-width: 860px) 100vw, 60vw"' : '') +
         (s.photo.position ? ' style="object-position:' + esc(s.photo.position) + '"' : '') +
         ' alt="' + esc(s.photo.alt || '') + '" loading="lazy" width="' + (s.photo.width || 1200) + '" height="' + (s.photo.height || 800) + '">' +
-        '<span class="photo-note">Service photo for “' + esc(s.name) + '” — add ' + esc(s.photo.src) + '</span></figure>' +
-        '<div class="feature-meta"><span class="feature-num">' + pad(n) + '</span><h3>' + esc(s.name) + '</h3></div>' +
-        '<p>' + esc(s.description || '') + '</p>' +
-        '<a class="arrow-link" href="#quote" data-service="' + esc(s.id) + '">Request a Quote<span class="sr-only"> for ' + esc(s.name) + '</span>' + ARROW + '</a>' +
-        '</article>';
+        '<span class="photo-note">Service photo — add ' + esc(s.photo.src) + '</span></figure>' +
+        '<div class="card-body"><span class="card-num">' + pad(n) + '</span><h3>' + esc(s.name) + '</h3>' +
+        '<div class="card-reveal"><div><p>' + esc(s.description || '') + '</p></div></div>' +
+        '<span class="card-cta"><i>' + ARROW + '</i>Request a Quote<span class="sr-only"> for ' + esc(s.name) + '</span></span></div>' +
+        '</a>';
     }).join('');
-    if (!featured.length) featuredEl.hidden = true;
     featuredEl.setAttribute('data-count', featured.length);
+    if (!featured.length) featuredEl.hidden = true;
 
-    listEl.innerHTML = rest.map(function (s) {
+    if (!listEl) { $$('.bento img').forEach(watchImage); return; }
+    listEl.innerHTML = rest.map(function (s, i) {
       n++;
-      return '<li class="service-item"><span class="service-num" aria-hidden="true">' + pad(n) + '</span><div>' +
+      return '<li><a class="service-row" href="' + quoteHref(s.id) + '" data-service="' + esc(s.id) + '" style="--d:' + (i % 4) + '">' +
+        '<span class="s-num" aria-hidden="true">' + pad(n) + '</span>' +
         '<h3>' + esc(s.name) + '</h3><p>' + esc(s.description || '') + '</p>' +
-        '<a class="arrow-link" href="#quote" data-service="' + esc(s.id) + '">Request a Quote<span class="sr-only"> for ' + esc(s.name) + '</span>' + ARROW + '</a>' +
-        '</div></li>';
+        '<span class="s-arrow" aria-hidden="true">' + ARROW + '</span>' +
+        '<span class="sr-only">Request a quote for ' + esc(s.name) + '</span></a></li>';
     }).join('');
     if (!rest.length) $('.service-index').hidden = true;
 
-    // Images injected after the head error listener still need a failure hook.
-    $$('.featured-services img').forEach(watchImage);
+    $$('.bento img').forEach(watchImage);
   }
-  function pad(i) { return i < 10 ? '0' + i : String(i); }
+
+  function quoteHref(id) { return 'contact.html?service=' + encodeURIComponent(id); }
 
   function watchImage(img) {
     var mark = function () { img.closest('.photo').classList.add('photo--pending'); };
@@ -80,34 +84,57 @@
     if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) mark();
   }
 
+  function renderMarquee() {
+    var track = $('[data-marquee]');
+    if (!track) return;
+    var names = services.map(function (s) { return s.name.replace(/ Installation$/, ''); });
+    var group = names.map(function (name) { return '<span class="marquee-item">' + esc(name) + WAVES + '</span>'; }).join('');
+    // Two identical groups make the loop seamless.
+    track.innerHTML = '<div class="marquee-group">' + group + '</div><div class="marquee-group" aria-hidden="true">' + group + '</div>';
+  }
+
   /* ---------------- Contact details, areas, meta ---------------- */
-  function renderContact() {
+  function contactItems() {
     var items = [];
-    if (waConfigured) items.push({ k: 'WhatsApp', v: waDisplay(), href: waUrl(CFG.whatsappGreeting) , ext: true });
+    if (waConfigured) items.push({ k: 'WhatsApp', v: waDisplay(), href: waUrl(CFG.whatsappGreeting), ext: true });
     if (CFG.phoneNumber) items.push({ k: 'Phone', v: CFG.phoneNumber, href: telHref(CFG.phoneNumber) });
     if (CFG.email) items.push({ k: 'Email', v: CFG.email, href: 'mailto:' + CFG.email });
     if (CFG.businessHours) items.push({ k: 'Hours', v: CFG.businessHours });
     if (CFG.serviceAreaSummary) items.push({ k: 'Service areas', v: CFG.serviceAreaSummary });
-
-    var html = items.map(function (it) {
+    return items;
+  }
+  function itemsHtml(items) {
+    return items.map(function (it) {
       var v = it.href
         ? '<a class="v" href="' + esc(it.href) + '"' + (it.ext ? ' target="_blank" rel="noopener"' : '') + '>' + esc(it.v) + '</a>'
         : '<span class="v">' + esc(it.v) + '</span>';
       return '<li><span class="k">' + esc(it.k) + '</span>' + v + '</li>';
     }).join('');
-    if (!items.length) html = '<li><span class="k">The quickest way to reach us</span><a class="v" href="#quote">Request a quote</a></li>';
-    $('[data-contact-list]').innerHTML = html;
+  }
+  function renderContact() {
+    var items = contactItems();
+    var footerList = $('[data-contact-list]');
+    if (footerList) footerList.innerHTML = items.length ? itemsHtml(items)
+      : '<li><span class="k">The quickest way to reach us</span><a class="v" href="contact.html">Request a quote</a></li>';
+    var reachable = items.filter(function (it) { return it.href; });
+    $$('[data-cta-contact], [data-contact-direct]').forEach(function (list) {
+      var rows = list.hasAttribute('data-contact-direct') ? items : reachable;
+      if (rows.length) list.innerHTML = itemsHtml(rows); else list.hidden = true;
+    });
 
     if (CFG.serviceAreaSummary) {
       var line = $('[data-areas-line]');
-      line.innerHTML = 'Serving <strong>' + esc(CFG.serviceAreaSummary) + '</strong>';
-      line.hidden = false;
+      if (line) {
+        line.innerHTML = 'Serving <strong>' + esc(CFG.serviceAreaSummary) + '</strong>';
+        line.hidden = false;
+      }
       var regions = areas().map(function (g) { return g.region; });
-      $('[data-areas-faq]').textContent = 'We work across ' + CFG.serviceAreaSummary +
+      var faqArea = $('[data-areas-faq]');
+      if (faqArea) faqArea.textContent = 'We work across ' + CFG.serviceAreaSummary +
         (regions.length ? ', including ' + listJoin(regions) : '') +
         '. Choose your area in the quotation form. If yours isn’t listed, select “Other area” and type it in, and we’ll let you know whether we can assist.';
     }
-    $('[data-year]').textContent = new Date().getFullYear();
+    $$('[data-year]').forEach(function (y) { y.textContent = new Date().getFullYear(); });
   }
   // tel: links work best in +27 international format.
   function telHref(n) { return 'tel:+' + digits(n); }
@@ -124,10 +151,7 @@
     var link = document.createElement('link');
     link.rel = 'canonical'; link.href = url;
     document.head.appendChild(link);
-    var add = function (prop, content) {
-      var m = document.createElement('meta'); m.setAttribute('property', prop); m.content = content; document.head.appendChild(m);
-    };
-    add('og:url', url);
+    var m = document.createElement('meta'); m.setAttribute('property', 'og:url'); m.content = url; document.head.appendChild(m);
     var og = $('meta[property="og:image"]');
     if (og) og.content = new URL('assets/img/og-image.jpg', url).href;
   }
@@ -151,11 +175,16 @@
     });
   }
 
-  /* ---------------- Navigation ---------------- */
+  /* ---------------- Header + navigation ---------------- */
   function setupNav() {
+    var header = $('.site-header');
     var toggle = $('.menu-toggle');
     var nav = $('#primary-nav');
     var label = $('.menu-toggle-label');
+
+    var onScroll = function () { header.classList.toggle('is-scrolled', window.scrollY > 12); };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     function setOpen(open) {
       toggle.setAttribute('aria-expanded', String(open));
@@ -169,29 +198,51 @@
       if (e.key === 'Escape' && nav.classList.contains('is-open')) { setOpen(false); toggle.focus(); }
     });
     window.matchMedia('(min-width: 961px)').addEventListener('change', function (m) { if (m.matches) setOpen(false); });
+  }
 
-    // Highlight the section currently in view.
-    if (!('IntersectionObserver' in window)) return;
-    var links = $$('.primary-nav ul a');
-    var map = {};
-    links.forEach(function (l) { map[l.getAttribute('href').slice(1)] = l; });
-    var sectionFor = { quote: 'contact', faq: 'contact' };
+  /* ---------------- Motion: scroll reveals ---------------- */
+  function setupReveals() {
+    var targets = $$('[data-reveal], .reveal-img, .card, .service-row, [data-steps], .cta');
+    if (!('IntersectionObserver' in window) || reduceMotion.matches) {
+      targets.forEach(function (el) { el.classList.add('is-in'); });
+      return;
+    }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        var id = sectionFor[en.target.id] || en.target.id;
-        links.forEach(function (l) { l.removeAttribute('aria-current'); });
-        if (map[id]) map[id].setAttribute('aria-current', 'true');
+        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
       });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    ['home', 'services', 'about', 'how-it-works', 'quote', 'faq', 'contact'].forEach(function (id) {
-      var el = document.getElementById(id); if (el) io.observe(el);
-    });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+    targets.forEach(function (el) { io.observe(el); });
+  }
+
+  /* Statement: words light up as the paragraph scrolls through the viewport. */
+  function setupStatement() {
+    var el = $('[data-words]');
+    if (!el) return;
+    var highlight = /^(DStv|tested|assessed|quoted)/i;
+    el.innerHTML = el.textContent.trim().split(/\s+/).map(function (w) {
+      return '<span class="w' + (highlight.test(w) ? ' hl' : '') + '">' + esc(w) + '</span>';
+    }).join(' ');
+    var words = $$('.w', el);
+    if (reduceMotion.matches) { words.forEach(function (w) { w.classList.add('is-lit'); }); return; }
+    var ticking = false;
+    var update = function () {
+      ticking = false;
+      var r = el.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var progress = (vh * 0.85 - r.top) / (r.height + vh * 0.3);
+      var lit = Math.round(Math.max(0, Math.min(1, progress)) * words.length);
+      words.forEach(function (w, i) { w.classList.toggle('is-lit', i < lit); });
+    };
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
   }
 
   /* ---------------- Privacy dialog ---------------- */
   function setupPrivacy() {
     var dlg = $('#privacy-dialog');
+    if (!dlg) return;
     $$('[data-open-privacy]').forEach(function (b) {
       b.addEventListener('click', function () {
         if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
@@ -201,66 +252,98 @@
   }
 
   /* =================================================================
-     QUOTE FORM
+     QUOTE FORM — four steps, then WhatsApp
      ================================================================= */
-  var form, serviceSelect, result;
+  var form, result;
+  var step = 1, maxStep = 1, TOTAL = 4;
   var allServices = function () { return services.concat([OTHER]); };
-
-  function findService(id) {
-    return allServices().filter(function (s) { return s.id === id; })[0];
-  }
+  function findService(id) { return allServices().filter(function (s) { return s.id === id; })[0]; }
 
   function setupForm() {
     form = $('#quote-form');
-    serviceSelect = $('#f-service');
+    if (!form) return;
     result = $('#form-result');
 
-    allServices().forEach(function (s) {
-      var o = document.createElement('option');
-      o.value = s.id; o.textContent = s.formLabel || s.name;
-      serviceSelect.appendChild(o);
-    });
+    $('[data-service-tiles]').innerHTML = allServices().map(function (s) {
+      return '<label class="tile"><input type="radio" name="service" value="' + esc(s.id) + '"><span>' + esc(s.formLabel || s.name) + '</span></label>';
+    }).join('');
 
-    // Small privacy note visible on mobile, where the side column text is hidden.
-    var pm = document.createElement('p');
-    pm.className = 'privacy-mobile';
-    pm.innerHTML = 'Your details are only used to respond to your quotation request. <button type="button" class="link-btn" data-open-privacy>Privacy notice</button>';
-    $('.form-submit').appendChild(pm);
-
-    // Dates: can't pick a day in the past.
     var d = new Date();
     $('#f-date').min = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
 
     setupAreas();
-    serviceSelect.addEventListener('change', updateConditional);
     updateConditional();
 
-    // "Request a quote" links anywhere on the page preselect the service.
-    document.addEventListener('click', function (e) {
-      var link = e.target.closest('[data-service]');
-      if (!link) return;
-      var id = link.getAttribute('data-service');
-      if (!findService(id)) return;
-      e.preventDefault();
-      serviceSelect.value = id;
-      updateConditional();
-      clearError(serviceSelect);
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      form.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-      history.replaceState(null, '', '#quote');
-      setTimeout(function () { $('#f-name').focus({ preventScroll: true }); }, reduce ? 0 : 450);
-    });
+    // Show one step at a time once JS is running.
+    $$('.step-panel', form).forEach(function (p) { p.hidden = p.getAttribute('data-step') !== '1'; });
 
-    // Live re-validation once a field has been flagged.
-    form.addEventListener('input', function (e) { if (e.target.getAttribute('aria-invalid') === 'true') validateField(e.target); });
-    form.addEventListener('change', function (e) { if (e.target.getAttribute('aria-invalid') === 'true') validateField(e.target); });
+    form.addEventListener('change', function (e) {
+      if (e.target.name === 'service') {
+        updateConditional();
+        // Picking a service moves straight on — fewer taps on a phone.
+        setTimeout(function () { if (step === 1 && validateStep(1)) goStep(2); }, 220);
+      }
+      revalidate(e.target);
+      updateSummary();
+    });
+    form.addEventListener('input', function (e) { revalidate(e.target); });
     form.addEventListener('focusout', function (e) {
       var t = e.target;
-      if (t.required && t.value.trim() !== '' && t.dataset.touched !== '1') { t.dataset.touched = '1'; }
-      if (t.required && t.dataset.touched === '1') validateField(t);
+      if (t.required && t.value.trim() !== '') t.dataset.touched = '1';
+      if (t.required && t.dataset.touched === '1') validateName(t.name);
     });
 
+    form.addEventListener('click', function (e) {
+      if (e.target.closest('[data-next]')) { if (validateStep(step)) goStep(step + 1); }
+      else if (e.target.closest('[data-back]')) goStep(step - 1);
+      else if (e.target.closest('[data-goto]')) goStep(+e.target.closest('[data-goto]').getAttribute('data-goto'));
+      else if (e.target.closest('[data-change-service]')) goStep(1);
+    });
+
+    // "Request a quote" links on other pages arrive as contact.html?service=<id>.
+    var wanted = new URLSearchParams(window.location.search).get('service');
+    if (wanted && findService(wanted)) {
+      $('input[name="service"][value="' + wanted + '"]', form).checked = true;
+      updateConditional();
+      updateSummary();
+      goStep(2, true);
+    }
+
     form.addEventListener('submit', onSubmit);
+  }
+
+  function goStep(n, silent) {
+    if (n < 1 || n > TOTAL || n > maxStep + 1) return;
+    var back = n < step;
+    step = n;
+    maxStep = Math.max(maxStep, n);
+    $$('.step-panel', form).forEach(function (p) {
+      var on = +p.getAttribute('data-step') === n;
+      p.hidden = !on;
+      p.classList.remove('is-entering', 'is-entering-back');
+      if (on) { void p.offsetWidth; p.classList.add(back ? 'is-entering-back' : 'is-entering'); }
+    });
+    $$('[data-goto]', form).forEach(function (b) {
+      var i = +b.getAttribute('data-goto');
+      b.disabled = i > maxStep;
+      b.classList.toggle('is-done', i < n);
+      if (i === n) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    });
+    $('[data-progress]').style.width = (n / TOTAL * 100) + '%';
+
+    var s = findService(val('service'));
+    $('[data-chosen-service]').innerHTML = s
+      ? 'Service: <strong>' + esc(s.formLabel || s.name) + '</strong> · <button type="button" class="link-btn" data-change-service>Change</button>'
+      : '';
+    result.hidden = true;
+
+    if (!silent) {
+      var top = form.getBoundingClientRect().top;
+      if (top < 0) scrollToEl(form);
+      var heading = $('.step-panel[data-step="' + n + '"] .step-title', form);
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
   }
 
   /* ---------- Area picker ---------- */
@@ -291,13 +374,13 @@
       $('[data-suburb-optional]').hidden = isOther;
       $('[data-suburb-req]').hidden = !isOther;
       suburb.placeholder = isOther ? 'e.g. Vereeniging' : 'e.g. Protea Glen Ext 11';
-      if (!isOther) clearError(suburb);
+      if (!isOther) clearError('suburb');
       if (isOther) suburb.focus();
     });
   }
 
   function updateConditional() {
-    var s = findService(serviceSelect.value);
+    var s = findService(val('service'));
     var group = s ? s.questions : null;
     $$('fieldset.conditional', form).forEach(function (fs) {
       var show = fs.getAttribute('data-group') === group;
@@ -306,8 +389,27 @@
     });
   }
 
+  function updateSummary() {
+    var box = $('[data-live-summary]');
+    var s = findService(val('service'));
+    var area = val('area') === OTHER_AREA ? val('suburb') : val('area');
+    var rows = [
+      ['Service', s ? (s.formLabel || s.name) : ''],
+      ['Property', val('property')],
+      ['Area', area],
+      ['Urgency', val('urgency')]
+    ].filter(function (r) { return r[1]; });
+    box.hidden = !rows.length;
+    $('dl', box).innerHTML = rows.map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('');
+  }
+
   /* ---------- Validation ---------- */
   var rules = {
+    service: function (v) { if (!v) return 'Please choose a service, or “Other / Not sure”.'; },
+    property: function (v) { if (!v) return 'Please choose the type of property.'; },
+    status: function (v) { if (!v) return 'Please choose the option closest to your current setup.'; },
+    area: function (v) { if (!v) return 'Please choose your area, or “Other area”.'; },
+    suburb: function (v) { if (!v) return 'Please type your suburb or town.'; },
     name: function (v) {
       if (!v) return 'Please enter your name.';
       if (v.length < 2) return 'Please enter your full name.';
@@ -316,11 +418,6 @@
       if (!v) return 'Please enter a WhatsApp or contact number so we can reply.';
       if (!validPhone(v)) return 'That number doesn’t look right. Use a format like 082 123 4567 or +27 82 123 4567.';
     },
-    area: function (v) { if (!v) return 'Please choose your area, or “Other area”.'; },
-    suburb: function (v) { if (!v) return 'Please type your suburb or town.'; },
-    service: function (v) { if (!v) return 'Please choose a service, or “Other / Not sure”.'; },
-    property: function (v) { if (!v) return 'Please choose the type of property.'; },
-    status: function (v) { if (!v) return 'Please choose the option closest to your current setup.'; },
     details: function (v) {
       if (!v) return 'Please describe the job in a few words.';
       if (v.length < 8) return 'Please add a little more detail so we can understand the job.';
@@ -338,43 +435,54 @@
     return d.length >= 8 && d.length <= 15;                    // other international without +
   }
 
-  function validateField(el) {
-    var rule = rules[el.name];
-    if (!rule) return true;
-    var msg = rule(el.value.trim());
-    var err = document.getElementById(el.id + '-error');
-    if (msg) {
-      el.setAttribute('aria-invalid', 'true');
-      if (err) {
-        err.textContent = msg; err.hidden = false;
-        var desc = (el.getAttribute('aria-describedby') || '').split(' ').filter(Boolean);
-        if (desc.indexOf(err.id) === -1) { desc.push(err.id); el.setAttribute('aria-describedby', desc.join(' ')); }
-      }
-      return false;
-    }
-    clearError(el);
-    return true;
+  function targetFor(name) { return $('[data-required-group="' + name + '"]', form) || form.elements[name]; }
+
+  function isRequired(name) {
+    if ($('[data-required-group="' + name + '"]', form)) return true;
+    var el = form.elements[name];
+    return !!(el && el.required && !el.matches(':disabled'));
   }
 
-  function clearError(el) {
-    el.removeAttribute('aria-invalid');
-    var err = document.getElementById(el.id + '-error');
+  function validateName(name) {
+    var rule = rules[name];
+    if (!rule) return true;
+    if (!isRequired(name)) { clearError(name); return true; }
+    var msg = rule(val(name));
+    if (!msg) { clearError(name); return true; }
+    targetFor(name).setAttribute('aria-invalid', 'true');
+    var err = $('[data-error-for="' + name + '"]', form);
+    if (err) { err.textContent = msg; err.hidden = false; }
+    return false;
+  }
+
+  function clearError(name) {
+    var t = targetFor(name);
+    if (t && t.removeAttribute) t.removeAttribute('aria-invalid');
+    var err = $('[data-error-for="' + name + '"]', form);
     if (err) { err.hidden = true; err.textContent = ''; }
   }
 
-  function validateAll() {
-    var invalid = $$('[required]', form).filter(function (el) { el.dataset.touched = '1'; return !validateField(el); });
-    var summary = $('#form-summary');
-    if (invalid.length) {
-      summary.textContent = invalid.length === 1
-        ? 'Please check the highlighted field above.'
-        : 'Please check the ' + invalid.length + ' highlighted fields above.';
-      summary.hidden = false;
-      invalid[0].focus();
-      return false;
+  function revalidate(el) {
+    if (!el || !el.name) return;
+    var t = targetFor(el.name);
+    if (t && t.getAttribute && t.getAttribute('aria-invalid') === 'true') validateName(el.name);
+  }
+
+  function namesInStep(n) {
+    var panel = $('.step-panel[data-step="' + n + '"]', form);
+    var names = $$('[data-required-group]', panel).map(function (g) { return g.getAttribute('data-required-group'); });
+    $$('input[required], select[required], textarea[required]', panel).forEach(function (el) { names.push(el.name); });
+    return names;
+  }
+
+  function validateStep(n) {
+    var bad = namesInStep(n).filter(function (name) { return !validateName(name); });
+    if (bad.length) {
+      var t = targetFor(bad[0]);
+      var focusEl = t.matches && t.matches('[data-required-group]') ? $('input', t) : t;
+      if (focusEl) focusEl.focus();
     }
-    summary.hidden = true;
-    return true;
+    return !bad.length;
   }
 
   /* ---------- Message ---------- */
@@ -449,16 +557,26 @@
   /* ---------- Submit ---------- */
   function onSubmit(e) {
     e.preventDefault();
-    if (!validateAll()) return;
+    // Enter key on an earlier step means "next", not "send".
+    if (step < TOTAL) { if (validateStep(step)) goStep(step + 1); return; }
+
+    for (var n = 1; n <= TOTAL; n++) {
+      if (!validateStep(n)) {
+        if (n !== step) { goStep(n); validateStep(n); }
+        var summary = $('#form-summary');
+        summary.textContent = n === TOTAL ? 'Please check the highlighted fields.' : '';
+        summary.hidden = n !== TOTAL;
+        return;
+      }
+    }
+    $('#form-summary').hidden = true;
 
     var message = buildMessage();
-
     if (!waConfigured) {
       console.warn('[Palesa Visuals] whatsappNumber is not set in js/config.js — cannot open WhatsApp.');
       showResult('unconfigured', message);
       return;
     }
-
     var url = waUrl(message);
     var win = window.open(url, '_blank');
     if (win) { try { win.opener = null; } catch (err) { /* ignore */ } }
@@ -476,17 +594,16 @@
       result.classList.add('is-warning');
       html = '<h3>WhatsApp quotes aren’t available on this page yet</h3>' +
         '<p>Your request has <strong>not</strong> been sent. You can copy the message below' +
-        (fallbackContact.length ? ' and ' + fallbackContact.join(' or ') : ' to send it to us directly') + '.</p>';
+        (fallbackContact.length ? ' and ' + fallbackContact.join(' or ') : ' to send it to us directly') + '.</p><div class="btn-row">';
     } else {
       result.classList.remove('is-warning');
       html = '<h3>Almost done — press Send in WhatsApp</h3>' +
         '<p>WhatsApp should now be open with your quotation request written out. <strong>Your request is only sent once you press Send in WhatsApp.</strong></p>' +
         '<p>WhatsApp didn’t open? Use the button below, or copy the message and send it to <strong>' + esc(waDisplay()) + '</strong>' +
         (fallbackContact.length ? '. You can also ' + fallbackContact.join(' or ') : '') + '.</p>' +
-        '<div class="btn-row"><a class="btn btn-primary" href="' + esc(url) + '" target="_blank" rel="noopener">Open WhatsApp again</a>';
+        '<div class="btn-row"><a class="btn btn-primary" href="' + esc(url) + '" target="_blank" rel="noopener"><span>Open WhatsApp again</span></a>';
     }
-    html += (kind === 'unconfigured' ? '<div class="btn-row">' : '') +
-      '<button type="button" class="btn btn-outline" data-copy>Copy message</button></div>' +
+    html += '<button type="button" class="btn btn-outline" data-copy><span>Copy message</span></button></div>' +
       '<details' + (kind === 'unconfigured' ? ' open' : '') + '><summary>View your message</summary><pre class="message-preview"></pre></details>';
 
     result.innerHTML = html;
@@ -494,15 +611,16 @@
     $('[data-copy]', result).addEventListener('click', function () { copyText(message.replace(/\*/g, '')); });
     result.hidden = false;
     result.focus({ preventScroll: true });
-    result.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    scrollToEl(result);
   }
 
   function copyText(text) {
     var done = function () { toast('Message copied. Paste it into WhatsApp, SMS or email.'); };
+    var fail = function () { toast('Couldn’t copy automatically — select the message text and copy it.'); };
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(done, function () { legacyCopy(text) ? done() : toast('Couldn’t copy automatically — select the message text and copy it.'); });
+      navigator.clipboard.writeText(text).then(done, function () { legacyCopy(text) ? done() : fail(); });
     } else {
-      legacyCopy(text) ? done() : toast('Couldn’t copy automatically — select the message text and copy it.');
+      legacyCopy(text) ? done() : fail();
     }
   }
   function legacyCopy(text) {
@@ -515,29 +633,23 @@
     return ok;
   }
 
-  /* ---------------- Setup notice (until config is complete) ---------------- */
+  /* ---------------- Setup notice (only for things that break the site) ---------------- */
   function setupNotice() {
     var missing = [];
     if (!waConfigured) missing.push('<code>whatsappNumber</code> — WhatsApp buttons and the quote form are disabled');
     if (!CFG.phoneNumber) missing.push('<code>phoneNumber</code>');
-    if (!CFG.email) missing.push('<code>email</code> (optional)');
     if (!areas().length) missing.push('<code>serviceAreas</code>');
-    if (!CFG.serviceAreaSummary) missing.push('<code>serviceAreaSummary</code>');
-    if (!CFG.businessHours) missing.push('<code>businessHours</code> (optional)');
-    if (!CFG.siteUrl) missing.push('<code>siteUrl</code> (for SEO, once the domain is known)');
-    if (!CFG.servicesConfirmed) missing.push('confirm the service list, then set <code>servicesConfirmed: true</code>');
+    if (!CFG.siteUrl) console.info('[Palesa Visuals] Set siteUrl in js/config.js once the domain is live.');
 
     var check = function () {
       var pending = $$('.photo--pending').length;
       var items = missing.slice();
       if (pending) items.push(pending + ' photo' + (pending > 1 ? 's' : '') + ' missing in <code>assets/photos/</code> (see README)');
-      if (!items.length) return;
-      if (sessionStorageGet('pv-setup-dismissed')) return;
+      if (!items.length || sessionStorageGet('pv-setup-dismissed')) return;
       document.documentElement.classList.add('show-setup');
       var bar = $('#setup-bar');
-      var open = '';
-      bar.innerHTML = '<details' + open + '><summary>Site setup: ' + items.length + ' item' + (items.length > 1 ? 's' : '') + ' to finish</summary>' +
-        '<div class="setup-body">Shown until configured. Update <code>js/config.js</code>:<ul><li>' + items.join('</li><li>') + '</li></ul>' +
+      bar.innerHTML = '<details><summary>Site setup: ' + items.length + ' item' + (items.length > 1 ? 's' : '') + ' to finish</summary>' +
+        '<div class="setup-body">Update <code>js/config.js</code>:<ul><li>' + items.join('</li><li>') + '</li></ul>' +
         '<button type="button">Hide for now</button></div></details>';
       bar.hidden = false;
       $('button', bar).addEventListener('click', function () {
@@ -552,11 +664,14 @@
 
   /* ---------------- Init ---------------- */
   renderServices();
+  renderMarquee();
   renderContact();
   applySiteUrl();
   setupWhatsAppButtons();
   setupNav();
   setupForm();
   setupPrivacy();
+  setupStatement();
+  setupReveals();
   setupNotice();
 })();
