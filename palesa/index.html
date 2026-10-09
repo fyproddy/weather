@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="preload" as="image" href="assets/photos/hero.jpg">
+  <link rel="preload" as="image" href="assets/photos/hero.jpg" imagesrcset="assets/photos/hero-800.jpg 800w, assets/photos/hero.jpg 1600w" imagesizes="(max-width: 960px) 100vw, 50vw">
 
   <script>
     // Mark any photo that fails to load so its frame shows a neutral panel instead of a broken image.
@@ -88,7 +88,7 @@
         <p class="hero-areas" data-areas-line hidden></p>
       </div>
       <figure class="hero-media photo">
-        <img src="assets/photos/hero.jpg" width="1600" height="1200" alt="Technician installing a satellite dish on the roof of a house" fetchpriority="high">
+        <img src="assets/photos/hero.jpg" srcset="assets/photos/hero-800.jpg 800w, assets/photos/hero.jpg 1600w" sizes="(max-width: 960px) 100vw, 50vw" width="1600" height="1005" alt="Technician tightening the mounting bracket of a satellite dish on a rooftop" fetchpriority="high">
         <span class="photo-note">Hero photo: technician installing a satellite dish on a residential roof — add assets/photos/hero.jpg</span>
       </figure>
     </section>
@@ -127,7 +127,7 @@
     <section class="section about" id="about" aria-labelledby="about-title">
       <div class="container about-grid">
         <figure class="about-media photo">
-          <img src="assets/photos/cabling.jpg" width="1200" height="1500" loading="lazy" alt="Neatly routed satellite cable clipped along an exterior wall">
+          <img src="assets/photos/cabling.jpg" srcset="assets/photos/cabling-640.jpg 640w, assets/photos/cabling.jpg 1100w" sizes="(max-width: 960px) 100vw, 40vw" width="1100" height="1650" loading="lazy" alt="Wall-mounted TV with its cables clipped neatly down the wall">
           <span class="photo-note">About photo: neatly routed satellite cabling or a technician at work — add assets/photos/cabling.jpg</span>
         </figure>
 

@@ -56,7 +56,7 @@ window.PALESA_CONFIG = {
    *  description – one or two plain sentences
    *  questions   – extra form questions: 'new' | 'signal' | 'multiroom' | 'mount' | 'commercial' | null
    *  photo       – shown for featured services; file lives in assets/photos/
-   *  featured    – featured services get a large photo block (the first three are used)
+   *  featured    – featured services get a large photo block (up to three; needs a photo)
    */
   services: [
     {
@@ -66,7 +66,7 @@ window.PALESA_CONFIG = {
       description: 'A new satellite dish and decoder set up for your home or business, with the dish positioned, cabling routed and the system tested before we leave.',
       questions: 'new',
       featured: true,
-      photo: { src: 'assets/photos/new-installation.jpg', alt: 'Satellite dish mounted on the roof of a house' }
+      photo: { src: 'assets/photos/new-installation.jpg', srcset: 'assets/photos/new-installation-800.jpg 800w, assets/photos/new-installation.jpg 1400w', width: 1400, height: 933, position: '62% 50%', alt: 'Installer setting up a wall-mounted DStv satellite dish with a signal meter' }
     },
     {
       id: 'signal-problems',
@@ -74,8 +74,7 @@ window.PALESA_CONFIG = {
       formLabel: 'Signal Problem / No Signal',
       description: 'Lost signal, poor reception or channels dropping out. We check the dish alignment, LNB and cabling to find where the fault is.',
       questions: 'signal',
-      featured: true,
-      photo: { src: 'assets/photos/signal-check.jpg', alt: 'Technician checking satellite signal strength with a meter' }
+      featured: false
     },
     {
       id: 'extra-view',
@@ -84,7 +83,7 @@ window.PALESA_CONFIG = {
       description: 'Setting up compatible decoders so you can watch in more than one room, depending on your equipment and configuration.',
       questions: 'multiroom',
       featured: true,
-      photo: { src: 'assets/photos/tv-room.jpg', alt: 'Television neatly installed in a living room' }
+      photo: { src: 'assets/photos/tv-room.jpg', srcset: 'assets/photos/tv-room-800.jpg 800w, assets/photos/tv-room.jpg 1400w', width: 1400, height: 1050, position: '60% 45%', alt: 'Wall-mounted television above a TV cabinet in a living room' }
     },
     {
       id: 'extra-tv-points',

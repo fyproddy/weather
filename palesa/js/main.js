@@ -47,7 +47,10 @@
     featuredEl.innerHTML = featured.map(function (s) {
       n++;
       return '<article class="feature">' +
-        '<figure class="photo"><img src="' + esc(s.photo.src) + '" alt="' + esc(s.photo.alt || '') + '" loading="lazy" width="1200" height="800">' +
+        '<figure class="photo"><img src="' + esc(s.photo.src) + '"' +
+        (s.photo.srcset ? ' srcset="' + esc(s.photo.srcset) + '" sizes="(max-width: 860px) 100vw, 640px"' : '') +
+        (s.photo.position ? ' style="object-position:' + esc(s.photo.position) + '"' : '') +
+        ' alt="' + esc(s.photo.alt || '') + '" loading="lazy" width="' + (s.photo.width || 1200) + '" height="' + (s.photo.height || 800) + '">' +
         '<span class="photo-note">Service photo for “' + esc(s.name) + '” — add ' + esc(s.photo.src) + '</span></figure>' +
         '<div class="feature-meta"><span class="feature-num">' + pad(n) + '</span><h3>' + esc(s.name) + '</h3></div>' +
         '<p>' + esc(s.description || '') + '</p>' +
@@ -55,6 +58,7 @@
         '</article>';
     }).join('');
     if (!featured.length) featuredEl.hidden = true;
+    featuredEl.setAttribute('data-count', featured.length);
 
     listEl.innerHTML = rest.map(function (s) {
       n++;

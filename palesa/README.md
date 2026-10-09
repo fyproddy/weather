@@ -49,7 +49,7 @@ so nothing looks broken.
 | --- | --- | --- | --- |
 | `hero.jpg` | Hero (top of page) | Technician installing a satellite dish on a residential roof | Landscape 4:3, about 1600 × 1200 |
 | `new-installation.jpg` | Services: New DStv Installation | Satellite dish neatly mounted on a house | Portrait or square, about 1200 × 1400 |
-| `signal-check.jpg` | Services: Signal Problems | Technician checking signal with a meter, or a dish being aligned | Landscape 16:10, about 1200 × 750 |
+| `signal-check.jpg` (optional, not used yet) | Services: Signal Problems — add the file, then set `featured: true` and a `photo` for that service in config.js | Technician checking signal with a meter, or a dish being aligned | Landscape 16:10, about 1200 × 750 |
 | `tv-room.jpg` | Services: Extra View | Clean TV installation in a living room | Landscape 16:10, about 1200 × 750 |
 | `cabling.jpg` | Why Palesa Visuals | Neatly clipped satellite cabling, or a technician at work | Portrait 4:5, about 1200 × 1500 |
 
