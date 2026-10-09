@@ -216,6 +216,39 @@ h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
   .signal-card { position: relative; right: auto; bottom: auto; margin: 16px var(--gutter) 0; max-width: none; box-shadow: none; border: 1px solid var(--line); }
 }
 
+/* ---------- Home hero: full photo, small text block bottom-left ---------- */
+.hero.hero-photo {
+  position: relative; isolation: isolate; overflow: hidden; padding: 0; margin-top: var(--header-h);
+  height: calc(100svh - var(--header-h)); min-height: 520px; max-height: 980px; display: flex; align-items: flex-end;
+  background: var(--ink);
+}
+.hero-bg { position: absolute; inset: 0; z-index: -2; background: var(--ink); }
+.hero-bg img { object-position: 38% 50%; transform: scale(calc(1 + var(--z, 0) * .08)); transform-origin: 50% 30%; }
+.hero.hero-photo::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(0deg, rgba(10,18,48,.86) 0%, rgba(10,18,48,.35) 42%, rgba(10,18,48,0) 70%),
+    linear-gradient(90deg, rgba(10,18,48,.55) 0%, rgba(10,18,48,0) 55%);
+}
+.hero-overlay { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding-bottom: clamp(24px, 5vh, 56px); }
+.hero-box { max-width: 480px; color: #fff; }
+.hero-box .kicker { margin-bottom: 14px; color: rgba(255,255,255,.85); text-shadow: 0 1px 8px rgba(0,0,0,.35); }
+.hero-box .kicker-sep { color: rgba(255,255,255,.35); }
+.hero-photo .display { color: #fff; font-size: clamp(1.9rem, 3.4vw, 3rem); margin-bottom: 12px; }
+.hero-photo .display .soft { color: rgba(255,255,255,.6); }
+.hero-line { color: rgba(255,255,255,.82); font-size: 1rem; margin-bottom: 20px; }
+.hero-photo .signal-card { position: static; flex: none; }
+@media (max-width: 640px) {
+  .hero.hero-photo { min-height: 480px; }
+  .hero-bg img { object-position: 30% 40%; }
+  .hero-box { max-width: 300px; }
+  .hero-photo .display { font-size: clamp(1.6rem, 7.6vw, 2rem); margin-bottom: 8px; }
+  .hero-line { font-size: .92rem; margin-bottom: 14px; }
+  .hero-box .btn-row { flex-wrap: nowrap; gap: 8px; }
+  .hero-box .btn { min-height: 44px; padding: 10px 16px; font-size: .9rem; }
+  .hero-photo .signal-card { display: none; }
+}
+
 /* ---------- Intro (two-tone statement + photo strip) ---------- */
 .intro, .statement { padding: var(--section-y) 0 0; }
 .statement { padding-bottom: calc(var(--section-y) * .6); }

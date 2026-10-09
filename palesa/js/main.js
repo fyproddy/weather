@@ -236,7 +236,9 @@
   function setupScrollMotion() {
     var expands = $$('[data-expand]');
     var drifters = $$('[data-speed]');
-    if (reduceMotion.matches || (!expands.length && !drifters.length)) {
+    if (reduceMotion.matches || (!expands.length && !drifters.length && !$('[data-zoom]'))) {
+      var zoom = $('[data-zoom]');
+      if (zoom) zoom.style.setProperty('--z', Math.min(1, window.scrollY / vh).toFixed(3));
       expands.forEach(function (el) { el.style.setProperty('--p', 1); });
       return;
     }
