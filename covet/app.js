@@ -3,8 +3,9 @@
   var byHandle = {};
   products.forEach(function (p) { byHandle[p.handle] = p; });
 
-  var TITLES = { all: "All sneakers", sportswear: "Sportswear", designer: "Designer", rare: "Rare & Hype" };
-  var state = { cat: "all", brand: "all", q: "", sort: "featured" };
+  var TITLES = { all: "All sneakers", luxury: "Luxury", sportswear: "Sportswear", rare: "Rare & Hype" };
+  var PAGE = 48;
+  var state = { cat: "all", brand: "all", collection: "all", q: "", sort: "featured", limit: PAGE };
 
   var $ = function (id) { return document.getElementById(id); };
   var grid = $("grid"), brandSel = $("brand");
@@ -53,7 +54,7 @@
     btn.appendChild(document.createTextNode(b));
     btn.appendChild(el("span", null, String(brands[b])));
     btn.addEventListener("click", function () {
-      setState({ cat: "all", brand: b, q: "" });
+      setState({ cat: "all", brand: b, collection: "all", q: "" });
       $("shop").scrollIntoView();
     });
     li.appendChild(btn);
@@ -65,7 +66,8 @@
     var list = products.filter(function (p) {
       if (state.cat !== "all" && p.category !== state.cat) return false;
       if (state.brand !== "all" && p.vendor !== state.brand) return false;
-      if (q && (p.vendor + " " + p.title).toLowerCase().indexOf(q) === -1) return false;
+      if (state.collection !== "all" && p.collection !== state.collection) return false;
+      if (q && (p.vendor + " " + p.title + " " + p.collection).toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
     if (state.sort === "price-asc") list.sort(function (a, b) { return a.price - b.price; });
@@ -79,12 +81,12 @@
     btn.type = "button";
     btn.setAttribute("aria-label", p.vendor + " " + p.title + ", " + money(p.price));
     var m = media(p, "media");
-    if (p.category !== "sportswear") m.appendChild(el("span", "badge " + p.category, p.category === "rare" ? "Rare" : "Designer"));
+    if (p.category !== "sportswear") m.appendChild(el("span", "badge " + p.category, p.category === "rare" ? "Rare" : "Luxury"));
     btn.appendChild(m);
     var body = el("div", "card-body");
     body.appendChild(el("p", "card-brand", p.vendor));
     body.appendChild(el("p", "card-title", p.title));
-    body.appendChild(el("p", "card-price", money(p.price)));
+    body.appendChild(priceRow(p, "card-price"));
     btn.appendChild(body);
     btn.addEventListener("click", function () { openProduct(p); });
     li.appendChild(btn);
@@ -93,10 +95,13 @@
 
   function render() {
     var list = filtered();
-    grid.replaceChildren.apply(grid, list.map(card));
+    grid.replaceChildren.apply(grid, list.slice(0, state.limit).map(card));
     $("empty").hidden = list.length > 0;
+    $("more").hidden = list.length <= state.limit;
+    $("more").textContent = "Load more (" + (list.length - state.limit) + " left)";
     $("resultCount").textContent = list.length + (list.length === 1 ? " pair" : " pairs");
-    $("shopTitle").textContent = state.brand !== "all" ? state.brand : TITLES[state.cat];
+    $("shopTitle").textContent = state.collection !== "all" ? state.collection
+      : state.brand !== "all" ? state.brand : TITLES[state.cat];
     document.querySelectorAll(".tab").forEach(function (t) { t.classList.toggle("is-active", t.dataset.cat === state.cat); });
     brandSel.value = state.brand;
     $("search").value = state.q;
@@ -104,15 +109,53 @@
   }
 
   function setState(patch) {
+    if (!("limit" in patch)) patch.limit = PAGE;
     Object.keys(patch).forEach(function (k) { state[k] = patch[k]; });
     render();
   }
 
+  // Covet price with the original store price struck through.
+  function priceRow(p, cls) {
+    var row = el("p", cls);
+    row.appendChild(el("span", "now", money(p.price)));
+    var was = el("s", "was", money(p.storePrice));
+    was.setAttribute("aria-label", "Store price " + money(p.storePrice));
+    row.appendChild(was);
+    return row;
+  }
+
+  $("more").addEventListener("click", function () { setState({ limit: state.limit + PAGE }); });
+
+  // ----- Collections (luxury and rare first) -----
+  var collections = [];
+  products.forEach(function (p) {
+    var c = collections.find(function (x) { return x.name === p.collection; });
+    if (!c) collections.push(c = { name: p.collection, brand: p.vendor, cat: p.category, count: 0, from: p.price });
+    c.count += 1;
+    c.from = Math.min(c.from, p.price);
+  });
+  [["luxury", "collLuxury"], ["rare", "collRare"], ["sportswear", "collSport"]].forEach(function (pair) {
+    var list = $(pair[1]);
+    collections.filter(function (c) { return c.cat === pair[0]; }).forEach(function (c) {
+      var li = el("li"), btn = el("button");
+      btn.type = "button";
+      var name = el("span", "coll-name", c.name);
+      var meta = el("span", "coll-meta", (c.name.indexOf(c.brand) === -1 ? c.brand + " / " : "") + c.count + (c.count === 1 ? " pair" : " pairs") + " / from " + money(c.from));
+      btn.appendChild(name); btn.appendChild(meta);
+      btn.addEventListener("click", function () {
+        setState({ cat: "all", brand: "all", collection: c.name, q: "" });
+        $("shop").scrollIntoView();
+      });
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+  });
+
   document.querySelectorAll("[data-cat]").forEach(function (a) {
-    a.addEventListener("click", function () { setState({ cat: a.dataset.cat, brand: "all" }); });
+    a.addEventListener("click", function () { setState({ cat: a.dataset.cat, brand: "all", collection: "all" }); });
   });
   $("search").addEventListener("input", function (e) { setState({ q: e.target.value }); });
-  brandSel.addEventListener("change", function (e) { setState({ brand: e.target.value }); });
+  brandSel.addEventListener("change", function (e) { setState({ brand: e.target.value, collection: "all" }); });
   $("sort").addEventListener("change", function (e) { setState({ sort: e.target.value }); });
 
   // ----- Product dialog -----
@@ -123,8 +166,10 @@
     $("pdMedia").replaceChildren(media(p, "pd-media-inner"));
     $("pdBrand").textContent = p.vendor;
     $("pdTitle").textContent = p.title;
-    $("pdPrice").textContent = money(p.price);
-    $("pdCat").textContent = p.categoryLabel;
+    $("pdPrice").replaceChildren(priceRow(p, "pd-price-row"));
+    var off = Math.round((1 - p.price / p.storePrice) * 100);
+    $("pdStore").textContent = (p.storePriceSource === "resale" ? "Resale market price " : "Store price ") + money(p.storePrice) + ". You save " + off + "%.";
+    $("pdCat").textContent = p.categoryLabel + " / " + p.collection;
     var sizes = $("pdSizes");
     sizes.replaceChildren();
     p.sizes.forEach(function (s) {

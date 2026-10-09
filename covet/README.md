@@ -1,6 +1,6 @@
 # Covet: sneaker store
 
-A static storefront for Covet: 105 sneakers from 31 brands in three categories (Sportswear, Designer, Rare & Hype). It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
+A static storefront for Covet: 403 sneakers from 40 brands in 146 collections, across three categories (Luxury, Rare & Hype, Sportswear). It covers icons from any year that are still sold, plus everything from 2020 to now that can still be bought somewhere. It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
 
 ## Run it
 
@@ -26,7 +26,8 @@ It can be hosted on GitHub Pages, Netlify, Vercel or any other static host.
 
 ## Before going live
 
-- **Prices** are placeholder ZAR estimates. Set real prices in `tools/build_catalog.py`.
+- **Pricing rule:** the Covet price is 60% of the store price (`DISCOUNT` in `tools/build_catalog.py`). For example, the LV Trainer store price is R 25 000, so Covet sells it at R 15 000. Sold-out pairs and collaborations use the current resale market price as their store price. The site shows the store price crossed out, and the Shopify file puts it in *Compare at price*.
+- **Store prices** are ZAR estimates. Check them before launch.
 - **Images** load from StockX's public image CDN by product name. They could not be checked from the build environment, so a few may not resolve. Any that fail show a clean text tile instead. Replace them with supplier or your own photos before launch.
 - **Stock**: the CSV imports every size with quantity 0 and status *draft*. Set inventory in Shopify.
 
