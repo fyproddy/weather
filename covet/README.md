@@ -28,7 +28,7 @@ It can be hosted on GitHub Pages, Netlify, Vercel or any other static host.
 
 - **Pricing rule:** the Covet price is 60% of the store price (`DISCOUNT` in `tools/build_catalog.py`). For example, the LV Trainer store price is R 25 000, so Covet sells it at R 15 000. Sold-out pairs and collaborations use the current resale market price as their store price. The site shows the store price crossed out, and the Shopify file puts it in *Compare at price*.
 - **Store prices** are ZAR estimates. Check them before launch.
-- **Images** load from StockX's public image CDN by product name. They could not be checked from the build environment, so a few may not resolve. Any that fail show a clean text tile instead. Replace them with supplier or your own photos before launch.
+- **Images**: 108 of 403 products have a checked, working photo from StockX's public image CDN. The rest show a clean text tile until a photo is added, and the shop lists pairs with photos first. To add photos, put the right StockX file name for each product in `tools/images.json`, or switch to your retail program's official photos. `python3 tools/check_images.py` re-checks every link.
 - **Stock**: the CSV imports every size with quantity 0 and status *draft*. Set inventory in Shopify.
 
 ## Connecting Shopify later

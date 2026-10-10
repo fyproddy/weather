@@ -15,9 +15,11 @@ Pricing rule: Covet price = 60% of the store price.
     collaboration pairs that no brand store sells any more
 All store prices are estimates - check them before launch.
 
-Images point at StockX's public CDN. The file name is built from
-"Brand Model Colourway" unless a slug is given. They could not be checked from the
-build environment; any image that fails to load falls back to a text tile.
+Images come from StockX's public image CDN. The file name is built from
+"Brand Model Colourway" unless a slug is given. tools/images.json records the
+result of checking every link: a corrected file name, or null where no photo
+was found (the site then shows a text tile and the Shopify CSV leaves the image
+empty). Re-check with: python3 tools/check_images.py
 """
 import csv
 import json
@@ -365,6 +367,8 @@ def slug(*parts):
 
 
 def expand():
+    with open(os.path.join(ROOT, "tools", "images.json")) as f:
+        checked = json.load(f)
     items, seen = [], set()
     for c in COLLECTIONS:
         for cw in c["colourways"]:
@@ -384,6 +388,8 @@ def expand():
             h = handle(c["brand"], title)
             assert h not in seen, h
             seen.add(h)
+            if h in checked:
+                img = checked[h]
             items.append({
                 "handle": h,
                 "title": title,
@@ -398,7 +404,7 @@ def expand():
                 "price": int(round(store * DISCOUNT / 10.0) * 10),
                 "currency": "ZAR",
                 "sizes": SIZES,
-                "image": IMG.format(img),
+                "image": IMG.format(img) if img else "",
                 "tags": [c["category"], c["brand"].lower(), c["collection"].lower()],
             })
     return items

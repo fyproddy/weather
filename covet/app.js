@@ -24,17 +24,18 @@
   // Product image with a plain typographic tile if the image can't load.
   function media(p, wrapCls) {
     var box = el("div", wrapCls);
-    var img = new Image();
-    img.alt = p.vendor + " " + p.title;
-    img.loading = "lazy";
-    img.decoding = "async";
-    img.onerror = function () {
-      img.remove();
+    function fallback() {
       var f = el("div", "fallback");
       f.appendChild(el("span", null, p.vendor));
       f.appendChild(el("strong", null, p.model));
       box.appendChild(f);
-    };
+    }
+    if (!p.image) { fallback(); return box; }
+    var img = new Image();
+    img.alt = p.vendor + " " + p.title;
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.onerror = function () { img.remove(); fallback(); };
     img.src = p.image;
     box.appendChild(img);
     return box;
@@ -70,6 +71,8 @@
       if (q && (p.vendor + " " + p.title + " " + p.collection).toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
+    // Featured: pairs with a photo first, catalogue order otherwise.
+    if (state.sort === "featured") list = list.filter(function (p) { return p.image; }).concat(list.filter(function (p) { return !p.image; }));
     if (state.sort === "price-asc") list.sort(function (a, b) { return a.price - b.price; });
     if (state.sort === "price-desc") list.sort(function (a, b) { return b.price - a.price; });
     if (state.sort === "name") list.sort(function (a, b) { return (a.vendor + a.title).localeCompare(b.vendor + b.title); });
