@@ -4,9 +4,12 @@ tools/apparel_products.json holds one entry per product on Covet's clothing list
 that was matched to a real listing (brand store or retailer), with that listing's
 photos and price. Items with no real listing are left out.
 
-Pricing rule for clothing: Covet price = 50% of the price on the listing the
-product was found on (the brand's store price, or the retailer/resale price for
-pieces only sold on resale). Prices are converted to rand with RATES.
+Pricing rule for clothing: Covet price = 50% of the original retail price.
+Where the listing a piece was found on is a resale shop (Stadium Goods), its ask
+can be many times retail, so tools/apparel_retail.json gives the retail price
+instead (the StockX retail price, or the brand's own store price for the same
+type of piece). The lower of the listing and the retail price is used.
+Prices are converted to rand with RATES.
 """
 import json
 import os
@@ -106,6 +109,8 @@ def load():
     if not os.path.exists(path):
         return []
     entries = json.load(open(path))
+    rpath = os.path.join(ROOT, "tools", "apparel_retail.json")
+    retail = json.load(open(rpath)) if os.path.exists(rpath) else {}
     items, seen = [], set()
     for e in entries:
         e = dict(e, category=category_of(e))
@@ -118,6 +123,8 @@ def load():
         store = int(round(e["price"] * RATES.get(e["currency"] or "USD", 18.5), -1)) if e.get("price") else None
         if not store:
             continue
+        if e["title"] in retail:
+            store = min(store, int(round(retail[e["title"]]["retail_usd"] * RATES["USD"], -1)))
         p = {
             "handle": h,
             "title": title,

@@ -34,7 +34,7 @@ It can be hosted on GitHub Pages, Netlify, Vercel or any other static host.
 ## Clothing
 
 - **Source list:** `tools/apparel_list.txt` is Covet's clothing list. Each item was matched to a real listing on the brand's own store or a retailer (Stadium Goods, Italist, Kith, Slam Jam, The Double F, Antonioli, Browns, Feature), keeping only matches with the same brand and garment type. Items with no real listing were left out. The matches, with photos, price and source link, are in `tools/apparel_products.json`; product names are the real listing's name.
-- **Pricing rule:** the Covet price is 50% of the price on the listing the piece was found on: the brand's store price, or the retailer or resale price (`DISCOUNT` and currency `RATES` in `tools/apparel.py`).
+- **Pricing rule:** the Covet price is 50% of the original retail price (`DISCOUNT` and currency `RATES` in `tools/apparel.py`). Pieces found on a resale shop, where the ask can be many times retail, are priced from their retail price in `tools/apparel_retail.json`: the StockX retail price, or, where StockX has no exact listing, the retail price of the closest same-brand piece. The lower of the listing and the retail price is used.
 - **Collections:** brand drops first (Chrome Hearts, Corteiz, Essentials, Gallery Dept., Hellstar, Sp5der, Supreme, Denim Tears), then by style (Jerseys, Tracksuits & Sets, Old Money, Italian Sportswear, Maison Logos, Designer Bottoms, Denim, Shorts, Sweatpants & Pants, Heavyweight Hoodies, Graphic Tees). Rules are in `tools/apparel.py`.
 
 ## Connecting Shopify later
