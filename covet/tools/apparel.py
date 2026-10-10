@@ -21,7 +21,7 @@ RATES = {"ZAR": 1, "USD": 18.5, "EUR": 20.0, "GBP": 23.5, "JPY": 0.123, "AUD": 1
 LABELS = {"hoodies": "Hoodies & Knits", "tops": "Tops", "bottoms": "Bottoms"}
 LUXURY = {"Balenciaga", "Burberry", "Celine", "Dior", "Fendi", "Gucci", "Louis Vuitton", "Prada", "Moncler",
           "Bottega Veneta", "Givenchy", "Loewe", "Miu Miu", "Saint Laurent", "Versace", "Thom Browne",
-          "Maison Margiela", "Amiri", "Casablanca", "Chrome Hearts", "Off-White", "Palm Angels"}
+          "Maison Margiela", "Amiri", "Enfants Riches Déprimés", "Satoshi Nakamoto", "Casablanca", "Chrome Hearts", "Off-White", "Palm Angels"}
 TOPS_SIZES = ["XS", "S", "M", "L", "XL", "XXL"]
 WAIST_SIZES = ["28", "30", "32", "34", "36", "38"]
 
@@ -35,6 +35,8 @@ COLLECTIONS = [
     ("Sp5der", lambda p: p["vendor"] == "Sp5der"),
     ("Supreme", lambda p: p["vendor"] == "Supreme"),
     ("Denim Tears", lambda p: p["vendor"] == "Denim Tears"),
+    ("Enfants Riches Déprimés", lambda p: p["vendor"] == "Enfants Riches Déprimés"),
+    ("Satoshi Nakamoto", lambda p: p["vendor"] == "Satoshi Nakamoto"),
     ("Jerseys", lambda p: re.search(r"\bjersey\b", p["title"], re.I)),
     ("Tracksuits & Sets", lambda p: re.search(r"track ?(jacket|pants|top)|tracksuit|set\b", p["title"], re.I)),
     ("Old Money", lambda p: p["vendor"] in {"Polo Ralph Lauren", "Lacoste", "Thom Browne", "Casablanca", "AMI Paris"}
@@ -90,7 +92,7 @@ def sizes_for(entry):
 def category_of(e):
     """Section from what the real product is, falling back to where it sat on the list."""
     t = e["title"].lower()
-    if re.search(r"\b(shorts?|sweatshorts|jeans|denim|pants|sweatpants?|joggers?|trousers|bermuda)\b", t) \
+    if re.search(r"\b(shorts?|sweatshorts|jeans|denim|pants|sweatpants?|sweats|pant|joggers?|trousers|bermuda)\b", t) \
             and not re.search(r"\b(jacket|shirt|hoodie)\b", t):
         return "bottoms"
     if re.search(r"\b(hoodie|hooded|hood|sweatshirt|sweater|crewneck|crew|pullover|cardigan|knit|quarter zip|jacket|zip up)\b", t):

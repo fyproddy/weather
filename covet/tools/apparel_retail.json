@@ -253,5 +253,205 @@
   "retail_usd": 152,
   "basis": "Corteiz retail, GBP 120",
   "listing_usd": 505.0
+ },
+ "Loose Threads Crewneck \"Black\" 40 068 BLK": {
+  "retail_usd": 950,
+  "basis": "estimate: ERD sweatshirt retail",
+  "listing_usd": 1108.0
+ },
+ "Sweet Surrender Of Alice Hoodie \"Faded Green\" 020 463 FADE": {
+  "retail_usd": 1200,
+  "basis": "estimate: ERD hoodie retail",
+  "listing_usd": 2278.0
+ },
+ "Paint Splatter L/S T-Shirt \"Black\" 010 859": {
+  "retail_usd": 550,
+  "basis": "estimate: ERD long-sleeve tee retail",
+  "listing_usd": 1425.0
+ },
+ "Modular LS T-Shirt \"Vintage White\"": {
+  "retail_usd": 550,
+  "basis": "estimate: ERD long-sleeve tee retail",
+  "listing_usd": 1788.0
+ },
+ "Incandescent Raglan Sweatshirt \"White\"": {
+  "retail_usd": 950,
+  "basis": "estimate: ERD sweatshirt retail",
+  "listing_usd": 1668.0
+ },
+ "Latency LS T-Shirt \"Black\"": {
+  "retail_usd": 550,
+  "basis": "estimate: ERD long-sleeve tee retail",
+  "listing_usd": 1075.0
+ },
+ "Reverend T-Shirt \"Thrashed Teal\"": {
+  "retail_usd": 450,
+  "basis": "estimate: ERD tee retail",
+  "listing_usd": 1338.0
+ },
+ "Come Live With Me Sweater \"Grey\"": {
+  "retail_usd": 1400,
+  "basis": "estimate: ERD knitwear retail",
+  "listing_usd": 2350.0
+ },
+ "I Still Have Hope Assemblage T-Shirt \"Ivory\"": {
+  "retail_usd": 450,
+  "basis": "estimate: ERD tee retail",
+  "listing_usd": 2028.0
+ },
+ "The Ballroom Dance Sweater \"White\" 80242": {
+  "retail_usd": 1400,
+  "basis": "estimate: ERD knitwear retail",
+  "listing_usd": 1771.0
+ },
+ "Enduro Denim \"Blue\" SS25PNT001": {
+  "retail_usd": 1250,
+  "basis": "Feature retail, same piece",
+  "listing_usd": 1357.0
+ },
+ "Abandoned Theme Park Half Zip \"Blue\" FW25SHT003BLU": {
+  "retail_usd": 650,
+  "basis": "estimate: Satoshi shirt retail",
+  "listing_usd": 616.0
+ },
+ "Don't Forget To Smile Shirt \"Black\" SAT022": {
+  "retail_usd": 650,
+  "basis": "estimate: Satoshi shirt retail",
+  "listing_usd": 981.0
+ },
+ "Distressed V-Cut Hoodie \"Blue/Light Blue\" SAT072": {
+  "retail_usd": 950,
+  "basis": "estimate: Satoshi hoodie retail",
+  "listing_usd": 1963.0
+ },
+ "Nessa Pant \"Blue Denim\" SAT057": {
+  "retail_usd": 1500,
+  "basis": "Feature retail, same piece",
+  "listing_usd": 1636.0
+ },
+ "Cybernetics Zip Up Hoodie \"Washed Black\" fw25ho006": {
+  "retail_usd": 1050,
+  "basis": "estimate: Satoshi zip hoodie retail",
+  "listing_usd": 1140.0
+ },
+ "Welcome To The Machine Tee \"Black\" SAT089": {
+  "retail_usd": 350,
+  "basis": "estimate: Satoshi tee retail",
+  "listing_usd": 1166.0
+ },
+ "Moto Hoodie \"Black\" SAT017": {
+  "retail_usd": 950,
+  "basis": "estimate: Satoshi hoodie retail",
+  "listing_usd": 1832.0
+ },
+ "Alive or Just Breathing Hoodie \"Black\" SAT084": {
+  "retail_usd": 950,
+  "basis": "estimate: Satoshi hoodie retail",
+  "listing_usd": 1308.0
+ },
+ "Moto Logo Hooded Sweatshirt \"Black\" SS25H0002 BLK": {
+  "retail_usd": 1000,
+  "basis": "Satoshi sweatpants retail at Feature",
+  "listing_usd": 1265.0
+ },
+ "Lost Boys Logo Zip Up Hooded Sweatshirt \"Black Multi\" SAT067": {
+  "retail_usd": 1000,
+  "basis": "Satoshi sweatpants retail at Feature",
+  "listing_usd": 2278.0
+ },
+ "Mesh Moto Sweatpants \"Black\" FW25PNT004 BLK": {
+  "retail_usd": 1000,
+  "basis": "Satoshi sweatpants retail at Feature",
+  "listing_usd": 1518.0
+ },
+ "Second Phase Tee \"Vintage White\" SAT018": {
+  "retail_usd": 350,
+  "basis": "estimate: Satoshi tee retail",
+  "listing_usd": 981.0
+ },
+ "Smiley Cutoff Tee \"Black\" SAT096": {
+  "retail_usd": 350,
+  "basis": "estimate: Satoshi tee retail",
+  "listing_usd": 1178.0
+ },
+ "Minute Man Press Tee \"White\" SAT077": {
+  "retail_usd": 350,
+  "basis": "estimate: Satoshi tee retail",
+  "listing_usd": 950.0
+ },
+ "BTC Short Sleeve Tee Shirt \"White\" SAT013": {
+  "retail_usd": 350,
+  "basis": "estimate: Satoshi tee retail",
+  "listing_usd": 505.0
+ },
+ "Luke Thermal Long Sleeve Tee Shirt \"Red White\" PS26TEE006 RED": {
+  "retail_usd": 450,
+  "basis": "estimate: Satoshi long-sleeve retail",
+  "listing_usd": 2617.0
+ },
+ "Worldwide Cut Off T-Shirt \"Washed Black\" SAT027": {
+  "retail_usd": 350,
+  "basis": "estimate: Satoshi tee retail",
+  "listing_usd": 1012.0
+ },
+ "Acid Long Sleeve T-Shirt \"White\" SAT073": {
+  "retail_usd": 450,
+  "basis": "estimate: Satoshi long-sleeve retail",
+  "listing_usd": 1308.0
+ },
+ "Logo Thermal Long Sleeve Shirt \"Black White\" FW25LS001 BLK": {
+  "retail_usd": 450,
+  "basis": "estimate: Satoshi long-sleeve retail",
+  "listing_usd": 1047.0
+ },
+ "Carpenter Shorts \"Camo\" SAT055": {
+  "retail_usd": 925,
+  "basis": "Satoshi shorts retail at Feature",
+  "listing_usd": 1308.0
+ },
+ "Mesh Moto Jersey \"Black\" SAT034": {
+  "retail_usd": 650,
+  "basis": "estimate: Satoshi shirt retail",
+  "listing_usd": 1636.0
+ },
+ "Moto Logo Sweatpants \"Red / Black\" SAT093": {
+  "retail_usd": 1000,
+  "basis": "Satoshi sweatpants retail at Feature",
+  "listing_usd": 1265.0
+ },
+ "Double Layer Studded Sweats Black \"Black\" FW24SWP001": {
+  "retail_usd": 1000,
+  "basis": "Satoshi sweatpants retail at Feature",
+  "listing_usd": 2058.0
+ },
+ "Holy Ghost Layered Thermal Sweatpants \"Black\" SAT019": {
+  "retail_usd": 1000,
+  "basis": "Satoshi sweatpants retail at Feature",
+  "listing_usd": 1773.0
+ },
+ "Luke Fleece Sweatpants \"Black\" SAT079": {
+  "retail_usd": 1000,
+  "basis": "Satoshi sweatpants retail at Feature",
+  "listing_usd": 1773.0
+ },
+ "Paint Splatter Carpenter Shorts \"Acid Rain Grey\" SAT056": {
+  "retail_usd": 925,
+  "basis": "Satoshi shorts retail at Feature",
+  "listing_usd": 1308.0
+ },
+ "Danny's Carpenter Stud-Embellished Distressed Shorts \"Black\" SAT076": {
+  "retail_usd": 925,
+  "basis": "Satoshi shorts retail at Feature",
+  "listing_usd": 2026.0
+ },
+ "Get What I Want Zip-Up Hoodie \"Grey\" SAT078": {
+  "retail_usd": 1050,
+  "basis": "estimate: Satoshi zip hoodie retail",
+  "listing_usd": 2279.0
+ },
+ "Star Studded Hoodie \"Black Grey\" SAT012": {
+  "retail_usd": 950,
+  "basis": "estimate: Satoshi hoodie retail",
+  "listing_usd": 1898.0
  }
 }
