@@ -32,6 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DISCOUNT = 0.60  # Covet price as a share of the store price
 ZAR_PER_USD = 18.5  # converts a listing's US$ store price to rand
 IMG = "https://images.stockx.com/images/{}.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&trim=color"
+VIEW = "https://images.stockx.com/360/{n}/Images/{n}/Lv2/img{f}.jpg?fm=webp&w=700&q=90"
 SIZES = ["UK 5", "UK 6", "UK 7", "UK 8", "UK 9", "UK 10", "UK 11", "UK 12"]
 
 LABELS = {"luxury": "Luxury", "sportswear": "Sportswear", "rare": "Rare & Hype"}
@@ -412,6 +413,9 @@ def expand():
     # Each pair's own store price in US$ (from its StockX listing), keyed by image.
     with open(os.path.join(ROOT, "tools", "store_prices_usd.json")) as f:
         usd = json.load(f)
+    # Extra angles from StockX's 360-degree photos (tools/check_gallery.py).
+    gallery_path = os.path.join(ROOT, "tools", "gallery.json")
+    gallery = json.load(open(gallery_path)) if os.path.exists(gallery_path) else {}
 
     plans, used = [], set()
     for c in COLLECTIONS:
@@ -473,6 +477,8 @@ def expand():
                 "currency": "ZAR",
                 "sizes": SIZES,
                 "image": IMG.format(img) if img else "",
+                "images": ([IMG.format(img)] + [VIEW.format(n=img[:-8] if img.endswith("-Product") else img, f=f)
+                                                for f in gallery.get(img, []) if f != "01"]) if img else [],
                 "tags": [c["category"], c["brand"].lower(), c["collection"].lower()],
             })
     return items
@@ -502,6 +508,9 @@ def write_csv(items, path):
                     "Variant Requires Shipping": "TRUE",
                     "Variant Taxable": "TRUE",
                 }
+                if 0 < i < len(p["images"]):
+                    row.update({"Image Src": p["images"][i].split("?")[0], "Image Position": i + 1,
+                                "Image Alt Text": f"{p['vendor']} {p['title']} view {i + 1}"})
                 if i == 0:
                     row.update({
                         "Title": f"{p['vendor']} {p['title']}",

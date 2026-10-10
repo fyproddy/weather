@@ -160,9 +160,40 @@
   // ----- Product dialog -----
   var dialog = $("product"), current = null, chosen = null;
 
+  // Main photo plus a row of extra angles (StockX 360 views) when available.
+  function showGallery(p) {
+    var main = $("pdMedia"), thumbs = $("pdThumbs");
+    thumbs.replaceChildren();
+    if (!p.images || p.images.length < 2) {
+      main.replaceChildren(media(p, "pd-media-inner"));
+      return;
+    }
+    var big = new Image();
+    big.alt = p.vendor + " " + p.title;
+    main.replaceChildren(big);
+    p.images.forEach(function (src, i) {
+      var b = el("button", "thumb-btn");
+      b.type = "button";
+      b.setAttribute("aria-label", "View " + (i + 1));
+      var t = new Image();
+      t.alt = "";
+      t.loading = "lazy";
+      t.src = src;
+      t.onerror = function () { b.remove(); };
+      b.appendChild(t);
+      b.addEventListener("click", function () { select(i); });
+      thumbs.appendChild(b);
+    });
+    function select(i) {
+      big.src = p.images[i];
+      thumbs.querySelectorAll(".thumb-btn").forEach(function (x, j) { x.classList.toggle("is-active", j === i); });
+    }
+    select(0);
+  }
+
   function openProduct(p) {
     current = p; chosen = null;
-    $("pdMedia").replaceChildren(media(p, "pd-media-inner"));
+    showGallery(p);
     $("pdBrand").textContent = p.vendor;
     $("pdTitle").textContent = p.title;
     $("pdPrice").replaceChildren(priceRow(p, "pd-price-row"));
