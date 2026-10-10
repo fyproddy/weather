@@ -74,10 +74,27 @@ def sizes_for(entry):
     raw = [str(s).strip() for s in entry.get("sizes") or []]
     ok = [s for s in raw if re.fullmatch(r"(XXS|XS|S|M|L|XL|XXL|XXXL|2XL|3XL|\d{2}|[0-6]|O/?S)", s, re.I)]
     if ok:
-        return ok
+        order = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "2XL", "XXXL", "3XL"]
+        def rank(s):
+            u = s.upper()
+            return (0, order.index(u)) if u in order else (1, int(s) if s.isdigit() else 0)
+        return sorted(dict.fromkeys(ok), key=rank)
     if entry["category"] == "bottoms" and re.search(r"jean|denim|trouser|pant", entry["title"], re.I):
         return WAIST_SIZES
     return TOPS_SIZES
+
+
+def category_of(e):
+    """Section from what the real product is, falling back to where it sat on the list."""
+    t = e["title"].lower()
+    if re.search(r"\b(shorts?|sweatshorts|jeans|denim|pants|sweatpants?|joggers?|trousers|bermuda)\b", t) \
+            and not re.search(r"\b(jacket|shirt|hoodie)\b", t):
+        return "bottoms"
+    if re.search(r"\b(hoodie|hooded|hood|sweatshirt|sweater|crewneck|crew|pullover|cardigan|knit|quarter zip|jacket|zip up)\b", t):
+        return "hoodies"
+    if re.search(r"\b(t-?shirts?|tee|tank|polo|shirt|jersey|top)\b", t):
+        return "tops"
+    return e["category"]
 
 
 def handle(*parts):
@@ -91,6 +108,7 @@ def load():
     entries = json.load(open(path))
     items, seen = [], set()
     for e in entries:
+        e = dict(e, category=category_of(e))
         name, colour = clean_title(e["title"], e["vendor"])
         title = f"{name} '{colour}'" if colour else name
         h = handle(e["vendor"], title)

@@ -1,6 +1,6 @@
 # Covet: sneaker store
 
-A static storefront for Covet: 538 sneakers from 40 brands in 140 collections, across three categories (Luxury, Rare & Hype, Sportswear). It covers icons from any year that are still sold, plus everything from 2020 to now that can still be bought somewhere. It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
+A static storefront for Covet: 538 sneakers (Luxury, Rare & Hype, Sportswear) and 243 clothing pieces (Hoodies & Knits, Tops, Bottoms) from 82 brands. It covers icons from any year that are still sold, plus everything from 2020 to now that can still be bought somewhere. It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
 
 ## Run it
 
@@ -30,6 +30,12 @@ It can be hosted on GitHub Pages, Netlify, Vercel or any other static host.
 - **Store prices** are ZAR estimates. Check them before launch.
 - **Images**: every one of the 538 products has a checked, working photo, and 331 have several views. Most come from StockX listings found by web search (`tools/extra_images.json`), with extra angles from StockX's 360-degree photos (`tools/gallery.json`, made by `tools/check_gallery.py`). Models StockX doesn't carry use real listings from Stadium Goods, Feature, Italist and ShopSimon (`tools/retail_products.json`). Models no reachable shop sells (LV Time Out, Rivoli and Beverly Hills, Gucci Horsebit sneaker, Balenciaga Cargo and Paris, Dior B57, Hermès Drive, Celine Block, Louboutin Vieira) were replaced by current models from the same brands. `python3 tools/check_images.py` re-checks every link.
 - **Stock**: the CSV imports every size with quantity 0 and status *draft*. Set inventory in Shopify.
+
+## Clothing
+
+- **Source list:** `tools/apparel_list.txt` is Covet's clothing list. Each item was matched to a real listing on the brand's own store or a retailer (Stadium Goods, Italist, Kith, Slam Jam, The Double F, Antonioli, Browns, Feature), keeping only matches with the same brand and garment type. Items with no real listing were left out. The matches, with photos, price and source link, are in `tools/apparel_products.json`; product names are the real listing's name.
+- **Pricing rule:** the Covet price is 50% of the price on the listing the piece was found on: the brand's store price, or the retailer or resale price (`DISCOUNT` and currency `RATES` in `tools/apparel.py`).
+- **Collections:** brand drops first (Chrome Hearts, Corteiz, Essentials, Gallery Dept., Hellstar, Sp5der, Supreme, Denim Tears), then by style (Jerseys, Tracksuits & Sets, Old Money, Italian Sportswear, Maison Logos, Designer Bottoms, Denim, Shorts, Sweatpants & Pants, Heavyweight Hoodies, Graphic Tees). Rules are in `tools/apparel.py`.
 
 ## Connecting Shopify later
 

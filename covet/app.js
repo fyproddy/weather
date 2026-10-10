@@ -101,7 +101,8 @@
     $("empty").hidden = list.length > 0;
     $("more").hidden = list.length <= state.limit;
     $("more").textContent = "Load more (" + (list.length - state.limit) + " left)";
-    $("resultCount").textContent = list.length + (list.length === 1 ? " pair" : " pairs");
+    var shoes = list.every(function (p) { return dept(p) === "sneakers"; });
+    $("resultCount").textContent = list.length + " " + (shoes ? (list.length === 1 ? "pair" : "pairs") : (list.length === 1 ? "item" : "items"));
     $("shopTitle").textContent = state.collection !== "all" ? state.collection
       : state.brand !== "all" ? state.brand : TITLES[state.cat];
     document.querySelectorAll(".tab").forEach(function (t) { t.classList.toggle("is-active", t.dataset.cat === state.cat); });
@@ -209,7 +210,9 @@
     var box = el("div", "rail-media");
     box.appendChild(photo(p));
     b.appendChild(box);
-    b.appendChild(el("span", "rail-brand", p.collectionNote || p.vendor));
+    var count = products.filter(function (x) { return x.collection === name; }).length;
+    var label = name.indexOf(p.vendor) > -1 || p.vendor.indexOf(name) > -1 || dept(p) === "clothing" ? count + " pieces" : p.vendor;
+    b.appendChild(el("span", "rail-brand", label));
     b.appendChild(el("span", "rail-name", name));
     b.addEventListener("click", function () {
       setState({ cat: "all", brand: "all", collection: name, q: "" });
