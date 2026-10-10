@@ -50,16 +50,6 @@
     o.value = b;
     brandSel.appendChild(o);
 
-    var li = el("li"), btn = el("button");
-    btn.type = "button";
-    btn.appendChild(document.createTextNode(b));
-    btn.appendChild(el("span", null, String(brands[b])));
-    btn.addEventListener("click", function () {
-      setState({ cat: "all", brand: b, collection: "all", q: "" });
-      $("shop").scrollIntoView();
-    });
-    li.appendChild(btn);
-    $("brandList").appendChild(li);
   });
 
   function filtered() {
@@ -125,30 +115,86 @@
 
   $("more").addEventListener("click", function () { setState({ limit: state.limit + PAGE }); });
 
-  // ----- Collections (luxury and rare first) -----
-  var collections = [];
-  products.forEach(function (p) {
-    var c = collections.find(function (x) { return x.name === p.collection; });
-    if (!c) collections.push(c = { name: p.collection, brand: p.vendor, cat: p.category, count: 0, from: p.price });
-    c.count += 1;
-    c.from = Math.min(c.from, p.price);
+  function byHandle_(h) { return byHandle[h]; }
+  function firstWithPhoto(test) { return products.find(function (p) { return p.image && test(p); }); }
+  function photo(p, cls) {
+    var img = new Image();
+    img.className = cls || "";
+    img.alt = p ? p.vendor + " " + p.title : "";
+    img.src = p ? p.image : "";
+    return img;
+  }
+
+  // ----- Hero: a few standout pairs, one at a time -----
+  // [handle, short headline]
+  var HERO = [["jordan-air-jordan-1-x-dior-high-grey", "Air Jordan 1 High Dior"],
+              ["louis-vuitton-lv-trainer-takashi-murakami-white", "LV Trainer Murakami"],
+              ["nike-air-force-1-low-x-louis-vuitton-virgil-abloh-white-green", "Louis Vuitton Air Force 1"]]
+    .map(function (h) { var p = byHandle_(h[0]); return p && { p: p, title: h[1] }; }).filter(Boolean);
+  var slides = $("heroSlides"), dots = $("heroDots"), heroAt = 0, heroTimer = null;
+  HERO.forEach(function (h, i) {
+    var p = h.p, s = el("div", "hero-slide");
+    var txt = el("div", "hero-text wrap");
+    txt.appendChild(el("p", "hero-brand", p.vendor));
+    txt.appendChild(el("h1", "hero-title", h.title));
+    var go = el("button", "btn", "Shop now");
+    go.type = "button";
+    go.addEventListener("click", function () { openProduct(p); });
+    txt.appendChild(go);
+    s.appendChild(photo(p, "hero-img"));
+    s.appendChild(txt);
+    slides.appendChild(s);
+    var d = el("button", "hero-dot");
+    d.type = "button";
+    d.setAttribute("aria-label", "Show " + p.vendor + " " + p.title);
+    d.addEventListener("click", function () { showHero(i); restartHero(); });
+    dots.appendChild(d);
   });
-  [["luxury", "collLuxury"], ["rare", "collRare"], ["sportswear", "collSport"]].forEach(function (pair) {
-    var list = $(pair[1]);
-    collections.filter(function (c) { return c.cat === pair[0]; }).forEach(function (c) {
-      var li = el("li"), btn = el("button");
-      btn.type = "button";
-      var name = el("span", "coll-name", c.name);
-      var meta = el("span", "coll-meta", (c.name.indexOf(c.brand) === -1 ? c.brand + " / " : "") + c.count + (c.count === 1 ? " pair" : " pairs") + " / from " + money(c.from));
-      btn.appendChild(name); btn.appendChild(meta);
-      btn.addEventListener("click", function () {
-        setState({ cat: "all", brand: "all", collection: c.name, q: "" });
-        $("shop").scrollIntoView();
-      });
-      li.appendChild(btn);
-      list.appendChild(li);
+  function showHero(i) {
+    heroAt = i;
+    slides.querySelectorAll(".hero-slide").forEach(function (s, j) { s.classList.toggle("is-on", j === i); });
+    dots.querySelectorAll(".hero-dot").forEach(function (d, j) { d.classList.toggle("is-on", j === i); });
+  }
+  function restartHero() {
+    clearInterval(heroTimer);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    heroTimer = setInterval(function () { showHero((heroAt + 1) % HERO.length); }, 6000);
+  }
+  if (HERO.length) { showHero(0); restartHero(); }
+
+  // ----- Category tiles -----
+  document.querySelectorAll(".tile").forEach(function (t) {
+    var key = t.dataset.tile;
+    var p = key === "sportswear" ? firstWithPhoto(function (x) { return x.category === "sportswear" && x.vendor === "Jordan"; }) : byHandle_(key);
+    if (p) t.insertBefore(photo(p, "tile-img"), t.firstChild);
+  });
+
+  // ----- Collections rail: photo cards -----
+  var RAIL = ["LV Trainer", "Dior x Air Jordan 1", "Triple S", "Ace", "Louis Vuitton x Air Force 1", "B30",
+              "Travis Scott x Jordan", "Geobasket", "Off-White x Nike", "Oversized Sneaker", "Yeezy", "LV Skate",
+              "Gucci x adidas", "Out Of Office", "Air Jordan Retro", "Track.2", "adidas Originals", "Skel-Top Low",
+              "New Balance Lifestyle", "Wales Bonner x adidas"];
+  var rail = $("rail");
+  RAIL.forEach(function (name) {
+    var p = firstWithPhoto(function (x) { return x.collection === name; });
+    if (!p) return;
+    var li = el("li", "rail-item"), b = el("button", "rail-card");
+    b.type = "button";
+    var box = el("div", "rail-media");
+    box.appendChild(photo(p));
+    b.appendChild(box);
+    b.appendChild(el("span", "rail-brand", p.vendor));
+    b.appendChild(el("span", "rail-name", name));
+    b.addEventListener("click", function () {
+      setState({ cat: "all", brand: "all", collection: name, q: "" });
+      $("shop").scrollIntoView();
     });
+    li.appendChild(b);
+    rail.appendChild(li);
   });
+  function railStep(dir) { rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: "smooth" }); }
+  $("railPrev").addEventListener("click", function () { railStep(-1); });
+  $("railNext").addEventListener("click", function () { railStep(1); });
 
   document.querySelectorAll("[data-cat]").forEach(function (a) {
     a.addEventListener("click", function () { setState({ cat: a.dataset.cat, brand: "all", collection: "all" }); });

@@ -22,29 +22,21 @@
         <a href="#shop" data-cat="rare">Rare</a>
         <a href="#shop" data-cat="sportswear">Sportswear</a>
         <a href="#collections">Collections</a>
-        <a href="#brands">Brands</a>
       </nav>
       <button class="bag-btn" id="bagOpen" type="button">Bag (<span id="bagCount">0</span>)</button>
     </div>
   </header>
 
   <main id="top">
-    <section class="hero">
-      <div class="wrap">
-        <p class="eyebrow">Streetwear retail / Curated designer fashion</p>
-        <h1>Every pair<br>worth wanting.</h1>
-        <p class="lede">Luxury runners, the collaborations everyone wants and the everyday classics. Sized in UK, delivered across South Africa.</p>
-        <div class="hero-links">
-          <a href="#shop" class="btn" data-cat="all">Shop all sneakers</a>
-          <a href="#shop" class="btn btn-outline" data-cat="rare">See the rare drops</a>
-        </div>
-      </div>
+    <section class="hero" aria-label="Featured">
+      <div class="hero-slides" id="heroSlides"></div>
+      <div class="hero-dots" id="heroDots" role="tablist" aria-label="Featured pairs"></div>
     </section>
 
-    <section class="cats wrap" aria-label="Categories">
-      <a href="#shop" class="cat" data-cat="luxury"><span class="cat-num">01</span><span class="cat-name">Luxury</span><span class="cat-desc">Louis Vuitton, Dior, Gucci, Balenciaga, Prada and more</span></a>
-      <a href="#shop" class="cat" data-cat="rare"><span class="cat-num">02</span><span class="cat-name">Rare &amp; Hype</span><span class="cat-desc">Luxury collaborations, Travis Scott, Off-White, Yeezy</span></a>
-      <a href="#shop" class="cat" data-cat="sportswear"><span class="cat-num">03</span><span class="cat-name">Sportswear</span><span class="cat-desc">Nike, Jordan, adidas, New Balance and more</span></a>
+    <section class="tiles wrap" aria-label="Shop by category">
+      <a href="#shop" class="tile" data-cat="luxury" data-tile="balenciaga-triple-s-white"><span class="tile-name">Luxury</span></a>
+      <a href="#shop" class="tile" data-cat="rare" data-tile="jordan-air-jordan-1-x-dior-high-grey"><span class="tile-name">Rare &amp; Hype</span></a>
+      <a href="#shop" class="tile" data-cat="sportswear" data-tile="sportswear"><span class="tile-name">Sportswear</span></a>
     </section>
 
     <section id="shop" class="shop wrap">
@@ -79,29 +71,25 @@
       <div class="more-wrap"><button type="button" class="btn btn-outline-dark" id="more" hidden>Load more</button></div>
     </section>
 
-    <section id="collections" class="collections wrap">
-      <h2>Collections</h2>
-      <div class="coll-group"><h3>Luxury</h3><ul id="collLuxury" class="coll-list"></ul></div>
-      <div class="coll-group"><h3>Rare &amp; Hype</h3><ul id="collRare" class="coll-list"></ul></div>
-      <div class="coll-group"><h3>Sportswear</h3><ul id="collSport" class="coll-list"></ul></div>
+    <section id="collections" class="collections">
+      <div class="wrap section-head">
+        <h2>Collections</h2>
+        <div class="rail-nav">
+          <button type="button" class="rail-btn" id="railPrev" aria-label="Previous">&larr;</button>
+          <button type="button" class="rail-btn" id="railNext" aria-label="Next">&rarr;</button>
+        </div>
+      </div>
+      <ul class="rail" id="rail"></ul>
     </section>
 
-    <section id="brands" class="brands wrap">
-      <h2>Brands</h2>
-      <ul id="brandList" class="brand-list"></ul>
-    </section>
-
-    <section class="promise wrap">
-      <div><h3>Authenticated</h3><p>Every rare and designer pair is checked before it ships.</p></div>
-      <div><h3>Nationwide delivery</h3><p>Door to door across South Africa, tracked from dispatch.</p></div>
-      <div><h3>Easy returns</h3><p>Unworn pairs in original packaging can be returned within 14 days.</p></div>
+    <section class="promise wrap" aria-label="Why Covet">
+      <p>Authenticated</p><p>Nationwide delivery</p><p>14-day returns</p>
     </section>
   </main>
 
   <footer class="footer">
     <div class="wrap footer-inner">
       <img src="assets/covet-logo-white.png" alt="Covet" width="110" height="28">
-      <p>Streetwear retail. Curated designer fashion.</p>
       <p class="muted">&copy; <span id="year"></span> Covet. All prices in ZAR, VAT included.</p>
     </div>
   </footer>
