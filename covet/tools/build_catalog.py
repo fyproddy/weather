@@ -31,6 +31,7 @@ import re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DISCOUNT = 0.60  # Covet price as a share of the store price
 ZAR_PER_USD = 18.5  # converts a listing's US$ store price to rand
+RESALE_SHOPS = {"www.stadiumgoods.com"}  # prices there are resale, not store prices
 IMG = "https://images.stockx.com/images/{}.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&trim=color"
 VIEW = "https://images.stockx.com/360/{n}/Images/{n}/Lv2/img{f}.jpg?fm=webp&w=700&q=90"
 SIZES = ["UK 5", "UK 6", "UK 7", "UK 8", "UK 9", "UK 10", "UK 11", "UK 12"]
@@ -415,6 +416,10 @@ def expand():
     with open(os.path.join(ROOT, "tools", "retail_products.json")) as f:
         retail = json.load(f)
     retail_views = {r["images"][0]: r["images"] for v in retail.values() for r in v}
+    retail_shop = {r["images"][0]: r["source"] for v in retail.values() for r in v}
+    # What those shops charge (US$), checked against comparable pairs below.
+    with open(os.path.join(ROOT, "tools", "retail_prices_usd.json")) as f:
+        shop_usd = {k: v for k, v in json.load(f).items() if v}
 
     plans, used = [], set()
     for c in COLLECTIONS:
@@ -458,6 +463,13 @@ def expand():
         for colour, store, img in entries:
             if img in usd:
                 store = int(round(usd[img] * ZAR_PER_USD, -2))
+            elif img in shop_usd:
+                resale_shop = retail_shop[img] in RESALE_SHOPS
+                if c["category"] == "rare" or not resale_shop:
+                    # Rare pairs follow their resale price; boutiques sell at store price.
+                    store = int(round(shop_usd[img] * ZAR_PER_USD, -2))
+                # A resale shop's price on a store-sold model is a markup, so the
+                # pair keeps its model's store price, like similar Covet pairs.
             title = make_title(c, colour)
             h = handle(c["brand"], title)
             if h in seen:
@@ -482,7 +494,32 @@ def expand():
                     [IMG.format(img)] + [VIEW.format(n=img[:-8] if img.endswith("-Product") else img, f=f)
                                          for f in gallery.get(img, []) if f != "01"]),
                 "tags": [c["category"], c["brand"].lower(), c["collection"].lower()],
+                "_shop_priced": (img in shop_usd and img not in usd and c["category"] != "rare"
+                                 and retail_shop.get(img) not in RESALE_SHOPS),
             })
+    return check_shop_prices(items)
+
+
+def check_shop_prices(items):
+    """Shop prices can be sale or resale prices rather than the original store price.
+
+    Compare each one with the store prices of comparable pairs (same collection,
+    else same brand); if it is far off, use the comparable store price instead.
+    """
+    def median(xs):
+        xs = sorted(xs)
+        return xs[len(xs) // 2] if xs else None
+    for p in items:
+        if not p.pop("_shop_priced"):
+            continue
+        same = [q["storePrice"] for q in items if q is not p and q["collection"] == p["collection"]
+                and not q.get("_shop_priced")]
+        brand = [q["storePrice"] for q in items if q is not p and q["vendor"] == p["vendor"]
+                 and q["category"] == p["category"] and not q.get("_shop_priced")]
+        ref = median(same) or median(brand)
+        if ref and not 0.7 * ref <= p["storePrice"] <= 1.5 * ref:
+            p["storePrice"] = ref
+        p["price"] = int(round(p["storePrice"] * DISCOUNT / 10.0) * 10)
     return items
 
 
