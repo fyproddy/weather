@@ -1,6 +1,6 @@
 # Covet: sneaker store
 
-A static storefront for Covet: 545 sneakers from 40 brands in 146 collections, across three categories (Luxury, Rare & Hype, Sportswear). It covers icons from any year that are still sold, plus everything from 2020 to now that can still be bought somewhere. It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
+A static storefront for Covet: 538 sneakers from 40 brands in 140 collections, across three categories (Luxury, Rare & Hype, Sportswear). It covers icons from any year that are still sold, plus everything from 2020 to now that can still be bought somewhere. It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
 
 ## Run it
 
@@ -28,7 +28,7 @@ It can be hosted on GitHub Pages, Netlify, Vercel or any other static host.
 
 - **Pricing rule:** the Covet price is 60% of each pair's own store price (`DISCOUNT` in `tools/build_catalog.py`); for example, an LV Trainer with a R 25 000 store price sells at R 15 000. Pairs found on StockX use the store price on their own listing (`tools/store_prices_usd.json`, in US$, converted at `ZAR_PER_USD`), so special editions such as the Takashi Murakami LV Trainer are priced from their own, higher store price. Sold-out collaborations use their recent resale price. Pairs with no listed price use their collection's store price. Only the Covet price is shown on the site.
 - **Store prices** are ZAR estimates. Check them before launch.
-- **Images**: 510 of 545 products have a checked, working photo from StockX's public image CDN. Every colourway is a real StockX listing found by web search and kept only if its photo loads (`tools/extra_images.json`). The other 35 are models StockX doesn't sell (for example LV Time Out, Rivoli and Beverly Hills, Gucci Horsebit, Balenciaga Cargo, Dior B57); they show a clean text tile and are listed after pairs with photos. `python3 tools/check_images.py` re-checks every link.
+- **Images**: every one of the 538 products has a checked, working photo, and 331 have several views. Most come from StockX listings found by web search (`tools/extra_images.json`), with extra angles from StockX's 360-degree photos (`tools/gallery.json`, made by `tools/check_gallery.py`). Models StockX doesn't carry use real listings from Stadium Goods, Feature, Italist and ShopSimon (`tools/retail_products.json`). Models no reachable shop sells (LV Time Out, Rivoli and Beverly Hills, Gucci Horsebit sneaker, Balenciaga Cargo and Paris, Dior B57, Hermès Drive, Celine Block, Louboutin Vieira) were replaced by current models from the same brands. `python3 tools/check_images.py` re-checks every link.
 - **Stock**: the CSV imports every size with quantity 0 and status *draft*. Set inventory in Shopify.
 
 ## Connecting Shopify later

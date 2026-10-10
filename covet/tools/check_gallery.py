@@ -34,7 +34,7 @@ def frames(name):
 
 def main():
     names = sorted({p["image"].split("/images/")[1].split(".jpg")[0]
-                    for p in build_catalog.expand() if p["image"]})
+                    for p in build_catalog.expand() if "images.stockx.com/images/" in p["image"]})
     with cf.ThreadPoolExecutor(16) as ex:
         found = {n: fs for n, fs in ex.map(frames, names) if len(fs) > 1}
     with open(os.path.join(ROOT, "tools", "gallery.json"), "w") as f:

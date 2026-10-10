@@ -57,9 +57,7 @@ COLLECTIONS = [
     C("Louis Vuitton", "LV Skate", "luxury", 26000, ["White", "Black", "Brown Monogram", "Blue"]),
     C("Louis Vuitton", "LV Runner Tatic", "luxury", 24000, ["White Black", "Black"]),
     C("Louis Vuitton", "LV Run Away", "luxury", 19500, ["White", "Black Monogram"]),
-    C("Louis Vuitton", "LV Time Out", "luxury", 21500, ["White", "Monogram"]),
-    C("Louis Vuitton", "LV Rivoli", "luxury", 20500, ["White", "Black"]),
-    C("Louis Vuitton", "LV Beverly Hills", "luxury", 19500, ["White", "Monogram"]),
+    C("Louis Vuitton", "Archlight", "luxury", 23500, []),
     C("Louis Vuitton", "LV Millenium", "luxury", 26500, ["Black", "White"]),
     # Gucci
     C("Gucci", "Ace", "luxury", 14500, [
@@ -72,7 +70,6 @@ COLLECTIONS = [
     C("Gucci", "Mac80", "luxury", 17500, ["White", "Black"]),
     C("Gucci", "Re-Web", "luxury", 14500, ["White", "Black"]),
     C("Gucci", "Run", "luxury", 15500, ["Black", "White"]),
-    C("Gucci", "Horsebit Sneaker", "luxury", 18500, ["White", "Black"]),
     # Balenciaga
     C("Balenciaga", "Triple S", "luxury", 21000, [
         ("White", None, "Balenciaga-Triple-S-White-2018-Product"), "Black", "Grey Red", "Clear Sole Black", "Beige"]),
@@ -85,10 +82,10 @@ COLLECTIONS = [
     C("Balenciaga", "3XL", "luxury", 25500, ["Grey", "Black", "White", "Beige"]),
     C("Balenciaga", "Runner", "luxury", 22500, ["Black", "White", "Grey Blue"]),
     C("Balenciaga", "Defender", "luxury", 24500, ["Black", "Beige"]),
-    C("Balenciaga", "Cargo", "luxury", 21000, ["Black", "White"]),
+    C("Balenciaga", "Jet Sneaker", "luxury", 18500, []),
     C("Balenciaga", "X-Pander", "luxury", 22500, ["Black", "White"]),
     C("Balenciaga", "Circuit", "luxury", 20500, ["White", "Black"]),
-    C("Balenciaga", "Paris Sneaker", "luxury", 13500, ["Black", "White"]),
+    C("Balenciaga", "Pocket Sneaker", "luxury", 19500, []),
     # Dior
     C("Dior", "B22", "luxury", 22500, ["White Blue", "Black", "White Grey", "Black Grey", "White Silver"]),
     C("Dior", "B23 High Top", "luxury", 23500, [("Oblique Ecru Blue", None, "Dior-B23-High-Top-Oblique-Product"), "Oblique Black", "Dior Oblique White"]),
@@ -97,7 +94,6 @@ COLLECTIONS = [
     C("Dior", "B27 High", "luxury", 23500, ["Black Grey Oblique", "White Grey Oblique"]),
     C("Dior", "B30", "luxury", 22500, ["Black", "White", "Grey", "Navy"]),
     C("Dior", "B33", "luxury", 22000, ["White", "Black", "Grey"]),
-    C("Dior", "B57 Mid", "luxury", 25500, ["White Black", "Beige"]),
     C("Dior", "B9S Skater", "luxury", 20500, ["Oblique Navy", "Black"]),
     C("Dior", "Walk'n'Dior", "luxury", 21500, ["Oblique Blue", "Black", "White"]),
     # Prada
@@ -144,9 +140,8 @@ COLLECTIONS = [
     C("Loewe", "Flow Runner", "luxury", 13500, ["Black", "White", "Green", "Navy"]),
     C("Loewe", "Ballet Runner", "luxury", 14500, ["Black", "White"]),
     C("Hermes", "Bouncing", "luxury", 22500, ["White", "Black"]),
-    C("Hermes", "Drive", "luxury", 19500, ["White", "Black"]),
     C("Celine", "CT-02 Trainer", "luxury", 15500, ["White", "Black"]),
-    C("Celine", "Block Sneaker", "luxury", 14500, ["White", "Black"]),
+    C("Celine", "High-Top Sneaker", "luxury", 15500, []),
     C("Miu Miu", "Miu Miu Sneaker", "luxury", 16500, ["White", "Black"]),
     C("Lanvin", "Curb", "luxury", 13500, ["Black", "White", "Grey"]),
     C("Lanvin", "Bumpr", "luxury", 12500, ["White", "Black"]),
@@ -154,7 +149,6 @@ COLLECTIONS = [
     C("Moncler", "Pivot", "luxury", 12500, ["White", "Black"]),
     C("Christian Louboutin", "Louis Junior Spikes", "luxury", 24500, ["Black", "White"]),
     C("Christian Louboutin", "Fun Louis Junior", "luxury", 19500, ["Black", "White"]),
-    C("Christian Louboutin", "Vieira", "luxury", 18500, ["White", "Black"]),
     C("Giuseppe Zanotti", "Talon", "luxury", 13500, ["Black", "White"]),
     # Designer streetwear
     C("Off-White", "Out Of Office", "luxury", 9500, [
@@ -416,6 +410,11 @@ def expand():
     # Extra angles from StockX's 360-degree photos (tools/check_gallery.py).
     gallery_path = os.path.join(ROOT, "tools", "gallery.json")
     gallery = json.load(open(gallery_path)) if os.path.exists(gallery_path) else {}
+    # Real listings from other shops (Stadium Goods, Feature, Italist, ShopSimon)
+    # for models StockX doesn't carry: {collection: [{colour, images}]}.
+    with open(os.path.join(ROOT, "tools", "retail_products.json")) as f:
+        retail = json.load(f)
+    retail_views = {r["images"][0]: r["images"] for v in retail.values() for r in v}
 
     plans, used = [], set()
     for c in COLLECTIONS:
@@ -445,6 +444,8 @@ def expand():
         for img in pool:
             entries.append([colour_from_image(c, img), c["price"], img])
             used.add(img)
+        for r in retail.get(c["collection"], []):
+            entries.append([r["colour"], c["price"], r["images"][0]])
         # Drop a placeholder without a photo when a real listing already covers its colourway.
         def words(t):
             return set(re.sub(r"[^a-z0-9 ]", " ", t.lower()).split())
@@ -476,9 +477,10 @@ def expand():
                 "price": int(round(store * DISCOUNT / 10.0) * 10),
                 "currency": "ZAR",
                 "sizes": SIZES,
-                "image": IMG.format(img) if img else "",
-                "images": ([IMG.format(img)] + [VIEW.format(n=img[:-8] if img.endswith("-Product") else img, f=f)
-                                                for f in gallery.get(img, []) if f != "01"]) if img else [],
+                "image": "" if not img else img if img in retail_views else IMG.format(img),
+                "images": [] if not img else retail_views[img] if img in retail_views else (
+                    [IMG.format(img)] + [VIEW.format(n=img[:-8] if img.endswith("-Product") else img, f=f)
+                                         for f in gallery.get(img, []) if f != "01"]),
                 "tags": [c["category"], c["brand"].lower(), c["collection"].lower()],
             })
     return items
