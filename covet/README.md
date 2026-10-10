@@ -1,6 +1,6 @@
 # Covet: sneaker store
 
-A static storefront for Covet: 403 sneakers from 40 brands in 146 collections, across three categories (Luxury, Rare & Hype, Sportswear). It covers icons from any year that are still sold, plus everything from 2020 to now that can still be bought somewhere. It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
+A static storefront for Covet: 452 sneakers from 40 brands in 146 collections, across three categories (Luxury, Rare & Hype, Sportswear). It covers icons from any year that are still sold, plus everything from 2020 to now that can still be bought somewhere. It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
 
 ## Run it
 
@@ -28,7 +28,7 @@ It can be hosted on GitHub Pages, Netlify, Vercel or any other static host.
 
 - **Pricing rule:** the Covet price is 60% of the store price (`DISCOUNT` in `tools/build_catalog.py`). For example, the LV Trainer store price is R 25 000, so Covet sells it at R 15 000. Sold-out pairs and collaborations use the current resale market price as their store price. Only the Covet price is shown; the store price is kept in the data but never displayed.
 - **Store prices** are ZAR estimates. Check them before launch.
-- **Images**: 108 of 403 products have a checked, working photo from StockX's public image CDN. The rest show a clean text tile until a photo is added, and the shop lists pairs with photos first. To add photos, put the right StockX file name for each product in `tools/images.json`, or switch to your retail program's official photos. `python3 tools/check_images.py` re-checks every link.
+- **Images**: 306 of 452 products have a checked, working photo from StockX's public image CDN. Colourways that had no photo were swapped for real StockX listings of the same model (found by web search, kept only if the photo loads), and extra listings were added to their collections; these live in `tools/extra_images.json`. The other 146 show a clean text tile and are listed after pairs with photos. `python3 tools/check_images.py` re-checks every link.
 - **Stock**: the CSV imports every size with quantity 0 and status *draft*. Set inventory in Shopify.
 
 ## Connecting Shopify later

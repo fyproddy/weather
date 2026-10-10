@@ -366,30 +366,80 @@ def slug(*parts):
     return re.sub(r"[^A-Za-z0-9.]+", "-", s).strip("-") + "-Product"
 
 
+def make_title(c, colour):
+    # Mixed collections ("Nike Classics", "Yeezy", collabs) name the shoe in the colourway field.
+    m = c["model"]
+    if m == c["brand"]:
+        return colour
+    if m in ("Air Max", "Air Jordan", "Yeezy") or " x " in m:
+        return f"{m} {colour}"
+    return f"{m} '{colour}'"
+
+
+def colour_from_image(c, img):
+    """Name a StockX listing's colourway from its image file name."""
+    words = img[:-len("-Product")].split("-") if img.endswith("-Product") else img.split("-")
+    womens = words[-1] == "W"
+    if womens:
+        words = words[:-1]
+    # Drop the brand/model words the name starts with, then any collab partner names.
+    lead = set(re.sub(r"[^a-z0-9 ]", " ", f"{c['brand']} {c['model']} {c['collection']}".lower()).split())
+    lead |= {"sneaker", "sneakers", "x", "by"}
+    while words and words[0].lower() in lead:
+        words = words[1:]
+    if " x " in c["model"]:
+        for part in c["model"].split(" x "):
+            pw = re.sub(r"[^A-Za-z0-9 ]", " ", part).split()
+            for i in range(len(words) - len(pw) + 1):
+                if [w.lower() for w in words[i:i + len(pw)]] == [p.lower() for p in pw]:
+                    words = words[:i] + words[i + len(pw):]
+                    break
+    colour = " ".join(words) or "OG"
+    return colour + (" (Women's)" if womens else "")
+
+
 def expand():
     with open(os.path.join(ROOT, "tools", "images.json")) as f:
         checked = json.load(f)
-    items, seen = [], set()
+    # Real StockX listings (checked photos) per collection, used to replace
+    # colourways without a photo and to extend the collection.
+    with open(os.path.join(ROOT, "tools", "extra_images.json")) as f:
+        extra = {k: [s + "-Product" for s in v] for k, v in json.load(f).items()}
+
+    plans, used = [], set()
     for c in COLLECTIONS:
+        entries = []
         for cw in c["colourways"]:
             if isinstance(cw, str):
                 cw = (cw,)
             colour = cw[0]
             store = cw[1] if len(cw) > 1 and cw[1] else c["price"]
             img = cw[2] if len(cw) > 2 else slug(c["brand"], c["model"], colour)
-            # Mixed collections ("Nike Classics", "Yeezy", collabs) name the shoe in the colourway field.
-            m = c["model"]
-            if m == c["brand"]:
-                title = colour
-            elif m in ("Air Max", "Air Jordan", "Yeezy") or " x " in m:
-                title = f"{m} {colour}"
-            else:
-                title = f"{m} '{colour}'"
-            h = handle(c["brand"], title)
-            assert h not in seen, h
-            seen.add(h)
+            h = handle(c["brand"], make_title(c, colour))
             if h in checked:
                 img = checked[h]
+            if img:
+                used.add(img)
+            entries.append([colour, store, img])
+        plans.append((c, entries))
+
+    items, seen = [], set()
+    for c, entries in plans:
+        pool = [s for s in extra.get(c["collection"], []) if s not in used]
+        for e in entries:
+            if not e[2] and pool:
+                img = pool.pop(0)
+                e[0], e[2] = colour_from_image(c, img), img
+                used.add(img)
+        for img in pool:
+            entries.append([colour_from_image(c, img), c["price"], img])
+            used.add(img)
+        for colour, store, img in entries:
+            title = make_title(c, colour)
+            h = handle(c["brand"], title)
+            if h in seen:
+                continue
+            seen.add(h)
             items.append({
                 "handle": h,
                 "title": title,
