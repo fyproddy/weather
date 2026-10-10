@@ -1,6 +1,6 @@
 # Covet: sneaker store
 
-A static storefront for Covet: 452 sneakers from 40 brands in 146 collections, across three categories (Luxury, Rare & Hype, Sportswear). It covers icons from any year that are still sold, plus everything from 2020 to now that can still be bought somewhere. It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
+A static storefront for Covet: 545 sneakers from 40 brands in 146 collections, across three categories (Luxury, Rare & Hype, Sportswear). It covers icons from any year that are still sold, plus everything from 2020 to now that can still be bought somewhere. It has search, brand filter, sorting, a product view with UK sizes, and a bag. It is built so that Shopify can be connected later without a rebuild.
 
 ## Run it
 
@@ -26,9 +26,9 @@ It can be hosted on GitHub Pages, Netlify, Vercel or any other static host.
 
 ## Before going live
 
-- **Pricing rule:** the Covet price is 60% of the store price (`DISCOUNT` in `tools/build_catalog.py`). For example, the LV Trainer store price is R 25 000, so Covet sells it at R 15 000. Sold-out pairs and collaborations use the current resale market price as their store price. Only the Covet price is shown; the store price is kept in the data but never displayed.
+- **Pricing rule:** the Covet price is 60% of each pair's own store price (`DISCOUNT` in `tools/build_catalog.py`); for example, an LV Trainer with a R 25 000 store price sells at R 15 000. Pairs found on StockX use the store price on their own listing (`tools/store_prices_usd.json`, in US$, converted at `ZAR_PER_USD`), so special editions such as the Takashi Murakami LV Trainer are priced from their own, higher store price. Sold-out collaborations use their recent resale price. Pairs with no listed price use their collection's store price. Only the Covet price is shown on the site.
 - **Store prices** are ZAR estimates. Check them before launch.
-- **Images**: 306 of 452 products have a checked, working photo from StockX's public image CDN. Colourways that had no photo were swapped for real StockX listings of the same model (found by web search, kept only if the photo loads), and extra listings were added to their collections; these live in `tools/extra_images.json`. The other 146 show a clean text tile and are listed after pairs with photos. `python3 tools/check_images.py` re-checks every link.
+- **Images**: 510 of 545 products have a checked, working photo from StockX's public image CDN. Every colourway is a real StockX listing found by web search and kept only if its photo loads (`tools/extra_images.json`). The other 35 are models StockX doesn't sell (for example LV Time Out, Rivoli and Beverly Hills, Gucci Horsebit, Balenciaga Cargo, Dior B57); they show a clean text tile and are listed after pairs with photos. `python3 tools/check_images.py` re-checks every link.
 - **Stock**: the CSV imports every size with quantity 0 and status *draft*. Set inventory in Shopify.
 
 ## Connecting Shopify later

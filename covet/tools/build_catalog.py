@@ -9,7 +9,9 @@ Scope: icons from any year that are still sold, plus everything released from 20
 to now that can still be bought somewhere - in brand stores, or on the resale
 market for sold-out pairs.
 
-Pricing rule: Covet price = 60% of the store price.
+Pricing rule: Covet price = 60% of each pair's own store price.
+  * Pairs found on StockX use the store price on their own listing
+    (tools/store_prices_usd.json), converted at ZAR_PER_USD.
   * "retail" store price = what the brand's own store charges (ZAR estimate)
   * "resale" store price = current resale market price, used for sold-out and
     collaboration pairs that no brand store sells any more
@@ -28,6 +30,7 @@ import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DISCOUNT = 0.60  # Covet price as a share of the store price
+ZAR_PER_USD = 18.5  # converts a listing's US$ store price to rand
 IMG = "https://images.stockx.com/images/{}.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&trim=color"
 SIZES = ["UK 5", "UK 6", "UK 7", "UK 8", "UK 9", "UK 10", "UK 11", "UK 12"]
 
@@ -404,7 +407,11 @@ def expand():
     # Real StockX listings (checked photos) per collection, used to replace
     # colourways without a photo and to extend the collection.
     with open(os.path.join(ROOT, "tools", "extra_images.json")) as f:
-        extra = {k: [s + "-Product" for s in v] for k, v in json.load(f).items()}
+        extra = json.load(f)
+
+    # Each pair's own store price in US$ (from its StockX listing), keyed by image.
+    with open(os.path.join(ROOT, "tools", "store_prices_usd.json")) as f:
+        usd = json.load(f)
 
     plans, used = [], set()
     for c in COLLECTIONS:
@@ -434,7 +441,18 @@ def expand():
         for img in pool:
             entries.append([colour_from_image(c, img), c["price"], img])
             used.add(img)
+        # Drop a placeholder without a photo when a real listing already covers its colourway.
+        def words(t):
+            return set(re.sub(r"[^a-z0-9 ]", " ", t.lower()).split())
+        shown = [words(e[0]) for e in entries if e[2]]
+        entries = [e for e in entries if e[2] or not any(words(e[0]) <= w for w in shown)]
+        # Once a collection has real listings with photos, drop the placeholders
+        # that matched no real listing.
+        if shown:
+            entries = [e for e in entries if e[2]]
         for colour, store, img in entries:
+            if img in usd:
+                store = int(round(usd[img] * ZAR_PER_USD, -2))
             title = make_title(c, colour)
             h = handle(c["brand"], title)
             if h in seen:
