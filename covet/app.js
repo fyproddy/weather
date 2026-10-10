@@ -3,7 +3,15 @@
   var byHandle = {};
   products.forEach(function (p) { byHandle[p.handle] = p; });
 
-  var TITLES = { all: "All sneakers", luxury: "Luxury", sportswear: "Sportswear", rare: "Rare & Hype" };
+  var TITLES = { all: "Shop all", sneakers: "Sneakers", clothing: "Clothing", luxury: "Luxury sneakers",
+                 sportswear: "Sportswear", rare: "Rare & Hype", hoodies: "Hoodies & Knits", tops: "Tops", bottoms: "Bottoms" };
+  function dept(p) { return p.department || "sneakers"; }
+  function inCat(p, cat) {
+    if (cat === "all") return true;
+    if (cat === "sneakers" || cat === "clothing") return dept(p) === cat;
+    if (cat === "rare") return p.category === "rare" || p.badge === "Rare";
+    return p.category === cat;
+  }
   var PAGE = 48;
   var state = { cat: "all", brand: "all", collection: "all", q: "", sort: "featured", limit: PAGE };
 
@@ -55,7 +63,7 @@
   function filtered() {
     var q = state.q.trim().toLowerCase();
     var list = products.filter(function (p) {
-      if (state.cat !== "all" && p.category !== state.cat) return false;
+      if (!inCat(p, state.cat)) return false;
       if (state.brand !== "all" && p.vendor !== state.brand) return false;
       if (state.collection !== "all" && p.collection !== state.collection) return false;
       if (q && (p.vendor + " " + p.title + " " + p.collection).toLowerCase().indexOf(q) === -1) return false;
@@ -74,7 +82,8 @@
     btn.type = "button";
     btn.setAttribute("aria-label", p.vendor + " " + p.title + ", " + money(p.price));
     var m = media(p, "media");
-    if (p.category !== "sportswear") m.appendChild(el("span", "badge " + p.category, p.category === "rare" ? "Rare" : "Luxury"));
+    var badge = p.badge !== undefined ? p.badge : p.category === "rare" ? "Rare" : p.category === "luxury" ? "Luxury" : "";
+    if (badge) m.appendChild(el("span", "badge " + (badge === "Rare" ? "rare" : "luxury"), badge));
     btn.appendChild(m);
     var body = el("div", "card-body");
     body.appendChild(el("p", "card-brand", p.vendor));
@@ -165,7 +174,9 @@
   // ----- Category tiles -----
   document.querySelectorAll(".tile").forEach(function (t) {
     var key = t.dataset.tile;
-    var p = key === "sportswear" ? firstWithPhoto(function (x) { return x.category === "sportswear" && x.vendor === "Jordan"; }) : byHandle_(key);
+    var p = key === "sportswear" ? firstWithPhoto(function (x) { return x.category === "sportswear" && x.vendor === "Jordan"; })
+      : key === "clothing" ? firstWithPhoto(function (x) { return dept(x) === "clothing" && x.category === "hoodies"; })
+      : byHandle_(key);
     if (p) t.insertBefore(photo(p, "tile-img"), t.firstChild);
   });
 
@@ -192,9 +203,34 @@
     li.appendChild(b);
     rail.appendChild(li);
   });
-  function railStep(dir) { rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: "smooth" }); }
-  $("railPrev").addEventListener("click", function () { railStep(-1); });
-  $("railNext").addEventListener("click", function () { railStep(1); });
+  function railCard(name, p) {
+    var li = el("li", "rail-item"), b = el("button", "rail-card");
+    b.type = "button";
+    var box = el("div", "rail-media");
+    box.appendChild(photo(p));
+    b.appendChild(box);
+    b.appendChild(el("span", "rail-brand", p.collectionNote || p.vendor));
+    b.appendChild(el("span", "rail-name", name));
+    b.addEventListener("click", function () {
+      setState({ cat: "all", brand: "all", collection: name, q: "" });
+      $("shop").scrollIntoView();
+    });
+    li.appendChild(b);
+    return li;
+  }
+  // Clothing collections in the order the catalogue lists them.
+  var rail2 = $("rail2"), seenColl = {};
+  products.forEach(function (p) {
+    if (dept(p) !== "clothing" || !p.image || seenColl[p.collection]) return;
+    seenColl[p.collection] = true;
+    rail2.appendChild(railCard(p.collection, p));
+  });
+  if (!rail2.children.length) { rail2.hidden = true; rail2.previousElementSibling.hidden = true; }
+  function railStep(r, dir) { r.scrollBy({ left: dir * r.clientWidth * 0.8, behavior: "smooth" }); }
+  $("railPrev").addEventListener("click", function () { railStep(rail, -1); });
+  $("railNext").addEventListener("click", function () { railStep(rail, 1); });
+  $("rail2Prev").addEventListener("click", function () { railStep(rail2, -1); });
+  $("rail2Next").addEventListener("click", function () { railStep(rail2, 1); });
 
   document.querySelectorAll("[data-cat]").forEach(function (a) {
     a.addEventListener("click", function () { setState({ cat: a.dataset.cat, brand: "all", collection: "all" }); });
@@ -244,6 +280,7 @@
     $("pdTitle").textContent = p.title;
     $("pdPrice").replaceChildren(priceRow(p, "pd-price-row"));
     $("pdCat").textContent = p.categoryLabel + " / " + p.collection;
+    $("pdSizeNote").textContent = (dept(p) === "clothing" ? "Sizes as the brand labels them." : "Sizes shown in UK.") + " Stock is confirmed at checkout.";
     var sizes = $("pdSizes");
     sizes.replaceChildren();
     p.sizes.forEach(function (s) {

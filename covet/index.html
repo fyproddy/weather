@@ -18,9 +18,9 @@
       <a href="#top" class="logo" aria-label="Covet home"><img src="assets/covet-logo-white.png" alt="Covet" width="141" height="36"></a>
       <nav class="nav" aria-label="Main">
         <a href="#shop" data-cat="all">Shop all</a>
-        <a href="#shop" data-cat="luxury">Luxury</a>
+        <a href="#shop" data-cat="sneakers">Sneakers</a>
+        <a href="#shop" data-cat="clothing">Clothing</a>
         <a href="#shop" data-cat="rare">Rare</a>
-        <a href="#shop" data-cat="sportswear">Sportswear</a>
         <a href="#collections">Collections</a>
       </nav>
       <button class="bag-btn" id="bagOpen" type="button">Bag (<span id="bagCount">0</span>)</button>
@@ -37,6 +37,7 @@
       <a href="#shop" class="tile" data-cat="luxury" data-tile="balenciaga-triple-s-white"><span class="tile-name">Luxury</span></a>
       <a href="#shop" class="tile" data-cat="rare" data-tile="jordan-air-jordan-1-x-dior-high-grey"><span class="tile-name">Rare &amp; Hype</span></a>
       <a href="#shop" class="tile" data-cat="sportswear" data-tile="sportswear"><span class="tile-name">Sportswear</span></a>
+      <a href="#shop" class="tile" data-cat="clothing" data-tile="clothing"><span class="tile-name">Clothing</span></a>
     </section>
 
     <section id="shop" class="shop wrap">
@@ -51,9 +52,12 @@
           <button type="button" class="tab" data-cat="luxury">Luxury</button>
           <button type="button" class="tab" data-cat="rare">Rare &amp; Hype</button>
           <button type="button" class="tab" data-cat="sportswear">Sportswear</button>
+          <button type="button" class="tab" data-cat="hoodies">Hoodies &amp; Knits</button>
+          <button type="button" class="tab" data-cat="tops">Tops</button>
+          <button type="button" class="tab" data-cat="bottoms">Bottoms</button>
         </div>
         <div class="controls">
-          <label class="field"><span class="sr-only">Search</span><input id="search" type="search" placeholder="Search model, colourway or collection"></label>
+          <label class="field"><span class="sr-only">Search</span><input id="search" type="search" placeholder="Search brand, item or colour"></label>
           <label class="field"><span class="sr-only">Brand</span><select id="brand"><option value="all">All brands</option></select></label>
           <label class="field"><span class="sr-only">Sort</span>
             <select id="sort">
@@ -80,6 +84,14 @@
         </div>
       </div>
       <ul class="rail" id="rail"></ul>
+      <div class="wrap section-head section-sub">
+        <h2>Clothing</h2>
+        <div class="rail-nav">
+          <button type="button" class="rail-btn" id="rail2Prev" aria-label="Previous">&larr;</button>
+          <button type="button" class="rail-btn" id="rail2Next" aria-label="Next">&rarr;</button>
+        </div>
+      </div>
+      <ul class="rail" id="rail2"></ul>
     </section>
 
     <section class="promise wrap" aria-label="Why Covet">
@@ -110,7 +122,7 @@
         <p class="label">Select size</p>
         <div class="sizes" id="pdSizes"></div>
         <button type="button" class="btn btn-block" id="pdAdd" disabled>Select a size</button>
-        <p class="muted small">Sizes shown in UK. Stock is confirmed at checkout.</p>
+        <p class="muted small" id="pdSizeNote">Sizes shown in UK. Stock is confirmed at checkout.</p>
       </div>
     </div>
   </dialog>

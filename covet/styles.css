@@ -68,7 +68,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; }
 .btn-block { display: block; width: 100%; }
 
 /* Category tiles: photo and one word */
-.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
 .tile { position: relative; display: block; aspect-ratio: 4 / 5; background: var(--paper); overflow: hidden; }
 .tile-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 14%; mix-blend-mode: multiply; transition: transform 0.4s ease; }
 .tile:hover .tile-img { transform: scale(1.05); }
@@ -80,7 +80,9 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; }
 .shop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
 .shop-head h2 { font-size: 32px; }
 .filters { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding: 16px 0; border-top: 1px solid var(--black); border-bottom: 1px solid var(--line); margin-bottom: 32px; }
-.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: none; }
 .tab { background: none; border: 1px solid var(--line); padding: 8px 14px; border-radius: 999px; font-size: 13px; }
 .tab:hover { border-color: var(--black); }
 .tab.is-active { background: var(--black); color: var(--white); border-color: var(--black); }
@@ -112,6 +114,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; }
 .collections { padding-top: 64px; scroll-margin-top: 68px; }
 .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .section-head h2 { font-size: 32px; }
+.section-sub { margin-top: 48px; }
 .rail-nav { display: flex; gap: 6px; }
 .rail-btn { width: 40px; height: 40px; border: 1px solid var(--line); background: var(--white); border-radius: 999px; font-size: 16px; }
 .rail-btn:hover { border-color: var(--black); }
@@ -205,7 +208,6 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; }
   .hero-dots { bottom: 24px; left: var(--gutter); right: auto; }
   .section-head h2, .shop-head h2 { font-size: 26px; }
   .tiles { grid-template-columns: 1fr 1fr; }
-  .tiles .tile:first-child { grid-column: span 2; aspect-ratio: 16 / 10; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 24px 12px; }
   .controls, .field, .field input, .field select { width: 100%; }
   .pd { grid-template-columns: 1fr; }
