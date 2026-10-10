@@ -94,7 +94,6 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; }
 .card-title { font-size: 15px; font-weight: 500; margin: 2px 0 6px; }
 .card-price { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
 .now { font-weight: 600; }
-.was { color: var(--muted); font-size: 13px; }
 .more-wrap { text-align: center; margin-top: 40px; }
 .btn-outline-dark { background: var(--white); color: var(--black); border-color: var(--black); min-width: 240px; }
 
@@ -145,8 +144,6 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; }
 .pd-price { margin: 12px 0 4px; }
 .pd-price-row { margin: 0; display: flex; align-items: baseline; gap: 12px; }
 .pd-price-row .now { font-size: 22px; }
-.pd-price-row .was { font-size: 15px; }
-.pd-store { margin: 0 0 4px; font-size: 13px; }
 .pd-cat { margin: 0 0 24px; color: var(--muted); font-size: 13px; }
 .label { font-size: 13px; font-weight: 600; margin: 0 0 10px; }
 .sizes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 20px; }

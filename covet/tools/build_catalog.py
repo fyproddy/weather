@@ -414,7 +414,7 @@ def write_csv(items, path):
     cols = ["Handle", "Title", "Body (HTML)", "Vendor", "Product Category", "Type", "Tags",
             "Published", "Option1 Name", "Option1 Value", "Variant SKU",
             "Variant Inventory Tracker", "Variant Inventory Qty", "Variant Inventory Policy",
-            "Variant Fulfillment Service", "Variant Price", "Variant Compare At Price",
+            "Variant Fulfillment Service", "Variant Price",
             "Variant Requires Shipping", "Variant Taxable", "Image Src", "Image Position",
             "Image Alt Text", "Status"]
     with open(path, "w", newline="") as f:
@@ -431,7 +431,6 @@ def write_csv(items, path):
                     "Variant Inventory Policy": "deny",
                     "Variant Fulfillment Service": "manual",
                     "Variant Price": f"{p['price']:.2f}",
-                    "Variant Compare At Price": f"{p['storePrice']:.2f}",
                     "Variant Requires Shipping": "TRUE",
                     "Variant Taxable": "TRUE",
                 }

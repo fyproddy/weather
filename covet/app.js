@@ -117,13 +117,9 @@
     render();
   }
 
-  // Covet price with the original store price struck through.
   function priceRow(p, cls) {
     var row = el("p", cls);
     row.appendChild(el("span", "now", money(p.price)));
-    var was = el("s", "was", money(p.storePrice));
-    was.setAttribute("aria-label", "Store price " + money(p.storePrice));
-    row.appendChild(was);
     return row;
   }
 
@@ -170,8 +166,6 @@
     $("pdBrand").textContent = p.vendor;
     $("pdTitle").textContent = p.title;
     $("pdPrice").replaceChildren(priceRow(p, "pd-price-row"));
-    var off = Math.round((1 - p.price / p.storePrice) * 100);
-    $("pdStore").textContent = (p.storePriceSource === "resale" ? "Resale market price " : "Store price ") + money(p.storePrice) + ". You save " + off + "%.";
     $("pdCat").textContent = p.categoryLabel + " / " + p.collection;
     var sizes = $("pdSizes");
     sizes.replaceChildren();
