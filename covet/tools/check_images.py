@@ -30,7 +30,7 @@ def main():
     path = os.path.join(ROOT, "tools", "images.json")
     with open(path) as f:
         checked = json.load(f)
-    items = [p for p in build_catalog.expand() if p["image"]]
+    items = [p for p in build_catalog.all_items() if p["image"]]
     with cf.ThreadPoolExecutor(16) as ex:
         results = list(ex.map(lambda p: (p["handle"], loads(p["image"])), items))
     broken = [h for h, ok in results if not ok]
