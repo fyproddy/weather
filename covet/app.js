@@ -12,7 +12,7 @@
     if (cat === "rare") return p.category === "rare" || p.badge === "Rare";
     return p.category === cat;
   }
-  var PAGE = 48;
+  var PAGE = 24;
   var state = { cat: "all", brand: "all", collection: "all", q: "", sort: "featured", limit: PAGE };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -69,8 +69,19 @@
       if (q && (p.vendor + " " + p.title + " " + p.collection).toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
-    // Featured: pairs with a photo first, catalogue order otherwise.
-    if (state.sort === "featured") list = list.filter(function (p) { return p.image; }).concat(list.filter(function (p) { return !p.image; }));
+    // Featured: take one piece from each brand in turn, so the first page shows range, not one model.
+    if (state.sort === "featured") {
+      var groups = {}, order = [];
+      list.forEach(function (p) {
+        if (!groups[p.vendor]) { groups[p.vendor] = []; order.push(p.vendor); }
+        groups[p.vendor].push(p);
+      });
+      var mixed = [];
+      for (var round = 0; mixed.length < list.length; round++) {
+        order.forEach(function (c) { if (groups[c][round]) mixed.push(groups[c][round]); });
+      }
+      list = mixed.filter(function (p) { return p.image; }).concat(mixed.filter(function (p) { return !p.image; }));
+    }
     if (state.sort === "price-asc") list.sort(function (a, b) { return a.price - b.price; });
     if (state.sort === "price-desc") list.sort(function (a, b) { return b.price - a.price; });
     if (state.sort === "name") list.sort(function (a, b) { return (a.vendor + a.title).localeCompare(b.vendor + b.title); });
@@ -82,8 +93,8 @@
     btn.type = "button";
     btn.setAttribute("aria-label", p.vendor + " " + p.title + ", " + money(p.price));
     var m = media(p, "media");
-    var badge = p.badge !== undefined ? p.badge : p.category === "rare" ? "Rare" : p.category === "luxury" ? "Luxury" : "";
-    if (badge) m.appendChild(el("span", "badge " + (badge === "Rare" ? "rare" : "luxury"), badge));
+    // Only rare pieces get a label; nearly everything else is designer, so a badge there is noise.
+    if (p.badge === "Rare" || (p.badge === undefined && p.category === "rare")) m.appendChild(el("span", "badge", "Rare"));
     btn.appendChild(m);
     var body = el("div", "card-body");
     body.appendChild(el("p", "card-brand", p.vendor));
@@ -135,40 +146,52 @@
     return img;
   }
 
-  // ----- Hero: a few standout pairs, one at a time -----
-  // [handle, short headline]
-  var HERO = [["jordan-air-jordan-1-x-dior-high-grey", "Air Jordan 1 High Dior"],
-              ["louis-vuitton-lv-trainer-takashi-murakami-white", "LV Trainer Murakami"],
-              ["nike-air-force-1-low-x-louis-vuitton-virgil-abloh-white-green", "Louis Vuitton Air Force 1"]]
-    .map(function (h) { var p = byHandle_(h[0]); return p && { p: p, title: h[1] }; }).filter(Boolean);
+  // ----- Hero: a few standout pieces, one at a time -----
+  // [handle, short headline, label above it]
+  var HERO = [["jordan-air-jordan-1-x-dior-high-grey", "Air Jordan 1 High Dior", "Dior x Jordan"],
+              ["louis-vuitton-lv-trainer-takashi-murakami-white", "LV Trainer Murakami", "Louis Vuitton"],
+              ["chrome-hearts-american-flag-fleece-hoodie-black", "American Flag Hoodie", "Chrome Hearts"],
+              ["nike-air-force-1-low-x-louis-vuitton-virgil-abloh-white-green", "Air Force 1 by Virgil Abloh", "Louis Vuitton x Nike"]]
+    .map(function (h) { var p = byHandle_(h[0]); return p && { p: p, title: h[1], label: h[2] }; }).filter(Boolean);
   var slides = $("heroSlides"), dots = $("heroDots"), heroAt = 0, heroTimer = null;
   HERO.forEach(function (h, i) {
     var p = h.p, s = el("div", "hero-slide");
     var txt = el("div", "hero-text wrap");
-    txt.appendChild(el("p", "hero-brand", p.vendor));
+    txt.appendChild(el("p", "eyebrow", h.label));
     txt.appendChild(el("h1", "hero-title", h.title));
+    txt.appendChild(el("p", "hero-price", money(p.price)));
+    var actions = el("div", "hero-actions");
     var go = el("button", "btn", "Shop now");
     go.type = "button";
     go.addEventListener("click", function () { openProduct(p); });
-    txt.appendChild(go);
+    var more = el("a", "text-link", "View collection");
+    more.href = "#shop";
+    more.addEventListener("click", function () { setState({ cat: "all", brand: "all", collection: p.collection, q: "" }); });
+    actions.appendChild(go);
+    actions.appendChild(more);
+    txt.appendChild(actions);
     s.appendChild(photo(p, "hero-img"));
     s.appendChild(txt);
     slides.appendChild(s);
-    var d = el("button", "hero-dot");
+    var d = el("button", "hero-dot", String(i + 1).padStart(2, "0"));
     d.type = "button";
-    d.setAttribute("aria-label", "Show " + p.vendor + " " + p.title);
+    d.setAttribute("aria-label", "Show " + h.title);
     d.addEventListener("click", function () { showHero(i); restartHero(); });
     dots.appendChild(d);
   });
   function showHero(i) {
     heroAt = i;
-    slides.querySelectorAll(".hero-slide").forEach(function (s, j) { s.classList.toggle("is-on", j === i); });
+    slides.querySelectorAll(".hero-slide").forEach(function (s, j) {
+      s.classList.toggle("is-on", j === i);
+      s.setAttribute("aria-hidden", j === i ? "false" : "true");
+      s.querySelectorAll("button, a").forEach(function (x) { x.tabIndex = j === i ? 0 : -1; });
+    });
     dots.querySelectorAll(".hero-dot").forEach(function (d, j) { d.classList.toggle("is-on", j === i); });
   }
   function restartHero() {
     clearInterval(heroTimer);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    heroTimer = setInterval(function () { showHero((heroAt + 1) % HERO.length); }, 6000);
+    heroTimer = setInterval(function () { showHero((heroAt + 1) % HERO.length); }, 6500);
   }
   if (HERO.length) { showHero(0); restartHero(); }
 
@@ -181,7 +204,25 @@
     if (p) t.insertBefore(photo(p, "tile-img"), t.firstChild);
   });
 
-  // ----- Collections rail: photo cards -----
+  function showCollection(name) {
+    setState({ cat: "all", brand: "all", collection: name, q: "" });
+    $("shop").scrollIntoView();
+  }
+  function railCard(name, p, label) {
+    var li = el("li", "rail-item"), b = el("button", "rail-card");
+    b.type = "button";
+    var box = el("div", "rail-media");
+    box.appendChild(photo(p));
+    b.appendChild(box);
+    b.appendChild(el("span", "rail-brand", label));
+    b.appendChild(el("span", "rail-name", name));
+    b.addEventListener("click", function () { showCollection(name); });
+    li.appendChild(b);
+    return li;
+  }
+  function countIn(name) { return products.filter(function (x) { return x.collection === name; }).length; }
+
+  // ----- Sneaker collections -----
   var RAIL = ["LV Trainer", "Dior x Air Jordan 1", "Triple S", "Ace", "Louis Vuitton x Air Force 1", "B30",
               "Travis Scott x Jordan", "Geobasket", "Off-White x Nike", "Oversized Sneaker", "Yeezy", "LV Skate",
               "Gucci x adidas", "Out Of Office", "Air Jordan Retro", "Track.2", "adidas Originals", "Skel-Top Low",
@@ -189,51 +230,77 @@
   var rail = $("rail");
   RAIL.forEach(function (name) {
     var p = firstWithPhoto(function (x) { return x.collection === name; });
-    if (!p) return;
-    var li = el("li", "rail-item"), b = el("button", "rail-card");
-    b.type = "button";
-    var box = el("div", "rail-media");
-    box.appendChild(photo(p));
-    b.appendChild(box);
-    b.appendChild(el("span", "rail-brand", p.vendor));
-    b.appendChild(el("span", "rail-name", name));
-    b.addEventListener("click", function () {
-      setState({ cat: "all", brand: "all", collection: name, q: "" });
-      $("shop").scrollIntoView();
-    });
-    li.appendChild(b);
-    rail.appendChild(li);
+    if (p) rail.appendChild(railCard(name, p, p.vendor));
   });
-  function railCard(name, p) {
-    var li = el("li", "rail-item"), b = el("button", "rail-card");
-    b.type = "button";
-    var box = el("div", "rail-media");
-    box.appendChild(photo(p));
-    b.appendChild(box);
-    var count = products.filter(function (x) { return x.collection === name; }).length;
-    var label = name.indexOf(p.vendor) > -1 || p.vendor.indexOf(name) > -1 || dept(p) === "clothing" ? count + " pieces" : p.vendor;
-    b.appendChild(el("span", "rail-brand", label));
-    b.appendChild(el("span", "rail-name", name));
-    b.addEventListener("click", function () {
-      setState({ cat: "all", brand: "all", collection: name, q: "" });
-      $("shop").scrollIntoView();
-    });
-    li.appendChild(b);
-    return li;
-  }
-  // Clothing collections in the order the catalogue lists them.
-  var rail2 = $("rail2"), seenColl = {};
+
+  // ----- Clothing collections, in the order the catalogue lists them -----
+  var rail2 = $("rail2"), clothColls = [];
   products.forEach(function (p) {
-    if (dept(p) !== "clothing" || !p.image || seenColl[p.collection]) return;
-    seenColl[p.collection] = true;
-    rail2.appendChild(railCard(p.collection, p));
+    if (dept(p) !== "clothing" || !p.image || clothColls.indexOf(p.collection) > -1) return;
+    clothColls.push(p.collection);
+    rail2.appendChild(railCard(p.collection, p, countIn(p.collection) + " pieces"));
   });
-  if (!rail2.children.length) { rail2.hidden = true; rail2.previousElementSibling.hidden = true; }
-  function railStep(r, dir) { r.scrollBy({ left: dir * r.clientWidth * 0.8, behavior: "smooth" }); }
-  $("railPrev").addEventListener("click", function () { railStep(rail, -1); });
-  $("railNext").addEventListener("click", function () { railStep(rail, 1); });
-  $("rail2Prev").addEventListener("click", function () { railStep(rail2, -1); });
-  $("rail2Next").addEventListener("click", function () { railStep(rail2, 1); });
+
+  // ----- Trending: one standout piece from each big collection, sneakers and clothing in turn -----
+  var trend = $("trend"), shoes = [], clothes = [];
+  RAIL.forEach(function (name) {
+    var list = products.filter(function (x) { return x.collection === name && x.image; });
+    if (list.length) shoes.push(list[Math.min(1, list.length - 1)]);
+  });
+  clothColls.forEach(function (name) {
+    var list = products.filter(function (x) { return x.collection === name && x.image; });
+    if (list.length) clothes.push(list[Math.min(1, list.length - 1)]);
+  });
+  for (var t = 0; t < 8; t++) {
+    [shoes[t], clothes[t]].forEach(function (p) {
+      if (!p) return;
+      var li = card(p);
+      li.className = "rail-item card";
+      trend.appendChild(li);
+    });
+  }
+
+  // ----- Clothing feature: four pieces from the brand-led collections -----
+  var fg = $("featureGrid");
+  clothColls.slice(0, 4).forEach(function (name) {
+    var p = firstWithPhoto(function (x) { return x.collection === name; });
+    var b = el("button", "feature-cell");
+    b.type = "button";
+    b.setAttribute("aria-label", name);
+    b.appendChild(photo(p));
+    b.appendChild(el("span", "feature-label", name));
+    b.addEventListener("click", function () { showCollection(name); });
+    fg.appendChild(b);
+  });
+
+  // ----- Shop by brand: the biggest names, as plain type -----
+  var bg = $("brandGrid");
+  Object.keys(brands).sort(function (a, b) { return brands[b] - brands[a]; }).slice(0, 20)
+    .sort(function (a, b) { return a.localeCompare(b, "en", { sensitivity: "base" }); })
+    .forEach(function (name) {
+      var li = el("li"), b = el("button", "brand-cell");
+      b.type = "button";
+      b.appendChild(el("span", "brand-name", name));
+      b.appendChild(el("span", "brand-count", String(brands[name])));
+      b.addEventListener("click", function () {
+        setState({ cat: "all", brand: name, collection: "all", q: "" });
+        $("shop").scrollIntoView();
+      });
+      li.appendChild(b);
+      bg.appendChild(li);
+    });
+
+  document.querySelectorAll(".rail-btn").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var r = $(b.dataset.rail);
+      r.scrollBy({ left: Number(b.dataset.dir) * r.clientWidth * 0.8, behavior: "smooth" });
+    });
+  });
+  $("searchLink").addEventListener("click", function (e) {
+    e.preventDefault();
+    $("shop").scrollIntoView();
+    setTimeout(function () { $("search").focus({ preventScroll: true }); }, 400);
+  });
 
   document.querySelectorAll("[data-cat]").forEach(function (a) {
     a.addEventListener("click", function () { setState({ cat: a.dataset.cat, brand: "all", collection: "all" }); });

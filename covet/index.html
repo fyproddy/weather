@@ -17,20 +17,25 @@
     <div class="wrap header-inner">
       <a href="#top" class="logo" aria-label="Covet home"><img src="assets/covet-logo-white.png" alt="Covet" width="141" height="36"></a>
       <nav class="nav" aria-label="Main">
-        <a href="#shop" data-cat="all">Shop all</a>
         <a href="#shop" data-cat="sneakers">Sneakers</a>
         <a href="#shop" data-cat="clothing">Clothing</a>
         <a href="#shop" data-cat="rare">Rare</a>
         <a href="#collections">Collections</a>
+        <a href="#brands">Brands</a>
       </nav>
-      <button class="bag-btn" id="bagOpen" type="button">Bag (<span id="bagCount">0</span>)</button>
+      <div class="header-actions">
+        <a href="#shop" class="header-link" id="searchLink">Search</a>
+        <button class="bag-btn" id="bagOpen" type="button">Bag (<span id="bagCount">0</span>)</button>
+      </div>
     </div>
   </header>
 
   <main id="top">
     <section class="hero" aria-label="Featured">
       <div class="hero-slides" id="heroSlides"></div>
-      <div class="hero-dots" id="heroDots" role="tablist" aria-label="Featured pairs"></div>
+      <div class="wrap hero-nav">
+        <div class="hero-dots" id="heroDots" aria-label="Featured"></div>
+      </div>
     </section>
 
     <section class="tiles wrap" aria-label="Shop by category">
@@ -40,15 +45,57 @@
       <a href="#shop" class="tile" data-cat="clothing" data-tile="clothing"><span class="tile-name">Clothing</span></a>
     </section>
 
-    <section id="shop" class="shop wrap">
+    <section class="block" aria-labelledby="trendTitle">
+      <div class="wrap section-head">
+        <h2 id="trendTitle">Trending now</h2>
+        <div class="rail-nav"><button type="button" class="rail-btn" data-rail="trend" data-dir="-1" aria-label="Previous">&larr;</button><button type="button" class="rail-btn" data-rail="trend" data-dir="1" aria-label="Next">&rarr;</button></div>
+      </div>
+      <ul class="rail rail-products" id="trend"></ul>
+    </section>
+
+    <section id="collections" class="block" aria-labelledby="collTitle">
+      <div class="wrap section-head">
+        <h2 id="collTitle">Sneaker collections</h2>
+        <div class="rail-nav"><button type="button" class="rail-btn" data-rail="rail" data-dir="-1" aria-label="Previous">&larr;</button><button type="button" class="rail-btn" data-rail="rail" data-dir="1" aria-label="Next">&rarr;</button></div>
+      </div>
+      <ul class="rail" id="rail"></ul>
+    </section>
+
+    <section class="block wrap" aria-label="Clothing">
+      <div class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Clothing</p>
+          <h2>Streetwear and designer, piece by piece.</h2>
+          <a href="#shop" class="btn btn-light" data-cat="clothing">Shop clothing</a>
+        </div>
+        <div class="feature-grid" id="featureGrid"></div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="clothTitle">
+      <div class="wrap section-head">
+        <h2 id="clothTitle">Clothing collections</h2>
+        <div class="rail-nav"><button type="button" class="rail-btn" data-rail="rail2" data-dir="-1" aria-label="Previous">&larr;</button><button type="button" class="rail-btn" data-rail="rail2" data-dir="1" aria-label="Next">&rarr;</button></div>
+      </div>
+      <ul class="rail" id="rail2"></ul>
+    </section>
+
+    <section id="brands" class="block wrap" aria-labelledby="brandsTitle">
+      <div class="section-head"><h2 id="brandsTitle">Shop by brand</h2></div>
+      <ul class="brand-grid" id="brandGrid"></ul>
+    </section>
+
+    <section id="shop" class="shop block wrap">
       <div class="shop-head">
-        <h2 id="shopTitle">All sneakers</h2>
+        <h2 id="shopTitle">Shop all</h2>
         <p id="resultCount" class="muted"></p>
       </div>
 
       <div class="filters">
         <div class="tabs" role="tablist" aria-label="Category">
           <button type="button" class="tab is-active" data-cat="all">All</button>
+          <button type="button" class="tab" data-cat="sneakers">Sneakers</button>
+          <button type="button" class="tab" data-cat="clothing">Clothing</button>
           <button type="button" class="tab" data-cat="luxury">Luxury</button>
           <button type="button" class="tab" data-cat="rare">Rare &amp; Hype</button>
           <button type="button" class="tab" data-cat="sportswear">Sportswear</button>
@@ -71,38 +118,43 @@
       </div>
 
       <ul id="grid" class="grid" aria-live="polite"></ul>
-      <p id="empty" class="empty" hidden>No sneakers match that search.</p>
+      <p id="empty" class="empty" hidden>Nothing matches that search.</p>
       <div class="more-wrap"><button type="button" class="btn btn-outline-dark" id="more" hidden>Load more</button></div>
     </section>
 
-    <section id="collections" class="collections">
-      <div class="wrap section-head">
-        <h2>Collections</h2>
-        <div class="rail-nav">
-          <button type="button" class="rail-btn" id="railPrev" aria-label="Previous">&larr;</button>
-          <button type="button" class="rail-btn" id="railNext" aria-label="Next">&rarr;</button>
-        </div>
+    <section class="promise" aria-label="Why Covet">
+      <div class="wrap promise-inner">
+        <div><h3>Authentic only</h3><p>Every piece comes through approved suppliers.</p></div>
+        <div><h3>Nationwide delivery</h3><p>Free on orders over R 2 500.</p></div>
+        <div><h3>14-day returns</h3><p>Return within 14 days of delivery.</p></div>
       </div>
-      <ul class="rail" id="rail"></ul>
-      <div class="wrap section-head section-sub">
-        <h2>Clothing</h2>
-        <div class="rail-nav">
-          <button type="button" class="rail-btn" id="rail2Prev" aria-label="Previous">&larr;</button>
-          <button type="button" class="rail-btn" id="rail2Next" aria-label="Next">&rarr;</button>
-        </div>
-      </div>
-      <ul class="rail" id="rail2"></ul>
-    </section>
-
-    <section class="promise wrap" aria-label="Why Covet">
-      <p>Authenticated</p><p>Nationwide delivery</p><p>14-day returns</p>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="wrap footer-inner">
-      <img src="assets/covet-logo-white.png" alt="Covet" width="110" height="28">
-      <p class="muted">&copy; <span id="year"></span> Covet. All prices in ZAR, VAT included.</p>
+    <div class="wrap footer-top">
+      <div class="footer-brand">
+        <img src="assets/covet-logo-white.png" alt="Covet" width="125" height="32">
+        <p>Sneakers and designer clothing, delivered across South Africa.</p>
+      </div>
+      <nav class="footer-col" aria-label="Shop">
+        <h3>Shop</h3>
+        <a href="#shop" data-cat="sneakers">Sneakers</a>
+        <a href="#shop" data-cat="clothing">Clothing</a>
+        <a href="#shop" data-cat="rare">Rare &amp; Hype</a>
+        <a href="#shop" data-cat="all">Shop all</a>
+      </nav>
+      <nav class="footer-col" aria-label="Explore">
+        <h3>Explore</h3>
+        <a href="#collections">Collections</a>
+        <a href="#brands">Brands</a>
+        <a href="#shop" data-cat="luxury">Luxury</a>
+        <a href="#shop" data-cat="sportswear">Sportswear</a>
+      </nav>
+    </div>
+    <div class="wrap footer-bottom">
+      <p>&copy; <span id="year"></span> Covet</p>
+      <p>All prices in ZAR, VAT included.</p>
     </div>
   </footer>
 
