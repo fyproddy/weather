@@ -13,8 +13,8 @@ Pricing rule: Covet price = 60% of each pair's own store price.
   * Pairs found on StockX use the store price on their own listing
     (tools/store_prices_usd.json), converted at ZAR_PER_USD.
   * "retail" store price = what the brand's own store charges (ZAR estimate)
-  * "resale" store price = current resale market price, used for sold-out and
-    collaboration pairs that no brand store sells any more
+  * Rare & Hype pairs (sold-out collaborations) use their original retail price
+    from tools/rare_retail_usd.json, never the resale price
 All store prices are estimates - check them before launch.
 
 Images come from StockX's public image CDN. The file name is built from
@@ -422,6 +422,10 @@ def expand():
     with open(os.path.join(ROOT, "tools", "retail_prices_usd.json")) as f:
         shop_usd = {k: v for k, v in json.load(f).items() if v}
 
+    # Original US$ retail of the Rare & Hype pairs, by handle.
+    with open(os.path.join(ROOT, "tools", "rare_retail_usd.json")) as f:
+        rare_usd = json.load(f)
+
     plans, used = [], set()
     for c in COLLECTIONS:
         entries = []
@@ -473,6 +477,8 @@ def expand():
                 # pair keeps its model's store price, like similar Covet pairs.
             title = make_title(c, colour)
             h = handle(c["brand"], title)
+            if h in rare_usd:
+                store = int(round(rare_usd[h] * ZAR_PER_USD, -2))
             if h in seen:
                 continue
             seen.add(h)
@@ -486,7 +492,7 @@ def expand():
                 "category": c["category"],
                 "categoryLabel": LABELS[c["category"]],
                 "storePrice": store,
-                "storePriceSource": c["source"],
+                "storePriceSource": "retail",
                 "price": int(round(store * DISCOUNT / 10.0) * 10),
                 "currency": "ZAR",
                 "sizes": SIZES,
